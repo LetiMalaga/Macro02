@@ -8,11 +8,3 @@
 import Foundation
 
 
-
-protocol ActivitiesPresenterProtocol: AnyObject {
-    
-}
-
-class ActivitiesPresenter: ActivitiesPresenterProtocol {
-    
-}

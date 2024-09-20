@@ -10,11 +10,13 @@ import Foundation
 protocol ActivitiesInteractorProtocol:AnyObject{
     var activities:[ActivitiesModel] { get set }
     
-    func fetchActivities(completion: @escaping ([ActivitiesModel]) -> Void)
+    func fetchActivities(completion: @escaping (Bool) -> Void)
     func addActivity(_ activity: ActivitiesModel, completion: @escaping (Bool) -> Void)
     func deleteActivity(at index: Int, completion: @escaping (Bool) -> Void)
     func validateActivityName(_ name: String) -> Bool
 }
+
+//------------------------------------------------------------------------------------------------------
 
 class ActivitiesInteractor: ActivitiesInteractorProtocol {
     var activities: [ActivitiesModel] = []
@@ -24,23 +26,32 @@ class ActivitiesInteractor: ActivitiesInteractorProtocol {
         self.activitiesData = activitiesData
     }
     
-    func fetchActivities(completion: @escaping ([ActivitiesModel]) -> Void) {
-        completion(activities)
+    func fetchActivities(completion: @escaping (Bool) -> Void) {
+        activitiesData.fetchActivities { activities in
+            if !activities.isEmpty {
+                self.activities = activities
+                completion(true)
+            }else {
+                completion(false)
+            }
+        }
+        
     }
     
     func addActivity(_ activity: ActivitiesModel, completion: @escaping (Bool) -> Void) {
         if validateActivityName(activity.tittle) {
-            activities.append(activity)
-            completion(true)
-        } else {
-            completion(false)
-        }
+            activitiesData.addActivity(activity) { success in
+                completion(success)
+            }
+        } 
     }
     
     func deleteActivity(at index: Int, completion: @escaping (Bool) -> Void) {
         if index < activities.count {
-            activities.remove(at: index)
-            completion(true)
+            let activity = activities[index]
+            activitiesData.deleteActivity(at: activity.id) { success in
+                completion(true)
+            }
         } else {
             completion(false)
         }
