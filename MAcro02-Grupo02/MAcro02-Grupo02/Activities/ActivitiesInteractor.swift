@@ -19,6 +19,7 @@ protocol ActivitiesInteractorProtocol:AnyObject{
 //------------------------------------------------------------------------------------------------------
 
 class ActivitiesInteractor: ActivitiesInteractorProtocol {
+    
     var activities: [ActivitiesModel] = []
     private var activitiesData:ActivitiesDataProtocol
     
@@ -27,9 +28,9 @@ class ActivitiesInteractor: ActivitiesInteractorProtocol {
     }
     
     func fetchActivities(completion: @escaping (Bool) -> Void) {
-        activitiesData.fetchActivities { activities in
+        activitiesData.fetchActivities { [weak self] activities in
             if !activities.isEmpty {
-                self.activities = activities
+                self?.activities = activities
                 completion(true)
             }else {
                 completion(false)

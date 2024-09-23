@@ -8,4 +8,6 @@
 import Foundation
 import UIKit
 
-
+class ActivitiesViewController: UIViewController {
+    
+}
