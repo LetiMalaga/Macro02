@@ -52,8 +52,10 @@ class ActivitiesInteractor: ActivitiesInteractorProtocol {
             let activity = activities[index]
             activitiesData.deleteActivity(at: activity.id) { success in
                 completion(true)
+                print ("Deleted activity: \(activity)")
             }
         } else {
+            print ("Index out of bounds")
             completion(false)
         }
     }

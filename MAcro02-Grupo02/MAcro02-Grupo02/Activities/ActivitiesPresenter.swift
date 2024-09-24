@@ -13,6 +13,7 @@ protocol ActivitiesViewProtocol: AnyObject {
 }
 
 protocol ActivitiesPresenterProtocol: AnyObject {
+    var activities : [ActivitiesModel] { get set }
     func viewDidLoad()
     func getActivity(at index: Int) -> ActivitiesModel
     func didSelectActivity(at index: Int)
@@ -21,16 +22,20 @@ protocol ActivitiesPresenterProtocol: AnyObject {
 }
 
 class ActivitiesPresenter: ActivitiesPresenterProtocol {
-    private weak var view: ActivitiesViewProtocol?
+    private var view: ActivitiesViewProtocol!
     private var interactor: ActivitiesInteractorProtocol
     
-    private var activities: [ActivitiesModel] = []
+    internal var activities: [ActivitiesModel] = []
     
     init (view: ActivitiesViewProtocol, activitiesInteractor: ActivitiesInteractorProtocol) {
         self.view = view
         self.interactor = activitiesInteractor
     }
     func viewDidLoad() {
+        fetchActivities()
+    }
+    
+    func fetchActivities() {
         interactor.fetchActivities { success in
             if success{
                 self.activities = self.interactor.activities
@@ -38,7 +43,6 @@ class ActivitiesPresenter: ActivitiesPresenterProtocol {
             }
         }
     }
-    
     func getActivity(at index: Int) -> ActivitiesModel {
         return activities[index]
     }

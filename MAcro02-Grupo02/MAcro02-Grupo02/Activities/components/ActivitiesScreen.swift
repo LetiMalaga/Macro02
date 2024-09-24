@@ -12,10 +12,9 @@ protocol ActivitiesProtocol: AnyObject {
     func saveButton()
 }
 
-class ActivitiesScreen: UIView {
+class ActivitiesScreen: UIView,ActivitiesViewProtocol{
     
     private weak var delegate: ActivitiesProtocol?
-    private var editableTable: Int?
     
     public func delegate(_ delegate: ActivitiesProtocol) {
         self.delegate = delegate
@@ -41,42 +40,26 @@ class ActivitiesScreen: UIView {
     
     lazy var activitiesTable: UITableView = {
         let table = UITableView()
-        table.delegate = self
-        table.dataSource = self
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         table.isScrollEnabled = false
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
     
+    
     override init(frame: CGRect) {
+        
         super.init(frame: frame)
         backgroundColor = traitCollection.userInterfaceStyle == .dark ? .black : .white
         setupView()
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func editButtonTapped(_ sender: UIButton) {
-        let section = sender.tag
-        
-        if let eT = editableTable {
-            if eT == section {
-                editableTable = nil
-                activitiesTable.setEditing(false, animated: true)
-            } else {
-                editableTable = section
-                activitiesTable.setEditing(true, animated: true)
-            }
-        } else {
-            editableTable = section
-            activitiesTable.setEditing(true, animated: true)
-        }
-        
-        activitiesTable.reloadData()
-    }
+
     
     private func setupView() {
         addSubview(activityTitle)
@@ -101,79 +84,13 @@ class ActivitiesScreen: UIView {
     }
 }
 
-extension ActivitiesScreen: UITableViewDelegate, UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        2
+extension ActivitiesScreen {
+    func reloadData() {
+        activitiesTable.reloadData()
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
-    }
-    
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        
-        if indexPath.row == 0 {
-               return false
-           }
-        
-        return indexPath.section == editableTable
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            let cell = UITableViewCell(style: .default, reuseIdentifier: "titleCell")
-            cell.textLabel?.text = indexPath.section == 0 ? "Intervalo Curto" : "Intervalo Longo"
-            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 22)
-
-            let editButton = UIButton(type: .system)
-            let isEditingThisSection = editableTable == indexPath.section
-            editButton.setTitle(isEditingThisSection ? "Pronto" : "Editar", for: .normal)
-            editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
-            editButton.translatesAutoresizingMaskIntoConstraints = false
-            editButton.tag = indexPath.section
-            cell.contentView.addSubview(editButton)
-
-            NSLayoutConstraint.activate([
-                editButton.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -16),
-                editButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
-            ])
-
-            return cell
-        } else {
-            let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-            cell.textLabel?.text = "Atividade \(indexPath.row)"
-            cell.accessoryType = .detailButton
-            return cell
-        }
-    }
-
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        56
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        20
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        60
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = UIView()
-        footerView.backgroundColor = .clear
-        return footerView
-    }
-    
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        
-        if indexPath.row == 0 {
-            return .none
-        }
-        
-        return indexPath.section == editableTable ? .delete : .none
-        
+    func showActivityDetail(_ activity: ActivitiesModel) {
+      printContent(activity)
     }
 }
+

@@ -12,50 +12,92 @@ import XCTest
 
 final class ActivitiesPresenterTests: XCTestCase {
     
-    func tesViewDidLoad() {
-        let mockActivities = ActivitiesDataMock()
-        let interactor = ActivitiesInteractor(activitiesData: mockActivities)
-        let presenter = ActivitiesPresenter(view: ActivitiesViewController() as! ActivitiesViewProtocol, activitiesInteractor: interactor)
+    
+    func testViewDidLoadCallsFetchActivitiesAndReloadsData() {
+        let viewMock = ActivitiesViewMock()
+        let interactorMock = ActivitiesInteractorMock()
+        let presenter = ActivitiesPresenter(view: viewMock, activitiesInteractor: interactorMock)
         
+        // Act
+        presenter.viewDidLoad()
         
+        // Assert
+        XCTAssertTrue(interactorMock.fetchActivitiesCalled, "fetchActivities should have been called")
+        XCTAssertTrue(viewMock.isReloadDataCalled, "reloadData should have been called")
+    }
+    
+    func testAddNewActivity() {
+        let viewMock = ActivitiesViewMock()
+        let interactorMock = ActivitiesInteractorMock()
+        let presenter = ActivitiesPresenter(view: viewMock, activitiesInteractor: interactorMock)
+        
+        // Arrange
+        let newActivity = ActivitiesModel(tittle: "Exercise")
+        
+        // Act
+        presenter.addNewActivity(newActivity)
+        
+        // Assert
+        XCTAssertTrue(interactorMock.addActivityCalled, "addActivity should have been called")
+        XCTAssertTrue(viewMock.isReloadDataCalled, "reloadData should have been called after adding a new activity")
+    }
+    
+    func testDeleteActivity() {
+        let viewMock = ActivitiesViewMock()
+        let interactorMock = ActivitiesInteractorMock()
+        let presenter = ActivitiesPresenter(view: viewMock, activitiesInteractor: interactorMock)
+        
+        // Act
+        presenter.deleteActivity(at: 0)
+        
+        // Assert
+        XCTAssertTrue(interactorMock.deleteActivityCalled, "deleteActivity should have been called")
+        XCTAssertTrue(viewMock.isReloadDataCalled, "reloadData should have been called after deleting an activity")
     }
     
 }
 
 class ActivitiesInteractorMock: ActivitiesInteractorProtocol {
-    var activities: [ActivitiesModel] = [ActivitiesModel(tittle: "Study"), ActivitiesModel(tittle: "Work"), ActivitiesModel(tittle: "Exercise")]
-    var shouldReturnError = false
+    var activities: [ActivitiesModel] = [
+        ActivitiesModel(tittle: "Study"),
+        ActivitiesModel(tittle: "Work")
+    ]
+    
+    var fetchActivitiesCalled = false
+    var addActivityCalled = false
+    var deleteActivityCalled = false
     
     func fetchActivities(completion: @escaping (Bool) -> Void) {
-        if !shouldReturnError {
-            completion(true)
-        }else {
-            completion(false)
-        }
+        fetchActivitiesCalled = true
+        completion(true)
     }
     
     func addActivity(_ activity: ActivitiesModel, completion: @escaping (Bool) -> Void) {
-        if validateActivityName(activity.tittle) {
-            if shouldReturnError {
-                completion(false)
-            }else {
-                completion(true)
-            }
-        }
+        addActivityCalled = true
+        activities.append(activity)
+        completion(true)
     }
     
     func deleteActivity(at index: Int, completion: @escaping (Bool) -> Void) {
-        if index < activities.count {
-            let activity = activities[index]
-            completion(true)
-        } else {
-            completion(false)
-        }
+        deleteActivityCalled = true
+        activities.remove(at: index)
+        completion(true)
     }
     
     func validateActivityName(_ name: String) -> Bool {
         return !name.isEmpty
     }
+}
+
+class ActivitiesViewMock: ActivitiesViewProtocol {
+    var isReloadDataCalled = false
+    var activityShown: ActivitiesModel?
     
+    func reloadData() {
+        isReloadDataCalled = true
+    }
     
+    func showActivityDetail(_ activity: ActivitiesModel) {
+        activityShown = activity
+    }
 }
