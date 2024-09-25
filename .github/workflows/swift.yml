@@ -19,7 +19,7 @@ jobs:
     - name: Build and Test
       run: |
           xcodebuild build \
-           -project MAcro02-Grupo02.xcodeproj \
+           -project MAcro02-Grupo02/MAcro02-Grupo02.xcodeproj \
            -scheme MAcro02-Grupo02 \
            -sdk iphonesimulator \
            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.0' \
