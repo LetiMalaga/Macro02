@@ -1,0 +1,30 @@
+# This workflow will build a Swift project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: MAcro02-Grupo02
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    
+    - uses: actions/checkout@v4
+    - name: SwiftFormat
+      run: swiftformat . --lint
+    - name: SwiftLint
+      run: swiftlint lint --strict
+      
+    - name: Build and Test
+      run: 
+          xcodebuild build \
+           -project [MAcro02-Grupo02] \
+           -scheme [MAcro02-Grupo02] \
+           -sdk iphonesimulator \
+           -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.0' \
+            test || exit 1
