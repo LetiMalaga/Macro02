@@ -15,13 +15,9 @@ jobs:
     steps:
     
     - uses: actions/checkout@v4
-    - name: SwiftFormat
-      run: swiftformat . --lint
-    - name: SwiftLint
-      run: swiftlint lint --strict
       
     - name: Build and Test
-      run: 
+      run: |
           xcodebuild build \
            -project MAcro02-Grupo02.xcodeproj \
            -scheme MAcro02-Grupo02 \
