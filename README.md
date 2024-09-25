@@ -6,7 +6,7 @@ Este é um repositório do projeto para o Macro 02 do Apple Developer Academy UC
 - Luca Beraldi,
 - Letícia Malagutti,
 - Luis Felipe Zica
-  
+
 O objetivo do projeto é desenvolver um aplicativo de "pomodoro" multi-plataforma que auxilia o usuário a ser mais produtivo, evitando a síndrome do burnout ao sugerir atividades rápidas e relaxantes que podem ser feitas nos momentos de intervalo do usuário.
 
 ## Estrutura do Projeto
@@ -14,11 +14,15 @@ O objetivo do projeto é desenvolver um aplicativo de "pomodoro" multi-plataform
 A estrutura de pastas e arquivos do projeto é organizada da seguinte forma:
 
 ```
-FPSARMini06/
+MAcro02-Grupo02/
 ├── Localizable.xcstrings
 │
-├── FPSARMini06/
-│   ├── Model/
+├── MAcro02-Grupo02/
+│   ├── LaunchScreen.storyboard
+│   ├── Main.storyboard
+│   ├── SceneDelegate.swift
+│   ├── ViewController.swift
+<!-- │   ├── Model/
 │   │   └── Model.swift
 │   ├── NavigationController/
 │   │   ├── Navigator.swift
@@ -53,22 +57,22 @@ FPSARMini06/
 │   │   └── MainScene.swift
 │   └── Utils/
 │   │   ├── frogDrone.usdz
-│   │   └── ComponentePauseMenu.swift
+│   │   └── ComponentePauseMenu.swift -->
 │   │
 │   ├── AppDelegate.swift
 │   ├── ContentView.swift
 │   ├── GameController.swift
 │   │
 │   ├── Assets.xcassets/
-│   │   └── AppIcon.appiconset/
 │   │
 │   └── Info.plist
 │   
-├── NomeDoProjetoTests/
-│   └── [NomeDoProjetoTests].swift
+├── MAcro02-Grupo02Tests/
+│   └── MAcro02_Grupo02Tests.swift
 │
-├── NomeDoProjetoUITests/
-│   └── [NomeDoProjetoUITests].swift
+├── MAcro02-Grupo02UITests/
+│   ├── MAcro02_Grupo02UITests.swift
+│   └── MAcro02_Grupo02UITestsLaunchTests.swift
 │
 ├── Podfile
 ├── README.md
@@ -110,12 +114,12 @@ Para manter o histórico de commits organizado e fácil de entender, siga esta e
 
 1. Clone o repositório:
     ```bash
-    git clone https://github.com/Eirado/FPSARMini06.git
+    git clone https://github.com/LetiMalaga/Macro02.git
     ```
 
 2. Navegue até o diretório do projeto:
     ```bash
-    cd FPSARMini06
+    cd MAcro02-Grupo02
     ```
 
 3. Instale as dependências do projeto:
@@ -125,7 +129,7 @@ Para manter o histórico de commits organizado e fácil de entender, siga esta e
 
 4. Abra o projeto no Xcode:
     ```bash
-    open FPSARMini06.xcworkspace
+    open MAcro02-Grupo02.xcodeproj
     ```
 
 ## Contribuição
