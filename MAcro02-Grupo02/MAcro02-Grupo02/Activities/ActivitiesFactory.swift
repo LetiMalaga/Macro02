@@ -6,3 +6,15 @@
 //
 
 import Foundation
+import UIKit
+
+class ActivitiesFactory{
+    static func makeActivitiesModule() -> UIViewController {
+        let viewController = ActivitiesViewController()
+        let data = ActivitiesData()
+        let interactor = ActivitiesInteractor(activitiesData: data)
+        let presenter = ActivitiesPresenter(view: viewController, activitiesInteractor: interactor)
+        viewController.presenter = presenter
+        return viewController
+    }
+}

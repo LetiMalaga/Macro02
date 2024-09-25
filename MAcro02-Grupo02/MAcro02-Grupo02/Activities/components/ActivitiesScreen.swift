@@ -12,7 +12,7 @@ protocol ActivitiesProtocol: AnyObject {
     func saveButton()
 }
 
-class ActivitiesScreen: UIView,ActivitiesViewProtocol{
+class ActivitiesScreen: UIView{
     
     private weak var delegate: ActivitiesProtocol?
     
@@ -84,13 +84,4 @@ class ActivitiesScreen: UIView,ActivitiesViewProtocol{
     }
 }
 
-extension ActivitiesScreen {
-    func reloadData() {
-        activitiesTable.reloadData()
-    }
-    
-    func showActivityDetail(_ activity: ActivitiesModel) {
-      printContent(activity)
-    }
-}
 
