@@ -118,7 +118,7 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             presenter?.deleteActivity(at: indexPath.row - 1)
-            ActivityScreen.reloadData()
+            ActivityScreen.activitiesTable.reloadData()
         }
     }
     
@@ -139,6 +139,6 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
             ActivityScreen.activitiesTable.setEditing(true, animated: true)
         }
         
-        ActivityScreen.reloadData()
+        ActivityScreen.activitiesTable.reloadData()
     }
 }
