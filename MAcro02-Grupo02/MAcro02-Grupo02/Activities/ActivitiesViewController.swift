@@ -7,6 +7,12 @@
 
 import UIKit
 
+protocol ActivitiesViewProtocol: AnyObject {
+    func reloadData()
+    func showActivityDetail(_ activity: ActivitiesModel)
+}
+
+//------------------------------------------------------------------------------------------------------
 
 class ActivitiesViewController: UIViewController
 {
@@ -41,14 +47,14 @@ class ActivitiesViewController: UIViewController
 
 extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,ActivitiesViewProtocol{
     func reloadData() {
-        print("reload data")
+        ActivityScreen.activitiesTable.reloadData()
     }
     
     func showActivityDetail(_ activity: ActivitiesModel) {
         print("show activity detail")
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter!.activities.count + 1
+        (presenter?.activities.count ?? 0) + 1
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -118,7 +124,7 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             presenter?.deleteActivity(at: indexPath.row - 1)
-            ActivityScreen.reloadData()
+            ActivityScreen.activitiesTable.reloadData()
         }
     }
     
@@ -139,6 +145,6 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
             ActivityScreen.activitiesTable.setEditing(true, animated: true)
         }
         
-        ActivityScreen.reloadData()
+        ActivityScreen.activitiesTable.reloadData()
     }
 }

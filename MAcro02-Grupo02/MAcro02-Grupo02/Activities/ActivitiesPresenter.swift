@@ -7,11 +7,6 @@
 
 import Foundation
 
-protocol ActivitiesViewProtocol: AnyObject {
-    func reloadData()
-    func showActivityDetail(_ activity: ActivitiesModel)
-}
-
 protocol ActivitiesPresenterProtocol: AnyObject {
     var activities : [ActivitiesModel] { get set }
     func viewDidLoad()
@@ -20,6 +15,8 @@ protocol ActivitiesPresenterProtocol: AnyObject {
     func deleteActivity(at index: Int)
     func addNewActivity(_ activity: ActivitiesModel)
 }
+
+//------------------------------------------------------------------------------------------------------
 
 class ActivitiesPresenter: ActivitiesPresenterProtocol {
     private var view: ActivitiesViewProtocol!
@@ -31,6 +28,7 @@ class ActivitiesPresenter: ActivitiesPresenterProtocol {
         self.view = view
         self.interactor = activitiesInteractor
     }
+    
     func viewDidLoad() {
         fetchActivities()
     }
@@ -43,6 +41,7 @@ class ActivitiesPresenter: ActivitiesPresenterProtocol {
             }
         }
     }
+    
     func getActivity(at index: Int) -> ActivitiesModel {
         return activities[index]
     }
@@ -67,7 +66,5 @@ class ActivitiesPresenter: ActivitiesPresenterProtocol {
             }
         }
     }
-    
-    
     
 }

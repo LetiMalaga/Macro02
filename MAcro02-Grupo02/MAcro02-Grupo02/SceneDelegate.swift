@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         
-        let vc = ActivitiesView()
+        let vc = ActivitiesViewController()
         
         window.rootViewController = vc
         window.makeKeyAndVisible()

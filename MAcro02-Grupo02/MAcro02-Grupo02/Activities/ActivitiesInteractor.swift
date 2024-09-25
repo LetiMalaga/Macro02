@@ -59,6 +59,7 @@ class ActivitiesInteractor: ActivitiesInteractorProtocol {
             completion(false)
         }
     }
+    
     func validateActivityName(_ name: String) -> Bool {
         return !name.isEmpty
     }
