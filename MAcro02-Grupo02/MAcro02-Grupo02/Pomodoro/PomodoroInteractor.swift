@@ -20,27 +20,35 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     var remainingTime = 0
     var isRunning = false
     var isPaused = false
+    var isWorkPhase = true
+    var remainingLoops = 0
+    var workDuration = 0   // Store the work duration
+    var breakDuration = 0  // Store the break duration
 
     func startPomodoro(workDuration: Int, breakDuration: Int, loopCount: Int) {
+        self.workDuration = workDuration  // Store the work duration
+        self.breakDuration = breakDuration  // Store the break duration
+        remainingLoops = loopCount
+        isWorkPhase = true
         remainingTime = workDuration * 60
         isRunning = true
         isPaused = false
         startTimer()
-        presenter?.updateButton(isRunning: isRunning, isPaused: isPaused) // Notify presenter to update button
+        presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
 
     func pausePomodoro() {
         isRunning = false
         isPaused = true
         timer?.invalidate()
-        presenter?.updateButton(isRunning: isRunning, isPaused: isPaused) // Notify presenter to update button
+        presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
 
     func resumePomodoro() {
         isRunning = true
         isPaused = false
         startTimer()
-        presenter?.updateButton(isRunning: isRunning, isPaused: isPaused) // Notify presenter to update button
+        presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
 
     func stopPomodoro() {
@@ -59,9 +67,32 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     private func updateTimer() {
         remainingTime -= 1
         if remainingTime <= 0 {
-            stopPomodoro()
+            switchPhase()
         } else {
             presenter?.displayTime(formatTime(remainingTime))
+        }
+    }
+
+    private func switchPhase() {
+        if isWorkPhase {
+            // Work phase ended, switch to break
+            isWorkPhase = false
+            remainingTime = breakDuration * 60
+            presenter?.displayTime(formatTime(remainingTime))
+            presenter?.updateStateLabel("Break Time!")
+        } else {
+            // Break phase ended
+            remainingLoops -= 1
+            if remainingLoops > 0 {
+                // Switch back to work
+                isWorkPhase = true
+                remainingTime = workDuration * 60
+                presenter?.displayTime(formatTime(remainingTime))
+                presenter?.updateStateLabel("Time to Work!")
+            } else {
+                // All loops completed, stop Pomodoro
+                stopPomodoro()
+            }
         }
     }
 
