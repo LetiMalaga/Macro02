@@ -1,17 +1,17 @@
+////
+////  MAcro02_Grupo02Tests.swift
+////  MAcro02-Grupo02Tests
+////
+////  Created by Luiz Felipe on 17/09/24.
+////
 //
-//  MAcro02_Grupo02Tests.swift
-//  MAcro02-Grupo02Tests
+//import Testing
+//@testable import MAcro02_Grupo02
 //
-//  Created by Luiz Felipe on 17/09/24.
+//struct MAcro02_Grupo02Tests {
 //
-
-import Testing
-@testable import MAcro02_Grupo02
-
-struct MAcro02_Grupo02Tests {
-
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-    }
-
-}
+//    @Test func example() async throws {
+//        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+//    }
+//
+//}
