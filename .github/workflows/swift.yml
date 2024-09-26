@@ -20,7 +20,7 @@ jobs:
           xcode-version: 16.0
       - name: Build and Test
         run: |
-          xcodebuild build \
+          xcodebuild clean build analyze test \
             -project MAcro02-Grupo02/MAcro02-Grupo02.xcodeproj \
             -scheme MAcro02-Grupo02 \
             -sdk iphonesimulator \
