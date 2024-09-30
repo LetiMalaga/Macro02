@@ -12,6 +12,8 @@ class InsightsData {
     
     let privateDatabase = CKContainer.default().privateCloudDatabase
     let zone = CKRecordZone(zoneName: "InsightsZone")
+    var records = [CKRecord]()
+    
     func saveZone() {
         privateDatabase.save(zone) { zone, error in
             if let error = error{
@@ -21,6 +23,7 @@ class InsightsData {
             }
         }
     }
+    
     //salvando poucos elementos
     func saveTestData() {
         let record = CKRecord(recordType: "Insights", recordID: CKRecord.ID(zoneID: zone.zoneID))
@@ -36,7 +39,8 @@ class InsightsData {
         }
     }
     
-    func savemanyTestData() {
+    //funcao para adicionar varias coisas no icloud
+    func saveManyTestData() {
         let record = CKRecord(recordType: "Insights", recordID: CKRecord.ID(zoneID: zone.zoneID))
         //record["test"] = "test"
         let value = "teste" as CKRecordValue
@@ -51,11 +55,40 @@ class InsightsData {
         
         operation.configuration = config
         
-        operation.modifyRecordsResultBlock = { result in
-            
+        operation.modifyRecordsResultBlock = {error in
+//            
+//            if let error = error{
+//                print ("Error saving record: \(error)")
+//            } else {
+//                print ("Record saved successfully")
+//            
+//            }
         }
-            
-        
+        privateDatabase.add(operation)
         
     }
-}
+    
+    //funcao de query
+    func queryTestData(closure: @escaping ([(CKRecord.ID, Result<CKRecord, any Error>)])-> Void){
+        
+        let query = CKQuery(recordType: "Insights", predicate: NSPredicate(value: true))
+        privateDatabase.fetch(withQuery: query, inZoneWith: zone.zoneID) { result in
+            switch result {
+            case .success(let records):
+                closure(records.matchResults)
+            case .failure(let error):
+                print("Error fetching records: \(error)")
+            }
+        }
+        
+    }
+        
+        //funcao para deletar atividades
+        func deleteTestData(at indexpath: IndexPath) {
+            let record = records[indexpath.row]
+            privateDatabase.delete(withRecordID: record.recordID) { record, error in
+                
+            }
+        }
+    }
+
