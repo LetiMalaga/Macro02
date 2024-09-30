@@ -143,4 +143,8 @@ class PomodoroViewController: UIViewController {
             stopButton.isHidden = true
         }
     }
+    
+    func updateStateLabel(_ text: String) {
+            stateLabel.text = text  // Update the state label's text
+        }
 }
