@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UserNotifications
 
 protocol PomodoroInteractorProtocol {
     func startPomodoro(workDuration: Int, breakDuration: Int, loopCount: Int)
@@ -42,6 +43,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         isPaused = true
         timer?.invalidate()
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // Cancel notifications on pause
     }
 
     func resumePomodoro() {
@@ -56,6 +58,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         isPaused = false
         timer?.invalidate()
         presenter?.resetPomodoro()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // Cancel all pending notifications
     }
 
     private func startTimer() {
@@ -80,6 +83,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             remainingTime = breakDuration * 60
             presenter?.displayTime(formatTime(remainingTime))
             presenter?.updateStateLabel("Break Time!")
+            scheduleNotification(title: "Break Time!", body: "Your work session has ended. Time for a break!")
         } else {
             // Break phase ended
             remainingLoops -= 1
@@ -89,6 +93,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 remainingTime = workDuration * 60
                 presenter?.displayTime(formatTime(remainingTime))
                 presenter?.updateStateLabel("Time to Work!")
+                scheduleNotification(title: "Time to Work!", body: "Your break is over. Time to focus!")
             } else {
                 // All loops completed, stop Pomodoro
                 stopPomodoro()
@@ -100,5 +105,25 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         let minutes = seconds / 60
         let seconds = seconds % 60
         return String(format: "%02d:%02d", minutes, seconds)
+    }
+
+    private func scheduleNotification(title: String, body: String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+
+        // Create the trigger for an immediate notification
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+
+        // Create the request
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        // Schedule the notification
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error)")
+            }
+        }
     }
 }
