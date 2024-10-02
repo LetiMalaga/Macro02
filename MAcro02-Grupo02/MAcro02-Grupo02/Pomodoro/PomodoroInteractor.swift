@@ -26,9 +26,11 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     var workDuration = 0   // Store the work duration
     var breakDuration = 0  // Store the break duration
 
+    private var pendingPhaseSwitch: Bool = false // Track if the phase switch is pending
+
     func startPomodoro(workDuration: Int, breakDuration: Int, loopCount: Int) {
-        self.workDuration = workDuration  // Store the work duration
-        self.breakDuration = breakDuration  // Store the break duration
+        self.workDuration = workDuration
+        self.breakDuration = breakDuration
         remainingLoops = loopCount
         isWorkPhase = true
         remainingTime = workDuration * 60
@@ -49,7 +51,15 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     func resumePomodoro() {
         isRunning = true
         isPaused = false
-        startTimer()
+
+        // Only start the timer if a phase switch is pending
+        if pendingPhaseSwitch {
+            pendingPhaseSwitch = false // Reset the pending phase switch
+            startTimer()
+        } else {
+            startTimer() // Start the timer normally if no phase switch is pending
+        }
+
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
 
@@ -79,24 +89,30 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     private func switchPhase() {
         if isWorkPhase {
             // Work phase ended, switch to break
+            timer?.invalidate() // Stop the timer
             isWorkPhase = false
-            remainingTime = breakDuration * 60
+            remainingTime = breakDuration * 60 // Set remaining time for break
             presenter?.displayTime(formatTime(remainingTime))
             presenter?.updateStateLabel("Break Time!")
-            scheduleNotification(title: "Break Time!", body: "Your work session has ended. Time for a break!")
+            scheduleNotification(title: "Break Time!", body: "Your work session has ended. Time for a break!") // Notification for break phase
+            pendingPhaseSwitch = true // Mark that we need to wait for user to resume
         } else {
             // Break phase ended
             remainingLoops -= 1
             if remainingLoops > 0 {
-                // Switch back to work
+                // Only switch to work phase if there are remaining loops
+                timer?.invalidate() // Stop the timer
                 isWorkPhase = true
-                remainingTime = workDuration * 60
+                remainingTime = workDuration * 60 // Set remaining time for work
                 presenter?.displayTime(formatTime(remainingTime))
                 presenter?.updateStateLabel("Time to Work!")
-                scheduleNotification(title: "Time to Work!", body: "Your break is over. Time to focus!")
+                scheduleNotification(title: "Time to Work!", body: "Your break is over. Time to focus!") // Notification for work phase
+                pendingPhaseSwitch = true // Mark that we need to wait for user to resume
             } else {
                 // All loops completed, stop Pomodoro
                 stopPomodoro()
+                presenter?.updateStateLabel("Pomodoro Complete!")
+                scheduleNotification(title: "Pomodoro Complete!", body: "You've completed all loops. Good job!"); // Notification for completion
             }
         }
     }
@@ -127,3 +143,4 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         }
     }
 }
+
