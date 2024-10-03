@@ -7,6 +7,7 @@
 
 import UIKit
 import UserNotifications
+import CloudKit
 
 class PomodoroViewController: UIViewController {
     var interactor: PomodoroInteractorProtocol!

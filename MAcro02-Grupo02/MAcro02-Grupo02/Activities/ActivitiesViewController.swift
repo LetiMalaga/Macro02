@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CloudKit
 
 protocol ActivitiesViewProtocol: AnyObject {
     func reloadData()
@@ -38,6 +39,7 @@ class ActivitiesViewController: UIViewController
              
             // Carregar atividades
             presenter?.viewDidLoad()
+            iCloudLogin().checkiCloudAccountStatus(from: self)
         }
     
 
