@@ -8,6 +8,7 @@
 import UIKit
 import UserNotifications
 import CloudKit
+import SwiftUI
 
 class PomodoroViewController: UIViewController {
     var interactor: PomodoroInteractorProtocol!
@@ -147,4 +148,8 @@ class PomodoroViewController: UIViewController {
     @objc private func stopButtonTapped() {
         interactor.stopPomodoro()
     }
+}
+
+#Preview {
+    PomodoroViewController().showLivePreview()
 }
