@@ -6,9 +6,14 @@
 //
 
 import Foundation
+import UIKit
 
 protocol InsightsPresenterProtocol {
-    func presentInsights(insights: InsightsData)
+    func presentTagInsights(insights: InsightsDataModel)
+    func presentFocusedInsights(insights: InsightsDataModel)
+    func presenteBreakdownInsights(insights: InsightsDataModel)
+    func presentSessionInsights(insights: InsightsDataModel)
+    func presenteTotalTimeInsights(insights: InsightsDataModel)
 }
 
 class InsightsPresenter: InsightsPresenterProtocol {
@@ -18,9 +23,32 @@ class InsightsPresenter: InsightsPresenterProtocol {
         self.view = view
     }
     
-    func presentInsights(insights: InsightsData) {
+    func presentTagInsights(insights: InsightsDataModel) {
+        let tags = insights.timeFocusedInMinutes
+    
         
     }
     
+    func presentFocusedInsights(insights: InsightsDataModel) {
+        let timeInHours = convertMinutesToHours(minutes: insights.timeFocusedInMinutes.values.reduce(0, +))
+    }
     
+    func presenteBreakdownInsights(insights: InsightsDataModel) {
+        let timeInHours = convertMinutesToHours(minutes: insights.timeBreakInMinutes)
+    }
+    func presentSessionInsights(insights: InsightsDataModel) {
+        let totalSessions = insights.value
+    }
+    
+    func presenteTotalTimeInsights(insights: InsightsDataModel) {
+        let totalTime = insights.timeTotalInMinutes
+    }
+    
+    func convertMinutesToHours(minutes: Int) -> Double {
+        let hours = minutes / 60               // Parte inteira: horas
+        let remainingMinutes = minutes % 60    // Minutos restantes
+        let decimalMinutes = Double(remainingMinutes) / 60.0 // Fração de hora
+        
+        return Double(hours) + decimalMinutes
+    }
 }

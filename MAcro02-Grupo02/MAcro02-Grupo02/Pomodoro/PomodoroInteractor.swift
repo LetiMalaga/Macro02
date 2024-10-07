@@ -15,6 +15,17 @@ protocol PomodoroInteractorProtocol {
 }
 
 class PomodoroInteractor: PomodoroInteractorProtocol {
+    private let counterKey = "PomodoroCount"
+    var counter: Int {
+        get {
+            // Recupera o valor do contador salvo no UserDefaults, caso não exista, retorna 0
+            return UserDefaults.standard.integer(forKey: counterKey)
+        }
+        set {
+            // Atualiza o valor do contador no UserDefaults
+            UserDefaults.standard.set(newValue, forKey: counterKey)
+        }
+    }
     var presenter: PomodoroPresenterProtocol?
     var timer: Timer?
     var remainingTime = 0
@@ -24,7 +35,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     var remainingLoops = 0
     var workDuration = 0   // Store the work duration
     var breakDuration = 0  // Store the break duration
-
+    
     func startPomodoro(workDuration: Int, breakDuration: Int, loopCount: Int) {
         self.workDuration = workDuration  // Store the work duration
         self.breakDuration = breakDuration  // Store the break duration
@@ -36,34 +47,34 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         startTimer()
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
-
+    
     func pausePomodoro() {
         isRunning = false
         isPaused = true
         timer?.invalidate()
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
-
+    
     func resumePomodoro() {
         isRunning = true
         isPaused = false
         startTimer()
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
-
+    
     func stopPomodoro() {
         isRunning = false
         isPaused = false
         timer?.invalidate()
         presenter?.resetPomodoro()
     }
-
+    
     private func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.updateTimer()
         }
     }
-
+    
     private func updateTimer() {
         remainingTime -= 1
         if remainingTime <= 0 {
@@ -72,7 +83,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             presenter?.displayTime(formatTime(remainingTime))
         }
     }
-
+    
     private func switchPhase() {
         if isWorkPhase {
             // Work phase ended, switch to break
@@ -92,10 +103,14 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             } else {
                 // All loops completed, stop Pomodoro
                 stopPomodoro()
+                
+                //adicionar icloud
+                counter += 1
+                
             }
         }
     }
-
+    
     private func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let seconds = seconds % 60

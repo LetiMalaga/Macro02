@@ -69,9 +69,9 @@ class InsightsData {
     }
     
     //funcao de query
-    func queryTestData(closure: @escaping ([(CKRecord.ID, Result<CKRecord, any Error>)])-> Void){
+    func queryTestData(predicate: NSPredicate, closure: @escaping ([(CKRecord.ID, Result<CKRecord, any Error>)])-> Void){
         
-        let query = CKQuery(recordType: "Insights", predicate: NSPredicate(value: true))
+        let query = CKQuery(recordType: "Insights", predicate: predicate)
         privateDatabase.fetch(withQuery: query, inZoneWith: zone.zoneID) { result in
             switch result {
             case .success(let records):

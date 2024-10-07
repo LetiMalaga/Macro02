@@ -16,7 +16,6 @@ protocol ActivitiesViewProtocol: AnyObject {
 
 class ActivitiesViewController: UIViewController
 {
-
     
     var ActivityScreen: ActivitiesScreen = ActivitiesScreen()
     var presenter: ActivitiesPresenterProtocol?
