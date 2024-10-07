@@ -38,6 +38,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         isPaused = false
         startTimer()
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
+        presenter?.updateStateLabel("Time to Work!")
     }
 
     func pausePomodoro() {
@@ -96,6 +97,9 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             presenter?.updateStateLabel("Break Time!")
             scheduleNotification(title: "Break Time!", body: "Your work session has ended. Time for a break!") // Notification for break phase
             pendingPhaseSwitch = true // Mark that we need to wait for user to resume
+            isRunning = false
+            isPaused = true
+            presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
         } else {
             // Break phase ended
             remainingLoops -= 1
@@ -108,6 +112,9 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 presenter?.updateStateLabel("Time to Work!")
                 scheduleNotification(title: "Time to Work!", body: "Your break is over. Time to focus!") // Notification for work phase
                 pendingPhaseSwitch = true // Mark that we need to wait for user to resume
+                isRunning = false
+                isPaused = true
+                presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
             } else {
                 // All loops completed, stop Pomodoro
                 stopPomodoro()
