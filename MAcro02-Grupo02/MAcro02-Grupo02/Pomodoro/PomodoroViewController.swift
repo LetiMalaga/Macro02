@@ -21,6 +21,7 @@ class PomodoroViewController: UIViewController {
     private let workDurationField = UITextField()
     private let breakDurationField = UITextField()
     private let loopCountField = UITextField()
+    private let longRestDurationField = UITextField()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +50,13 @@ class PomodoroViewController: UIViewController {
         workDurationField.placeholder = "Work Duration (min)"
         breakDurationField.placeholder = "Break Duration (min)"
         loopCountField.placeholder = "Number of Loops"
+        
+        longRestDurationField.placeholder = "Long Rest Duration (min)"
+        longRestDurationField.borderStyle = .roundedRect
+        longRestDurationField.keyboardType = .numberPad
+        longRestDurationField.textAlignment = .center
 
-        [workDurationField, breakDurationField, loopCountField].forEach {
+        [workDurationField, breakDurationField, loopCountField, longRestDurationField].forEach {
             $0.borderStyle = .roundedRect
             $0.keyboardType = .numberPad
             $0.textAlignment = .center
@@ -73,7 +79,7 @@ class PomodoroViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        let subviews = [timerLabel, stateLabel, workDurationField, breakDurationField, loopCountField, controlButton, stopButton]
+        let subviews = [timerLabel, stateLabel, workDurationField, breakDurationField, longRestDurationField, loopCountField, controlButton, stopButton]
         subviews.forEach {
             view.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -93,18 +99,22 @@ class PomodoroViewController: UIViewController {
             breakDurationField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             breakDurationField.topAnchor.constraint(equalTo: workDurationField.bottomAnchor, constant: 10),
             breakDurationField.widthAnchor.constraint(equalToConstant: 200),
+            
+            longRestDurationField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            longRestDurationField.topAnchor.constraint(equalTo: loopCountField.bottomAnchor, constant: 10),
+            longRestDurationField.widthAnchor.constraint(equalToConstant: 200),
 
             loopCountField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loopCountField.topAnchor.constraint(equalTo: breakDurationField.bottomAnchor, constant: 10),
             loopCountField.widthAnchor.constraint(equalToConstant: 200),
 
             controlButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            controlButton.topAnchor.constraint(equalTo: loopCountField.bottomAnchor, constant: 30),
+            controlButton.topAnchor.constraint(equalTo: loopCountField.bottomAnchor, constant: 50),
             controlButton.widthAnchor.constraint(equalToConstant: 200),
             controlButton.heightAnchor.constraint(equalToConstant: 50),
 
             stopButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stopButton.topAnchor.constraint(equalTo: controlButton.bottomAnchor, constant: 20),
+            stopButton.topAnchor.constraint(equalTo: controlButton.bottomAnchor, constant: 40),
             stopButton.widthAnchor.constraint(equalToConstant: 200),
             stopButton.heightAnchor.constraint(equalToConstant: 50)
         ])
@@ -137,7 +147,16 @@ class PomodoroViewController: UIViewController {
             let workDuration = Int(workDurationField.text ?? "") ?? 25
             let breakDuration = Int(breakDurationField.text ?? "") ?? 5
             let loopCount = Int(loopCountField.text ?? "") ?? 4
-            interactor.startPomodoro(workDuration: workDuration, breakDuration: breakDuration, loopCount: loopCount)
+            let longRestDuration = Int(longRestDurationField.text ?? "") ?? 15 // Adding long rest logic
+            
+            // UNUSED IN FRONT END RIGHT NOW - START
+            
+            // Add toggle later on to toggle this
+            let wantsBreathing = false
+            
+            // UNUSED IN FRONT END RIGHT NOW - END
+            
+            interactor.startPomodoro(workDuration: workDuration, breakDuration: breakDuration, loopCount: loopCount, longRestDuration: longRestDuration, wantsBreathing: wantsBreathing)
         } else if controlButton.title(for: .normal) == "Pause" {
             interactor.pausePomodoro()
         } else if controlButton.title(for: .normal) == "Resume" {
