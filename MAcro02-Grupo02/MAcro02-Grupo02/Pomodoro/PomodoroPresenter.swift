@@ -5,14 +5,14 @@
 //  Created by Luca on 23/09/24.
 //
 
-
 import Foundation
+import SwiftUI
 
 protocol PomodoroPresenterProtocol {
     func displayTime(_ time: String)
     func resetPomodoro()
     func updateButton(isRunning: Bool, isPaused: Bool)
-    func updateStateLabel(_ text: String)  // New function to update the state label
+    func updateStateLabel(_ text: String)
 }
 
 class PomodoroPresenter: PomodoroPresenterProtocol {
@@ -36,3 +36,8 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
         viewController?.updateStateLabel(text)
     }
 }
+
+#Preview {
+    
+}
+
