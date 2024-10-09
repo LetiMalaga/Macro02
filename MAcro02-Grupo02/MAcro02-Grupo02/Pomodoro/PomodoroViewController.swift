@@ -147,7 +147,15 @@ class PomodoroViewController: UIViewController {
             let breakDuration = Int(breakDurationField.text ?? "") ?? 5
             let loopCount = Int(loopCountField.text ?? "") ?? 4
             let longRestDuration = Int(longRestDurationField.text ?? "") ?? 15 // Adding long rest logic
-            interactor.startPomodoro(workDuration: workDuration, breakDuration: breakDuration, loopCount: loopCount, longRestDuration: longRestDuration)
+            
+            // UNUSED IN FRONT END RIGHT NOW - START
+            
+            // Add toggle later on to toggle this
+            let wantsBreathing = false
+            
+            // UNUSED IN FRONT END RIGHT NOW - END
+            
+            interactor.startPomodoro(workDuration: workDuration, breakDuration: breakDuration, loopCount: loopCount, longRestDuration: longRestDuration, wantsBreathing: wantsBreathing)
         } else if controlButton.title(for: .normal) == "Pause" {
             interactor.pausePomodoro()
         } else if controlButton.title(for: .normal) == "Resume" {

@@ -9,7 +9,7 @@ import Foundation
 import UserNotifications
 
 protocol PomodoroInteractorProtocol {
-    func startPomodoro(workDuration: Int, breakDuration: Int, loopCount: Int, longRestDuration: Int)
+    func startPomodoro(workDuration: Int, breakDuration: Int, loopCount: Int, longRestDuration: Int, wantsBreathing: Bool)
     func pausePomodoro()
     func resumePomodoro()
     func stopPomodoro()
@@ -23,6 +23,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     var isRunning = false
     var isPaused = false
     var isWorkPhase = true
+    var wantsBreathing: Bool = false
     var remainingLoops = 0
     var workDuration = 0
     var breakDuration = 0
@@ -32,18 +33,25 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     private var breathingTimer: Timer?
     private var isBreakCompleted = false // Flag to track if break is completed
     
-    func startPomodoro(workDuration: Int, breakDuration: Int, loopCount: Int, longRestDuration: Int) {
+    func startPomodoro(workDuration: Int, breakDuration: Int, loopCount: Int, longRestDuration: Int, wantsBreathing: Bool) {
         self.workDuration = workDuration
         self.breakDuration = breakDuration
         self.longRestDuration = longRestDuration
+        self.wantsBreathing = wantsBreathing
         remainingLoops = loopCount
         isWorkPhase = true
         remainingTime = workDuration * 60
         isRunning = true
         isPaused = false
-        startBreathingExercise() // Start breathing before work session
-        presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
-        presenter?.updateStateLabel("Time to Breathe!")
+        if wantsBreathing == true {
+            startBreathingExercise() // Start breathing before work session
+            presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
+            presenter?.updateStateLabel("Time to Breathe!")
+        } else {
+            self.startTimer()
+            presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
+            self.presenter?.updateStateLabel("Time to Work!")
+        }
     }
     
     func pausePomodoro() {
@@ -61,7 +69,11 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         
         if pendingPhaseSwitch && isBreakCompleted {
             // Start breathing if resuming after a break
-            startBreathingExercise()
+            if wantsBreathing {
+                startBreathingExercise()
+            } else {
+                startTimer()
+            }
         } else {
             startTimer() // Just resume the timer if resuming from a pause
         }
@@ -121,6 +133,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             timer?.invalidate()
             
             if remainingLoops > 1 {
+                remainingLoops -= 1
                 // Normal work-to-break transition
                 isWorkPhase = false
                 remainingTime = breakDuration * 60
