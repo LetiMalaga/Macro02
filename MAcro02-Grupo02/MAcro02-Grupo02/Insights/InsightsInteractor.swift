@@ -12,7 +12,7 @@ protocol InsightsInteractorProtocol: AnyObject {
     func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void)
     func getInsights(predicate: NSPredicate) -> InsightsDataModel
     
-    func insightsPerDay() 
+    func insightsPerDay()
     func insightsPerMonth()
     func insightsPerWeek()
     func getLastSunday() -> Date?
@@ -33,12 +33,19 @@ class InsightsInteractor : InsightsInteractorProtocol {
         dataManager.queryTestData(predicate: predicate) { result in
             result.forEach { id, data in
                 switch data {
-                case .success(let focusResult): break
-
+                case .success(let focusResult):
+                    if let tagString = focusResult[TimerRecord.tagKey] as? String,
+                       let tag = Tags(rawValue: tagString) {
+                        let focus = FocusDataModel(focusTimeInMinutes: focusResult[TimerRecord.focusTimeKey] as? Int ?? 0, breakTimeinMinutes: focusResult[TimerRecord.breakTimeKey] as? Int ?? 0, category: tag, date: focusResult[TimerRecord.dateKey] as? Date ?? Date())
+                        focusData.append(focus)
+                        print("success in fetching data")
+                    } else {
+                        print("error in fetching data")
+                    }
+                    
                 case .failure:
                     break
                 }
-                
             }
             completion(focusData)
         }
@@ -104,7 +111,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         let components = calendar.dateComponents([.year, .month], from: currentDate)
         guard let firstDayOfMonth = calendar.date(from: components) else {return }
         let predicate = NSPredicate(format: "creationDate >= %@ AND creationDate <= %@", argumentArray: [firstDayOfMonth, currentDate])
-
+        
         apliedInsights(insights: getInsights(predicate: predicate))
     }
     
@@ -129,7 +136,7 @@ struct FocusDataModel: Identifiable {
     var id = UUID()
     var focusTimeInMinutes: Int
     var breakTimeinMinutes: Int
-    var longBreakTimeinMinutes: Int
+//    var longBreakTimeinMinutes: Int
     var category: Tags
     var date: Date
     

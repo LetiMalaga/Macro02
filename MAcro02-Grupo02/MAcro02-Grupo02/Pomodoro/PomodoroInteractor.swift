@@ -16,6 +16,7 @@ protocol PomodoroInteractorProtocol {
 }
 
 class PomodoroInteractor: PomodoroInteractorProtocol {
+    var dataManager: PomodoroData = PomodoroData()
     var presenter: PomodoroPresenterProtocol?
     var timer: Timer?
     var remainingTime = 0
@@ -110,6 +111,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 pendingPhaseSwitch = true // Mark that we need to wait for user to resume
             } else {
                 // All loops completed, stop Pomodoro
+                dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: "nil")
                 stopPomodoro()
                 presenter?.updateStateLabel("Pomodoro Complete!")
                 scheduleNotification(title: "Pomodoro Complete!", body: "You've completed all loops. Good job!"); // Notification for completion
