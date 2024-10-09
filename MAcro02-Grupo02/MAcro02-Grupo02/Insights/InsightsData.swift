@@ -14,15 +14,15 @@ class InsightsData {
     let zone = CKRecordZone(zoneName: "InsightsZone")
     var records = [CKRecord]()
     
-    func saveZone() {
-        privateDatabase.save(zone) { zone, error in
-            if let error = error{
-                print ("Error saving zone: \(error)")
-            } else {
-                print ("Zone saved successfully")
-            }
-        }
-    }
+//    func saveZone() {
+//        privateDatabase.save(zone) { zone, error in
+//            if let error = error{
+//                print ("Error saving zone: \(error)")
+//            } else {
+//                print ("Zone saved successfully")
+//            }
+//        }
+//    }
     
     //salvando poucos elementos
     func saveTestData() {

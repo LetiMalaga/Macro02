@@ -11,7 +11,7 @@ import CloudKit
 
 class PomodoroData {
     let privateDatabase = CKContainer.default().privateCloudDatabase
-    let zone = CKRecordZone(zoneName: "InsightsZone")
+    let zone = CKRecordZone(zoneName: "PomoInsightsZone")
     var records = [CKRecord]()
     
     func savePomodoro(time: Int) {
