@@ -8,6 +8,7 @@
 import Foundation
 
 protocol InsightsInteractorProtocol: AnyObject {
+    
     func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void)
     func getInsights(predicate: NSPredicate) -> InsightsDataModel
     
@@ -18,15 +19,14 @@ protocol InsightsInteractorProtocol: AnyObject {
 }
 
 class InsightsInteractor : InsightsInteractorProtocol {
+    
     private var presenter: InsightsPresenterProtocol?
     private var dataManager: InsightsData = InsightsData()
-    private var insightsData: [FocusDataModel] = []
     
     init(presenter: InsightsPresenterProtocol) {
         self.presenter = presenter
     }
     
-    // busca os ultimos dados do dia
     func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void) {
         var focusData: [FocusDataModel] = []
         

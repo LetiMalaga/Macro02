@@ -45,9 +45,9 @@ class InsightsPresenter: InsightsPresenterProtocol {
     }
     
     func convertMinutesToHours(minutes: Int) -> Double {
-        let hours = minutes / 60               // Parte inteira: horas
-        let remainingMinutes = minutes % 60    // Minutos restantes
-        let decimalMinutes = Double(remainingMinutes) / 60.0 // Fração de hora
+        let hours = minutes / 60               
+        let remainingMinutes = minutes % 60
+        let decimalMinutes = Double(remainingMinutes) / 60.0
         
         return Double(hours) + decimalMinutes
     }

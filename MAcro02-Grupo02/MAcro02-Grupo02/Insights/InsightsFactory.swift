@@ -10,9 +10,13 @@ import UIKit
 
 class InsightsFactory {
     static func makeInsights() -> UIViewController {
-        let presenter = InsightsPresenter()
-        let interactor = InsightsInteractor()
-        let viewController = InsightsViewController()
+        
+        var viewController = InsightsViewController()
+        let presenter = InsightsPresenter(view: viewController)
+        let interactor = InsightsInteractor(presenter: presenter)
+        
+        viewController.interactor = interactor
+        
         return viewController
     }
 }
