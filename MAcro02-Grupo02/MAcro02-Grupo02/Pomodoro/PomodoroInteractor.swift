@@ -81,6 +81,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         remainingTime -= 1
         if remainingTime <= 0 {
             switchPhase()
+            presenter?.completePomodoro()
         } else {
             presenter?.displayTime(formatTime(remainingTime))
             

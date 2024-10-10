@@ -13,6 +13,7 @@ protocol PomodoroPresenterProtocol {
     func resetPomodoro()
     func updateButton(isRunning: Bool, isPaused: Bool)
     func updateTimer(percentage:Float)
+    func completePomodoro()
 }
 
 class PomodoroPresenter: PomodoroPresenterProtocol {
@@ -31,6 +32,10 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
     
     func updateTimer(percentage: Float) {
         viewController?.updateCircle(percentage: percentage)
+    }
+    
+    func completePomodoro() {
+        viewController?.complete()
     }
 }
 

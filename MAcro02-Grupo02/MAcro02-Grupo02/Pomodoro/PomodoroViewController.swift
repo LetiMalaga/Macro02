@@ -156,7 +156,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         isRuning = true
         intervaloLabel.isHidden = true
         pauseLabel.isHidden = false
-        interactor?.startPomodoro(workDuration: 25, breakDuration: 5, loopCount: 4)
+        interactor?.startPomodoro(workDuration: 1, breakDuration: 1, loopCount: 4)
     }
     
     @objc func resume() {
@@ -176,6 +176,13 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         playButton.isHidden = false
         pauseLabel.isHidden = true
         intervaloLabel.isHidden = false
+        isRuning = false
+    }
+    
+    func complete() {
+        resumeButton.isHidden = false
+        resetButton.isHidden = false
+        pauseLabel.isHidden = true
         isRuning = false
     }
     
