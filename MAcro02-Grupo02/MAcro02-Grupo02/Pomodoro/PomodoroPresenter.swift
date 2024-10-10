@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 protocol PomodoroPresenterProtocol {
     func displayTime(_ time: String)
@@ -33,8 +32,3 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
         viewController?.updateCircle(percentage: percentage)
     }
 }
-
-#Preview {
-    
-}
-

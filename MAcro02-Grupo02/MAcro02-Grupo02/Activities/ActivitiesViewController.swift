@@ -17,6 +17,7 @@ protocol ActivitiesViewProtocol: AnyObject {
 
 class ActivitiesViewController: UIViewController
 {
+
     
     var ActivityScreen: ActivitiesScreen = ActivitiesScreen()
     var presenter: ActivitiesPresenterProtocol?
@@ -126,7 +127,6 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
         if editingStyle == .delete {
             presenter?.deleteActivity(at: indexPath.row - 1)
             ActivityScreen.activitiesTable.reloadData()
-
         }
     }
     
