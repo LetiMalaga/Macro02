@@ -73,12 +73,11 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row > 0 {
-            
+            interactor?.getActivity(at: indexPath.row - 1)
         }
     }
     
-    interactor?.getActivity(at: indexPath.row - 1)
-    selectededActivity
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "titleCell")
@@ -101,8 +100,8 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
             return cell
         } else {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-            let activity = presenter?.activities[indexPath.row-1] // -1 para ignorar o título
-                    cell.textLabel?.text = activity?.tittle
+            let activity = activities[indexPath.row - 1] // -1 para ignorar o título
+                    cell.textLabel?.text = activity.tittle
                     cell.accessoryType = .detailButton
                     return cell
         }
@@ -129,9 +128,7 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            presenter?.deleteActivity(at: indexPath.row - 1)
-            ActivityScreen.activitiesTable.reloadData()
-
+            interactor?.deleteActivity(at: indexPath.row - 1)
         }
     }
     
@@ -154,4 +151,5 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
         
         ActivityScreen.activitiesTable.reloadData()
     }
+    
 }

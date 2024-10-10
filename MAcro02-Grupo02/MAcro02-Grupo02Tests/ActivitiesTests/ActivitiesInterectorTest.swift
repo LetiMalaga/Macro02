@@ -10,107 +10,75 @@ import XCTest
 
 final class ActivitiesInteractorTest: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-    }
-    
     func testFetchActivitiesSuccess() {
         let mockActivitiesData = ActivitiesDataMock()
-        let interactor = ActivitiesInteractor(activitiesData: mockActivitiesData)
+        let mockActivitiesPresenter: ActivitiesPresenterProtocol = ActivitiesPresenterMock()
+        let interactor = ActivitiesInteractor(activitiesData: mockActivitiesData, presenter: mockActivitiesPresenter)
         
         let expectation = self.expectation(description: "fetchActivities")
         
-        // Act
-        interactor.fetchActivities { success in
-            
-            // Assert
-            XCTAssertTrue(success)
-            
-            expectation.fulfill()
-        }
+        interactor.fetchActivities()
+        XCTAssertFalse(interactor.activities.isEmpty)
+        expectation.fulfill()
+        
         wait(for: [expectation], timeout: 1.0)
+        
     }
-    func testAddActivitySuccess() {
+    
+    func testAddActivitie() {
         let mockActivitiesData = ActivitiesDataMock()
-        let interactor = ActivitiesInteractor(activitiesData: mockActivitiesData)
+        let mockActivitiesPresenter: ActivitiesPresenterProtocol = ActivitiesPresenterMock()
+        let interactor = ActivitiesInteractor(activitiesData: mockActivitiesData, presenter: mockActivitiesPresenter)
         
-        // Arrange
-        let newActivity = ActivitiesModel(tittle: "Read a book")
-        let expectation = self.expectation(description: "addActivity")
+        let expectation = self.expectation(description: "addActivities")
         
-        // Act
-        interactor.addActivity(newActivity) { success in
-            // Assert
+        let activity = ActivitiesModel(tittle: "Study")
+        interactor.addActivity(activity) { success in
             XCTAssertTrue(success)
-            
-            expectation.fulfill()
         }
+        XCTAssertFalse(interactor.activities.contains(where: { activity in
+            activity.tittle == activity.tittle
+        }))
+        
+        expectation.fulfill()
         
         wait(for: [expectation], timeout: 1.0)
     }
     
-    func testDeleteActivitySuccess() {
+    func testDeleteActivity() {
         let mockActivitiesData = ActivitiesDataMock()
-        let interactor = ActivitiesInteractor(activitiesData: mockActivitiesData)
+        let mockActivitiesPresenter: ActivitiesPresenterProtocol = ActivitiesPresenterMock()
+        let interactor = ActivitiesInteractor(activitiesData: mockActivitiesData, presenter: mockActivitiesPresenter)
         
         let expectation = self.expectation(description: "deleteActivity")
         
-        interactor.deleteActivity(at: 0) { success in
-            XCTAssertTrue(!success)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 1.0)
-        
-    }
-    func testFetchActivitiesError() {
-        let mockActivitiesData = ActivitiesDataMock()
-        let interactor = ActivitiesInteractor(activitiesData: mockActivitiesData)
-        
-        // Arrange
-        mockActivitiesData.shouldReturnError = true
-        let expectation = self.expectation(description: "fetchActivitiesError")
-        
-        // Act
-        interactor.fetchActivities { success in
-            // Assert
-            XCTAssertFalse(success)
-            expectation.fulfill()
+        let activity = ActivitiesModel(tittle: "Teste")
+        interactor.addActivity(activity) { success in
+            XCTAssertTrue(success)
         }
         
-        wait(for: [expectation], timeout: 1.0)
-    }
-    func testAddActivityError() {
-        let mockActivitiesData = ActivitiesDataMock()
-        let interactor = ActivitiesInteractor(activitiesData: mockActivitiesData)
-        
-        // Arrange
-        mockActivitiesData.shouldReturnError = true
-        
-        let newActivity = ActivitiesModel(tittle:"Read a book")
-        let expectation = self.expectation(description: "addActivityError")
-        
-        // Act
-        interactor.addActivity(newActivity) { success in
-            // Assert
-            XCTAssertFalse(success)
-            expectation.fulfill()
+        if let index = interactor.activities.firstIndex(where: { $0.tittle == "Teste"}){
+            XCTAssertTrue(index < interactor.activities.count)
+            interactor.deleteActivity(at: index)
+            XCTAssertFalse(interactor.activities.contains(where: {$0.tittle == "Teste"}))
         }
         
+        expectation.fulfill()
+        
         wait(for: [expectation], timeout: 1.0)
+        
     }
     
-    func testDeleteActivityError() {
+    func testValidateActivityName() {
         let mockActivitiesData = ActivitiesDataMock()
-        let interactor = ActivitiesInteractor(activitiesData: mockActivitiesData)
+        let mockActivitiesPresenter: ActivitiesPresenterProtocol = ActivitiesPresenterMock()
+        let interactor = ActivitiesInteractor(activitiesData: mockActivitiesData, presenter: mockActivitiesPresenter)
         
-        mockActivitiesData.shouldReturnError = true
+        let expectation = self.expectation(description: "validateActivityName")
         
-        let expectation = self.expectation(description: "deleteActivityError")
-        
-        interactor.deleteActivity(at: 0) { success in
-            XCTAssertFalse(success)
-            expectation.fulfill()
-        }
+        let name = "Study"
+        XCTAssertTrue(interactor.validateActivityName(name))
+        expectation.fulfill()
         
         wait(for: [expectation], timeout: 1.0)
     }
@@ -152,3 +120,18 @@ class ActivitiesDataMock: ActivitiesDataProtocol {
     }
     
 }
+    class ActivitiesPresenterMock: ActivitiesPresenterProtocol {
+        
+        
+        func uploadActivitys(_ activity: [ActivitiesModel]) {
+
+        }
+        
+        func returnActivity(activity: ActivitiesModel) {
+        }
+        
+        func deleteActivity(at index: Int) {
+
+        }
+        
+    }

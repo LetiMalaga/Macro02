@@ -12,92 +12,84 @@ import XCTest
 
 final class ActivitiesPresenterTests: XCTestCase {
     
-    
-    func testViewDidLoadCallsFetchActivitiesAndReloadsData() {
+    func testUploadActivitys() {
         let viewMock = ActivitiesViewMock()
-        let interactorMock = ActivitiesInteractorMock()
-        let presenter = ActivitiesPresenter(view: viewMock, activitiesInteractor: interactorMock)
+        let presenter = ActivitiesPresenter(view: viewMock)
         
-        // Act
-        presenter.viewDidLoad()
+        let expectation = self.expectation(description: "uploadActivity")
         
-        // Assert
-        XCTAssertTrue(interactorMock.fetchActivitiesCalled, "fetchActivities should have been called")
-        XCTAssertTrue(viewMock.isReloadDataCalled, "reloadData should have been called")
+        let activities = [ActivitiesModel(tittle: "teste1"), ActivitiesModel(tittle: "teste2"), ActivitiesModel(tittle: "teste3")]
+        presenter.uploadActivitys(activities)
+        
+        XCTAssertTrue(viewMock.activities.count == 3)
+        XCTAssertTrue(viewMock.activities.contains(where: {$0.tittle == "teste1"}))
+        XCTAssertTrue(viewMock.activities.contains(where: {$0.tittle == "teste2"}))
+        XCTAssertTrue(viewMock.activities.contains(where: {$0.tittle == "teste3"}))
+        XCTAssertTrue(viewMock.isReloadDataCalled)
+        
+        expectation.fulfill()
+        
+        wait(for: [expectation], timeout: 1.0)
     }
     
-    func testAddNewActivity() {
+    func testReturnActivity() {
         let viewMock = ActivitiesViewMock()
-        let interactorMock = ActivitiesInteractorMock()
-        let presenter = ActivitiesPresenter(view: viewMock, activitiesInteractor: interactorMock)
+        let presenter = ActivitiesPresenter(view: viewMock)
+    
+        let expectation = self.expectation(description: "returnActivity")
         
-        // Arrange
-        let newActivity = ActivitiesModel(tittle: "Exercise")
+        let activity = ActivitiesModel(tittle: "Teste")
+        presenter.returnActivity(activity: activity)
         
-        // Act
-        presenter.addNewActivity(newActivity)
+        XCTAssertTrue(viewMock.selectededActivity?.tittle == activity.tittle)
         
-        // Assert
-        XCTAssertTrue(interactorMock.addActivityCalled, "addActivity should have been called")
-        XCTAssertTrue(viewMock.isReloadDataCalled, "reloadData should have been called after adding a new activity")
+        expectation.fulfill()
+        
+        wait(for: [expectation], timeout: 1.0)
     }
     
     func testDeleteActivity() {
         let viewMock = ActivitiesViewMock()
-        let interactorMock = ActivitiesInteractorMock()
-        let presenter = ActivitiesPresenter(view: viewMock, activitiesInteractor: interactorMock)
+        let presenter = ActivitiesPresenter(view: viewMock)
+    
+        let expectation = self.expectation(description: "deleteActivity")
         
-        // Act
-        presenter.deleteActivity(at: 0)
+        let activity = ActivitiesModel(tittle: "Teste")
+        viewMock.activities.append(activity)
+        if let index = viewMock.activities.firstIndex(where: {$0.tittle == "Teste"}){
+            XCTAssertTrue(index < viewMock.activities.count)
+            presenter.deleteActivity(at: index)
+            XCTAssertFalse(viewMock.activities.contains(where: {$0.tittle == "Teste"}))
+        }
         
-        // Assert
-        XCTAssertTrue(interactorMock.deleteActivityCalled, "deleteActivity should have been called")
-        XCTAssertTrue(viewMock.isReloadDataCalled, "reloadData should have been called after deleting an activity")
+        XCTAssertTrue(viewMock.isReloadDataCalled)
+        
+        expectation.fulfill()
+        
+        wait(for: [expectation], timeout: 1.0)
     }
     
-}
-
-class ActivitiesInteractorMock: ActivitiesInteractorProtocol {
-    var activities: [ActivitiesModel] = [
-        ActivitiesModel(tittle: "Study"),
-        ActivitiesModel(tittle: "Work")
-    ]
     
-    var fetchActivitiesCalled = false
-    var addActivityCalled = false
-    var deleteActivityCalled = false
     
-    func fetchActivities(completion: @escaping (Bool) -> Void) {
-        fetchActivitiesCalled = true
-        completion(true)
-    }
-    
-    func addActivity(_ activity: ActivitiesModel, completion: @escaping (Bool) -> Void) {
-        addActivityCalled = true
-        activities.append(activity)
-        completion(true)
-    }
-    
-    func deleteActivity(at index: Int, completion: @escaping (Bool) -> Void) {
-        deleteActivityCalled = true
-        activities.remove(at: index)
-        completion(true)
-    }
-    
-    func validateActivityName(_ name: String) -> Bool {
-        return !name.isEmpty
-    }
 }
 
 class ActivitiesViewMock: ActivitiesViewProtocol {
-    var isReloadDataCalled = false
-    var activityShown: ActivitiesModel?
+    var activities: [ActivitiesModel] = [ActivitiesModel(tittle: "Study"), ActivitiesModel(tittle: "Work"), ActivitiesModel(tittle: "Exercise")]
+    var selectededActivity: ActivitiesModel?
+    
+    var isReloadDataCalled: Bool = false
+    var showActivityDetailCalled: Bool = false
     
     func reloadData() {
-        isReloadDataCalled = true
+        self.isReloadDataCalled = true
+        print("reloadData called")
     }
     
-    func showActivityDetail(_ activity: ActivitiesModel) {
-        activityShown = activity
+    func showActivityDetail(_ activity:ActivitiesModel) {
+        self.showActivityDetailCalled = true
+        self.selectededActivity = activity
+        print("showActivityDetail called")
     }
+    
+    
 }
