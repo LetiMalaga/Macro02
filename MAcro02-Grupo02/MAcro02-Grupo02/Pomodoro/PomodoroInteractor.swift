@@ -83,23 +83,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             switchPhase()
         } else {
             presenter?.displayTime(formatTime(remainingTime))
-            
         }
-        
-        presenter?.updateTimer(percentage: percentageTime())
-        
-        
-    }
-    
-    private func percentageTime() -> Float {
-        
-        let atual = Float(remainingTime)
-        let total = Float((workDuration * 60))
-        
-        let progress = (1 - atual / total)
-
-        return progress
-        
     }
 
     private func switchPhase() {
@@ -109,6 +93,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             isWorkPhase = false
             remainingTime = breakDuration * 60 // Set remaining time for break
             presenter?.displayTime(formatTime(remainingTime))
+            presenter?.updateStateLabel("Break Time!")
             scheduleNotification(title: "Break Time!", body: "Your work session has ended. Time for a break!") // Notification for break phase
             pendingPhaseSwitch = true // Mark that we need to wait for user to resume
         } else {
@@ -120,11 +105,13 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 isWorkPhase = true
                 remainingTime = workDuration * 60 // Set remaining time for work
                 presenter?.displayTime(formatTime(remainingTime))
+                presenter?.updateStateLabel("Time to Work!")
                 scheduleNotification(title: "Time to Work!", body: "Your break is over. Time to focus!") // Notification for work phase
                 pendingPhaseSwitch = true // Mark that we need to wait for user to resume
             } else {
                 // All loops completed, stop Pomodoro
                 stopPomodoro()
+                presenter?.updateStateLabel("Pomodoro Complete!")
                 scheduleNotification(title: "Pomodoro Complete!", body: "You've completed all loops. Good job!"); // Notification for completion
             }
         }
@@ -134,11 +121,6 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         let minutes = seconds / 60
         let seconds = seconds % 60
         return String(format: "%02d:%02d", minutes, seconds)
-    }
-    
-    private func roundedFloat(_ value: Float, toPlaces places: Int) -> Float {
-        let divisor = pow(10.0, Float(places))
-        return round(value * divisor) / divisor
     }
 
     private func scheduleNotification(title: String, body: String) {

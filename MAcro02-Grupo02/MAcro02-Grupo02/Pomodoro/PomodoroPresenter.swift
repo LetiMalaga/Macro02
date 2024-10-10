@@ -11,7 +11,7 @@ protocol PomodoroPresenterProtocol {
     func displayTime(_ time: String)
     func resetPomodoro()
     func updateButton(isRunning: Bool, isPaused: Bool)
-    func updateTimer(percentage:Float)
+    func updateStateLabel(_ text: String)
 }
 
 class PomodoroPresenter: PomodoroPresenterProtocol {
@@ -23,12 +23,15 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
 
     func resetPomodoro() {
         viewController?.displayTime("25:00")
+        viewController?.updateButton(isRunning: false, isPaused: false)
+        viewController?.updateStateLabel("Time to Work!")
     }
 
     func updateButton(isRunning: Bool, isPaused: Bool) {
+        viewController?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
-    
-    func updateTimer(percentage: Float) {
-        viewController?.updateCircle(percentage: percentage)
+
+    func updateStateLabel(_ text: String) {
+        viewController?.updateStateLabel(text)
     }
 }
