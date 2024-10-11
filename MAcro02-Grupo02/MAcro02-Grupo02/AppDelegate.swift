@@ -32,13 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-    func registerBackgroundTasks() {
-            BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.seuApp.dailyInsights", using: nil) { task in
-                self.handleDailyTask(task: task as! BGAppRefreshTask)
-            }
+//    func registerBackgroundTasks() {
+//            BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.seuApp.dailyInsights", using: nil) { task in
+//                self.handleDailyTask(task: task as! BGAppRefreshTask)
+//            }
 //            BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.seuApp.weeklyInsights", using: nil) { task in
 //                self.handleWeeklyTask(task: task as! BGAppRefreshTask)
 //            }
-        }
+//        }
 }
 
