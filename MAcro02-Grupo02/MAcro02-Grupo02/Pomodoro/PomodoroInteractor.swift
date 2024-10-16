@@ -57,6 +57,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         // Only start the timer if a phase switch is pending
         if pendingPhaseSwitch {
             pendingPhaseSwitch = false // Reset the pending phase switch
+            switchPhase()
             startTimer()
         } else {
             startTimer() // Start the timer normally if no phase switch is pending
@@ -127,7 +128,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 pendingPhaseSwitch = true // Mark that we need to wait for user to resume
             } else {
                 // All loops completed, stop Pomodoro
-                dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: "nil")
+                dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil")
                 stopPomodoro()
                 scheduleNotification(title: "Pomodoro Complete!", body: "You've completed all loops. Good job!"); // Notification for completion
             }

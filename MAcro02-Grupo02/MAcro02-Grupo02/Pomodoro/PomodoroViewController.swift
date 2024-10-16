@@ -78,12 +78,18 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     // MARK: - Lifecycle
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+        let workDuration = pomoConfig.workDuration
+        let breakDuration = pomoConfig.breakDuration
+        
+        timeLabel.text = PomodoroInteractor().formatTime(workDuration * 60)
+        intervaloLabel.text = "Intervalo: \(PomodoroInteractor().formatTime(breakDuration * 60))"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
-        timeLabel.text = PomodoroInteractor().formatTime(pomoConfig.workDuration * 60)
-        intervaloLabel.text = "Intervalo: \(PomodoroInteractor().formatTime(pomoConfig.breakDuration * 60))"
         
         // Gestures
         

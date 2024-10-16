@@ -33,10 +33,10 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     }()
 
     var configs: [(type: ConfigType, title: String, seconds: Int)] = [
-        (.foco, "Foco", 3000),
-        (.intervaloCurto, "Intervalo Curto", 600),
-        (.intervaloLongo, "Intervalo Longo", 1200),
-        (.ciclosPomodoro, "Ciclos de Pomodoro", 4)
+        (.foco, "Foco", 0),
+        (.intervaloCurto, "Intervalo Curto", 0),
+        (.intervaloLongo, "Intervalo Longo", 0),
+        (.ciclosPomodoro, "Ciclos de Pomodoro", 0)
     ]
 
     override func viewDidLoad() {
@@ -45,11 +45,21 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         // Definindo cor de fundo da view principal
         view.backgroundColor = .white
         
+        print(pomoDefaults.workDuration)
+        print(pomoDefaults.breakDuration)
+        print(pomoDefaults.longBreakDuration)
+        
+        
+        let workDuration = pomoDefaults.workDuration
+        let breakDuration = pomoDefaults.breakDuration
+        let longBreakDuration = pomoDefaults.longBreakDuration
+        let loops = pomoDefaults.loops
+        
         // Atualizando os valores com base em PomoDefaults
-        configs[0].seconds = pomoDefaults.workDuration * 60
-        configs[1].seconds = pomoDefaults.breakDuration * 60
-        configs[2].seconds = pomoDefaults.longBreakDuration * 60
-        configs[3].seconds = pomoDefaults.loops
+        configs[0].seconds = workDuration
+        configs[1].seconds = breakDuration
+        configs[2].seconds = longBreakDuration
+        configs[3].seconds = loops
         
         navigationItem.hidesBackButton = true
         
@@ -119,7 +129,9 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     // Ação ao selecionar uma célula
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let config = configs[indexPath.item]
-        print("Selecionado: \(config.title)")
+        
+        let vc = TimeSelectorViewController(title: config.title, type: config.type, atualTime: config.seconds)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -194,7 +206,6 @@ class ConfigCell: UICollectionViewCell {
 
             // Seta à direita da célula
             arrowImageView.centerYAnchor.constraint(equalTo: minutesLabel.centerYAnchor),
-            arrowImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             arrowImageView.widthAnchor.constraint(equalToConstant: 20),
             arrowImageView.heightAnchor.constraint(equalToConstant: 20)
         ])
@@ -218,17 +229,21 @@ class ConfigCell: UICollectionViewCell {
     // Função para configurar os valores (minutos e segundos)
     func configure(title: String, seconds: Int) {
         titleLabel.text = title
-        minutesLabel.text = String(seconds / 60) // Converte segundos em minutos
+        minutesLabel.text = String(seconds) // Converte segundos em minutos
         
         // Se for Ciclos Pomodoro, esconder segundos
         if title == "Ciclos de Pomodoro" {
             secondsLabel.isHidden = true
             colonLabel.isHidden = true
             minutesLabel.text = "\(seconds)"
+            
+            NSLayoutConstraint.activate([arrowImageView.trailingAnchor.constraint(equalTo: minutesLabel.trailingAnchor, constant: 40)])
         } else {
             secondsLabel.isHidden = false
             colonLabel.isHidden = false
-            secondsLabel.text = String(seconds % 60) // Resto dos segundos
+            secondsLabel.text = "00"
+            
+            NSLayoutConstraint.activate([arrowImageView.trailingAnchor.constraint(equalTo: secondsLabel.trailingAnchor, constant: 40)])
         }
     }
 }

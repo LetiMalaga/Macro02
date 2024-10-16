@@ -34,17 +34,11 @@ class PomoDefaults {
         get {
             return defaults.integer(forKey: workKey)
         }
-        set {
-            defaults.set(newValue, forKey: workKey)
-        }
     }
     
     var breakDuration: Int {
         get {
             return defaults.integer(forKey: breakKey)
-        }
-        set {
-            defaults.set(newValue, forKey: breakKey)
         }
     }
     
@@ -52,17 +46,11 @@ class PomoDefaults {
         get {
             return defaults.integer(forKey: longBreakKey)
         }
-        set {
-            defaults.set(newValue, forKey: longBreakKey)
-        }
     }
     
     var loops: Int {
         get {
             return defaults.integer(forKey: loopKey)
-        }
-        set {
-            defaults.set(newValue, forKey: loopKey)
         }
     }
     
@@ -74,9 +62,10 @@ class PomoDefaults {
                 return .none
             }
         }
-        set {
-            defaults.set(newValue, forKey: tagKey)
-        }
+    }
+    
+    func setTime(for key: String, value: Any) {
+        defaults.set(value, forKey: key)
     }
     
     
