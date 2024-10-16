@@ -47,7 +47,6 @@ struct InsightsSwiftUIView: View {
                             .fontWeight(.bold)
                             .foregroundStyle(.black)
                     }
-                }
                 .padding(.vertical)
                 
             // Retângulo foco
