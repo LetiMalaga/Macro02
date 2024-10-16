@@ -7,71 +7,70 @@
 
 import XCTest
 @testable import MAcro02_Grupo02
+import CloudKit
 
 final class InsightsInteractorTests: XCTestCase {
     
-    func testQueryInsights(){
-        let mockData = InsightsDataMock()
-        let mockPresenter = InsightsPresenterMock()
-        let expectation = self.expectation(description: "Query insights")
-        // Act
-        mockData.queryTestData { result in
-            switch result {
-            case .success(let data):
-                // Assert
-                switch data {
-                case .success(let data):
-                    XCTAssertTrue(!data.isEmpty)
-                case .failure:
-                    XCTFail()
-                }
-                
-                
-                expectation.fulfill()
-            case .failure:
-                XCTFail()
-            }
-        }
+    func testFetchInsightsDataCallsQueryTestData(){
+        let mockData = MockInsightsData()
+        let mockPresenter = MockInsightsPresenter()
+        let interactor = InsightsInteractor(presenter: mockPresenter, dataManager: mockData)
+        
+        let expectation = self.expectation(description: "queryInsights")
+        
+        let predicate = NSPredicate(format: "data == %@", Date() as CVarArg)
+        
+        interactor.fetchInsightsData(predicate: predicate) { _ in }
+        
+        XCTAssertTrue(mockData.queryTestDataCalled, "O método queryTestData deveria ter sido chamado.")
+        expectation.fulfill()
+        
         wait(for: [expectation], timeout: 1.0)
-       
     }
-}
-
-class InsightsDataMock{
-    func queryTestData(closure: @escaping (Result<Result<[String], Error>, Error>)-> Void){
-        let result: Result<Result<[String], Error>, Error> = .success(.success(["test", "test2", "test3", "test4", "test5"]))
-        closure(result)
+    
+    func testInsightsPerDayPresentsData(){
+        let mockData = MockInsightsData()
+        let mockPresenter = MockInsightsPresenter()
+        let interactor = InsightsInteractor(presenter: mockPresenter, dataManager: mockData)
         
+        let expectation = self.expectation(description: "queryInsights")
+        
+        let predicate = NSPredicate(format: "data == %@", Date() as CVarArg)
+        
+        let mockFocusData = FocusDataModel(focusTimeInMinutes: 30, breakTimeinMinutes: 10, category: .relax, date: Date())
+        mockData.mockResult = [
+            (CKRecord.ID(recordName: "test"), .success(CKRecord(recordType: "TimerRecord")))
+        ]
+        
+        interactor.insightsPerDay()
+        
+        XCTAssertTrue(mockPresenter.insightsPresented, "Os insights deveriam ter sido apresentados pelo presenter.")
+        expectation.fulfill()
+        
+        wait(for: [expectation], timeout: 1.0)
     }
 }
 
-class InsightsPresenterMock:InsightsPresenterProtocol{
+class MockInsightsData: InsightsDataProtocol {
+    var queryTestDataCalled = false
+    var mockResult: [(CKRecord.ID, Result<CKRecord, any Error>)] = []
+    
+    func queryTestData(predicate: NSPredicate, closure: @escaping ([(CKRecord.ID, Result<CKRecord, any Error>)]) -> Void) {
+        queryTestDataCalled = true
+        closure(mockResult)
+    }
+}
+
+// Mock para o protocolo InsightsPresenterProtocol
+class MockInsightsPresenter: InsightsPresenterProtocol {
+    var insightsPresented = false
+    
     func presentTagInsights(insights: InsightsDataModel) {
-        let tags = insights.timeFocusedInMinutes
+        insightsPresented = true
     }
     
-    func presentFocusedInsights(insights: InsightsDataModel) {
-        let timeInHours = convertMinutesToHours(minutes: insights.timeFocusedInMinutes.values.reduce(0, +))
-    }
-    
-    func presenteBreakdownInsights(insights: InsightsDataModel) {
-        let timeInHours = convertMinutesToHours(minutes: insights.timeBreakInMinutes)
-    }
-    func presentSessionInsights(insights: InsightsDataModel) {
-        let totalSessions = insights.value
-    }
-    
-    func presenteTotalTimeInsights(insights: InsightsDataModel) {
-        let totalTime = insights.timeTotalInMinutes
-    }
-    
-    func convertMinutesToHours(minutes: Int) -> Double {
-        let hours = minutes / 60               // Parte inteira: horas
-        let remainingMinutes = minutes % 60    // Minutos restantes
-        let decimalMinutes = Double(remainingMinutes) / 60.0 // Fração de hora
-        
-        return Double(hours) + decimalMinutes
-    }
-    
-    
+    func presentFocusedInsights(insights: InsightsDataModel) {}
+    func presentSessionInsights(insights: InsightsDataModel) {}
+    func presenteBreakdownInsights(insights: InsightsDataModel) {}
+    func presenteTotalTimeInsights(insights: InsightsDataModel) {}
 }
