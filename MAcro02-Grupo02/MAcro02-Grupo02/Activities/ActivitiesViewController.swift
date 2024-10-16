@@ -9,6 +9,9 @@ import UIKit
 import CloudKit
 
 protocol ActivitiesViewProtocol: AnyObject {
+    var activities: [ActivitiesModel] { get set }
+    var selectededActivity: ActivitiesModel? {get set}
+    
     func reloadData()
     func showActivityDetail(_ activity: ActivitiesModel)
 }
@@ -17,11 +20,11 @@ protocol ActivitiesViewProtocol: AnyObject {
 
 class ActivitiesViewController: UIViewController
 {
-
     
     var ActivityScreen: ActivitiesScreen = ActivitiesScreen()
-    var presenter: ActivitiesPresenterProtocol?
-
+    var interactor: ActivitiesInteractorProtocol?
+    var activities: [ActivitiesModel] = []
+    var selectededActivity: ActivitiesModel?
     
     private var editableTable: Int?
 
@@ -38,7 +41,7 @@ class ActivitiesViewController: UIViewController
             ActivityScreen.activitiesTable.dataSource = self
              
             // Carregar atividades
-            presenter?.viewDidLoad()
+            interactor?.fetchActivities()
             iCloudLogin().checkiCloudAccountStatus(from: self)
         }
     
@@ -56,7 +59,7 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
         print("show activity detail")
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        (presenter?.activities.count ?? 0) + 1
+        activities.count + 1
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -70,11 +73,11 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row > 0 {
-            presenter?.didSelectActivity(at: indexPath.row - 1)
+            interactor?.getActivity(at: indexPath.row - 1)
         }
     }
     
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "titleCell")
@@ -97,8 +100,8 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
             return cell
         } else {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-            let activity = presenter?.activities[indexPath.row-1] // -1 para ignorar o título
-                    cell.textLabel?.text = activity?.tittle
+            let activity = activities[indexPath.row - 1] // -1 para ignorar o título
+                    cell.textLabel?.text = activity.tittle
                     cell.accessoryType = .detailButton
                     return cell
         }
@@ -125,8 +128,7 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            presenter?.deleteActivity(at: indexPath.row - 1)
-            ActivityScreen.activitiesTable.reloadData()
+            interactor?.deleteActivity(at: indexPath.row - 1)
         }
     }
     
@@ -149,4 +151,5 @@ extension ActivitiesViewController: UITableViewDelegate, UITableViewDataSource ,
         
         ActivityScreen.activitiesTable.reloadData()
     }
+    
 }
