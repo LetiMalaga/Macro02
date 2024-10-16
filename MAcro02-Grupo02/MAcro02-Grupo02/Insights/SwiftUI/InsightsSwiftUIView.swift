@@ -14,42 +14,42 @@ struct InsightsSwiftUIView: View {
     
     var body: some View {
         VStack(spacing: 20){
-                Picker("TimeFrameSegmentControl", selection: $selectedTimeFrame) {
-                    ForEach(timeFrame, id: \.self) {
-                        Text($0)
-                    }
+            Picker("TimeFrameSegmentControl", selection: $selectedTimeFrame) {
+                ForEach(timeFrame, id: \.self) {
+                    Text($0)
                 }
-                .pickerStyle(.segmented)
-                
-                HStack{
-                    Button{
-                        
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .foregroundStyle(.black)
-                    }
+            }
+            .pickerStyle(.segmented)
+            
+            HStack{
+                Button{
                     
-                    Spacer()
-                    
-                    Text("Hoje")
+                } label: {
+                    Image(systemName: "chevron.left")
                         .font(.headline)
                         .fontWeight(.bold)
+                        .foregroundStyle(.black)
+                }
+                
+                Spacer()
+                
+                Text("Hoje")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                
+                Spacer()
+                
+                Button{
                     
-                    Spacer()
-                    
-                    Button{
-                        
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .foregroundStyle(.black)
-                    }
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.black)
+                }
                 .padding(.vertical)
                 
-            // Retângulo foco
+                // Retângulo foco
                 ZStack{
                     RoundedRectangle(cornerRadius: 15)
                         .foregroundStyle(Color(UIColor.systemGray4))
@@ -76,7 +76,7 @@ struct InsightsSwiftUIView: View {
                         
                     }
                     .padding()
-                        
+                    
                     // Quadrado sessões
                     HStack{
                         Spacer()
@@ -96,8 +96,8 @@ struct InsightsSwiftUIView: View {
                             }
                             .padding(8)
                         }
-                            .frame(width: (UIScreen.main.bounds.height * .bgRectangleTopHeightCtt - 16))
-                            .padding(8)
+                        .frame(width: (UIScreen.main.bounds.height * .bgRectangleTopHeightCtt - 16))
+                        .padding(8)
                     }
                 }
                 .frame(height: UIScreen.main.bounds.height * .bgRectangleTopHeightCtt)
@@ -165,13 +165,14 @@ struct InsightsSwiftUIView: View {
                     }
                     .frame(width: (UIScreen.main.bounds.width * .bgPauseAndTotalRectanglesWidthCtt - .bgPauseAndTotalRectanglesWidthSubtractionCtt), height: UIScreen.main.bounds.height * .bgPauseAndTotalRectanglesHeightCtt)
                 }
-
+                
                 FocoPorTagChartView()
-//                .frame(width: CGFloat(UIScreen.main.bounds.width-40), height: CGFloat(UIScreen.main.bounds.height/3))
+                //                .frame(width: CGFloat(UIScreen.main.bounds.width-40), height: CGFloat(UIScreen.main.bounds.height/3))
                 Spacer()
             }
             .padding()
             .navigationTitle("Resultados")
+        }
     }
 }
 
