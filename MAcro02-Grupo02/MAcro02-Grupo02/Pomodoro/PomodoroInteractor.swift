@@ -13,6 +13,7 @@ protocol PomodoroInteractorProtocol {
     func pausePomodoro()
     func resumePomodoro()
     func stopPomodoro()
+    func updateTimer()
 }
 
 class PomodoroInteractor: PomodoroInteractorProtocol {
@@ -119,7 +120,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         }
     }
     
-    private func updateTimer() {
+    internal func updateTimer() {
         remainingTime -= 1
         if remainingTime <= 0 {
             switchPhase()
@@ -186,13 +187,12 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     }
 
 
-    
-    
-    private func formatTime(_ seconds: Int) -> String {
+    func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let seconds = seconds % 60
         return String(format: "%02d:%02d", minutes, seconds)
     }
+    
     
     private func scheduleNotification(title: String, body: String) {
         let content = UNMutableNotificationContent()

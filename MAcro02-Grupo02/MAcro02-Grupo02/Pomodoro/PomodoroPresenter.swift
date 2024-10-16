@@ -28,6 +28,11 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
         viewController?.updateStateLabel("Time to Work!")
     }
 
+    func updateTimerDisplay(time: String, progress: Float) {
+        viewController?.displayTime(time)
+        viewController?.updateTimerCircleProgress(progress)
+    }
+    
     func updateButton(isRunning: Bool, isPaused: Bool) {
         viewController?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
