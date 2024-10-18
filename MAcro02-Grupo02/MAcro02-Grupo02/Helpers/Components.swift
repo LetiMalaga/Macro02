@@ -14,6 +14,9 @@ class ComponenteOndeVoceSeEncontraViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         setupView()
     }
     
@@ -34,6 +37,10 @@ class ComponenteOndeVoceSeEncontraViewController: UIViewController {
         bgRectangleAtHomeButton.backgroundColor = .white
         bgRectangleAtHomeButton.layer.cornerRadius = 20
         
+        bgRectangleNotHomeButton.center = view.center
+        bgRectangleNotHomeButton.backgroundColor = .white
+        bgRectangleNotHomeButton.layer.cornerRadius = 20
+        
     }
     
     private func setupConstraints() {
@@ -48,7 +55,7 @@ class ComponenteOndeVoceSeEncontraViewController: UIViewController {
             bgRectangleCompOVSE.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             bgRectangleCompOVSE.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            bgRectangleCompOVSE.heightAnchor.constraint(equalToConstant: view.bounds.height * .bgRectangleCompOVSE),
+            bgRectangleCompOVSE.heightAnchor.constraint(equalToConstant: view.bounds.height * .bgRectangleCompOVSEHeight),
             
             bgRectangleCompOVSE.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             bgRectangleCompOVSE.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
@@ -58,13 +65,17 @@ class ComponenteOndeVoceSeEncontraViewController: UIViewController {
             
             bgRectangleAtHomeButton.bottomAnchor.constraint(equalTo: bgRectangleCompOVSE.bottomAnchor, constant: -20),
             
-            bgRectangleAtHomeButton.widthAnchor.constraint(equalToConstant: bgRectangleCompOVSE.bounds.width * .bgButtonRectangle),
+            bgRectangleAtHomeButton.widthAnchor.constraint(equalToConstant: bgRectangleCompOVSE.bounds.width * .bgButtonRectangleWidth),
+            bgRectangleAtHomeButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .bgButtonRectangleHeight),
+            bgRectangleAtHomeButton.leadingAnchor.constraint(equalTo: bgRectangleCompOVSE.leadingAnchor, constant: 20),
             
             bgRectangleNotHomeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            bgRectangleNotHomeButton.bottomAnchor.constraint(equalTo: bgRectangleAtHomeButton.bottomAnchor, constant: -20),
+            bgRectangleNotHomeButton.bottomAnchor.constraint(equalTo: bgRectangleAtHomeButton.topAnchor, constant: -20),
             
-            bgRectangleNotHomeButton.widthAnchor.constraint(equalToConstant: bgRectangleCompOVSE.bounds.width * .bgButtonRectangle),
+            bgRectangleNotHomeButton.widthAnchor.constraint(equalToConstant: bgRectangleCompOVSE.bounds.width * .bgButtonRectangleWidth),
+            bgRectangleNotHomeButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .bgButtonRectangleHeight),
+            bgRectangleNotHomeButton.leadingAnchor.constraint(equalTo: bgRectangleCompOVSE.leadingAnchor, constant: 20),
             
         ])
     }
@@ -77,6 +88,7 @@ class ComponenteOndeVoceSeEncontraViewController: UIViewController {
 }
 
 extension Double{
-    public static let bgRectangleCompOVSE = 0.34
-    public static let bgButtonRectangle = 0.8
+    public static let bgRectangleCompOVSEHeight = 0.34
+    public static let bgButtonRectangleWidth = 0.8
+    public static let bgButtonRectangleHeight = 0.06
 }
