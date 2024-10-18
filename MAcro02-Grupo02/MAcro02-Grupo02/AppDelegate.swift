@@ -15,7 +15,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let insightsNotifications = InsightsNotifications()
+        insightsNotifications.registerBackgroundTasks()
+        insightsNotifications.scheduleDailyBackgroundTask()
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                print("Erro ao pedir permissão para notificações: \(error)")
+            }
+            print("Permissão concedida: \(granted)")
+        }
         return true
+        
     }
 
     // MARK: UISceneSession Lifecycle
@@ -31,14 +42,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-//    func registerBackgroundTasks() {
-//            BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.seuApp.dailyInsights", using: nil) { task in
-//                self.handleDailyTask(task: task as! BGAppRefreshTask)
-//            }
-//            BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.seuApp.weeklyInsights", using: nil) { task in
-//                self.handleWeeklyTask(task: task as! BGAppRefreshTask)
-//            }
-//        }
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        let insightsNotifications = InsightsNotifications()
+        insightsNotifications.registerBackgroundTasks()
+        insightsNotifications.scheduleDailyBackgroundTask()
+    }
 }
+
+    
+
+
 
