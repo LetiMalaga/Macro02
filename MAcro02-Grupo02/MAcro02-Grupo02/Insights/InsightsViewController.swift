@@ -31,8 +31,8 @@ class InsightsViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .white
         setupFocusStats()
-//        setupConstraints()
-        setupSwiftUIView()
+        setupConstraints()
+//        setupSwiftUIView()
     }
     
     func setupSwiftUIView(){
