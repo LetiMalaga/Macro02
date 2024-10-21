@@ -8,12 +8,14 @@
 import SwiftUI
 
 class InsightsSwiftUIViewController: UIHostingController<InsightsSwiftUIView> {
+    var interactor:InsightsInteractorProtocol?
+    
     required init?(coder: NSCoder) {
-        super.init(coder: coder, rootView: InsightsSwiftUIView())
+        super.init(coder: coder, rootView: InsightsSwiftUIView(interactor: interactor))
     }
     
     init() {
-        super.init(rootView: InsightsSwiftUIView())
+        super.init(rootView: InsightsSwiftUIView(interactor: interactor))
     }
     
     override func viewDidLoad() {

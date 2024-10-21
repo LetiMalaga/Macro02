@@ -9,6 +9,9 @@ import SwiftUI
 import Charts
 
 struct InsightsSwiftUIView: View {
+    
+    var interactor:InsightsInteractorProtocol!
+    var insightsData: InsightsDataView!
     var timeFrame = ["Dia", "Semana", "Mês"]
     @State private var selectedTimeFrame: String = "Dia"
     
@@ -20,6 +23,18 @@ struct InsightsSwiftUIView: View {
                 }
             }
             .pickerStyle(.segmented)
+            .task {
+                switch selectedTimeFrame {
+                case "Dia":
+                    interactor.insightsPerDay()
+                case "Semana":
+                    interactor.insightsPerWeek()
+                case "Mês":
+                    interactor.insightsPerMonth()
+                default:
+                    print("erro")
+                }
+            }
             
             HStack{
                 Button{
@@ -69,7 +84,7 @@ struct InsightsSwiftUIView: View {
                             Text(String(Date().formatted(date: .omitted, time: .shortened)))
                                 .font(.system(size: 64, weight: .bold))
                                 .minimumScaleFactor(0.5)
-                            Text("Horas")
+                            Text(insightsData.foco)
                                 .minimumScaleFactor(0.5)
                             Spacer()
                         }
@@ -89,7 +104,7 @@ struct InsightsSwiftUIView: View {
                                     .bold()
                                     .minimumScaleFactor(0.5)
                                 Spacer()
-                                Text("3")
+                                Text("\(insightsData.session)")
                                     .font(.system(size: 64, weight: .bold))
                                     .minimumScaleFactor(0.5)
                                 Spacer()
@@ -117,7 +132,7 @@ struct InsightsSwiftUIView: View {
                                     Spacer()
                                 }
                                 HStack{
-                                    Text("10m")
+                                    Text(insightsData.pause)
                                         .font(.title)
                                         .bold()
                                         .minimumScaleFactor(0.5)
@@ -148,7 +163,7 @@ struct InsightsSwiftUIView: View {
                                     Spacer()
                                 }
                                 HStack{
-                                    Text("2:30h")
+                                    Text("\(insightsData.total)")
                                         .font(.title)
                                         .bold()
                                         .minimumScaleFactor(0.5)
@@ -166,7 +181,7 @@ struct InsightsSwiftUIView: View {
                     .frame(width: (UIScreen.main.bounds.width * .bgPauseAndTotalRectanglesWidthCtt - .bgPauseAndTotalRectanglesWidthSubtractionCtt), height: UIScreen.main.bounds.height * .bgPauseAndTotalRectanglesHeightCtt)
                 }
                 
-                FocoPorTagChartView()
+                FocoPorTagChartView(data: insightsData.tags)
                 //                .frame(width: CGFloat(UIScreen.main.bounds.width-40), height: CGFloat(UIScreen.main.bounds.height/3))
                 Spacer()
             }

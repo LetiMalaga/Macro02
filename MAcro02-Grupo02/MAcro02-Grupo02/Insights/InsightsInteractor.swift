@@ -86,7 +86,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         }
         
         guard let data else { print("dados nulos")
-            return InsightsDataModel(title: "test", timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0)}
+            return InsightsDataModel(timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0)}
         
         return data
     }
@@ -138,70 +138,6 @@ class InsightsInteractor : InsightsInteractorProtocol {
         let daysToLastSunday = (weekday == 1) ? 0 : weekday - 1
         return calendar.date(byAdding: .day, value: -daysToLastSunday, to: today)
     }
-    
-    func scheduleEndOfDayNotification(insights: InsightsDataModel){
-        let content = UNMutableNotificationContent()
-        content.title = "Resumo do seu dia"
-        content.body = "Você focou por \(insights.timeFocusedInMinutes[.focus] ?? 0) minutos hoje. Continue assim!"
-        content.sound = .default
-        
-        // Configurar para notificar ao final do dia (23:59)
-        var dateComponents = DateComponents()
-        dateComponents.hour = 23
-        dateComponents.minute = 59
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
-    }
-    
-    func scheduleEndOfWeekNotification(insights: InsightsDataModel) {
-        let content = UNMutableNotificationContent()
-        content.title = "Resumo da sua semana"
-        content.body = "Você focou por \(insights.timeFocusedInMinutes.values.max() ?? 0) minutos nesta semana. Continue melhorando!"
-        content.sound = .default
-        
-        // Configura para o último dia da semana (Domingo às 23:59)
-        var dateComponents = DateComponents()
-        dateComponents.weekday = 1  // Domingo
-        dateComponents.hour = 23
-        dateComponents.minute = 59
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
-    }
-    
-    func registerBackgroundTasks() {
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.example.app.dailyInsights", using: nil) { task in
-            self.handleAppRefresh(task: task as! BGAppRefreshTask)
-        }
-    }
-    
-    func handleAppRefresh(task: BGAppRefreshTask) {
-        // Agendar a próxima tarefa
-        scheduleAppRefresh()
-        
-        // Buscar dados e agendar notificação
-//        insightsPerDay()
-        self.insights?.timeFocusedInMinutes = [.focus:50]
-        scheduleEndOfDayNotification(insights: insights!)
-        task.setTaskCompleted(success: true)
-        
-    }
-    
-    func scheduleAppRefresh() {
-        let request = BGAppRefreshTaskRequest(identifier: "com.example.app.dailyInsights")
-        request.earliestBeginDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 0, of: Date())
-        
-        do {
-            try BGTaskScheduler.shared.submit(request)
-        } catch {
-            print("Unable to submit task: \(error)")
-        }
-    }
 }
 
 
@@ -210,7 +146,6 @@ struct FocusDataModel: Identifiable {
     var id = UUID()
     var focusTimeInMinutes: Int
     var breakTimeinMinutes: Int
-    //    var longBreakTimeinMinutes: Int
     var category: Tags
     var date: Date
     
@@ -226,7 +161,6 @@ enum Tags: String, Codable {
 
 struct InsightsDataModel: Identifiable{
     var id = UUID()
-    var title: String
     
     var timeFocusedInMinutes: [Tags:Int]
     var timeTotalInMinutes: Int

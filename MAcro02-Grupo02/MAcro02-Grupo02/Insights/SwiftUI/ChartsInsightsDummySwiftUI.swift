@@ -15,12 +15,7 @@ struct ChartData: Identifiable {
 }
 
 struct FocoPorTagChartView: View {
-    let data = [ChartData(type:"fish", count: 10),
-                ChartData(type:"reptiles", count: 21),
-                ChartData(type:"bird", count: 18),
-                ChartData(type:"dog", count: 40),
-                ChartData(type:"cat", count: 65),
-    ]
+    let data:[ChartData]
     
     var body: some View {
         Chart (data) { dataPoint in
@@ -69,5 +64,5 @@ struct FocoPorTagChartView: View {
 //}
 
 #Preview{
-    FocoPorTagChartView()
+//    FocoPorTagChartView()
 }

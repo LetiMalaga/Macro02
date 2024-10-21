@@ -10,9 +10,16 @@ import UIKit
 import SwiftUI
 
 protocol InsightsViewProtocol: AnyObject {
-    
+    var data: InsightsDataView { get set}
 }
 
+struct InsightsDataView{
+    var foco: String
+    var pause: String
+    var session:Int
+    var total: String
+    var tags: [ChartData]
+}
 class InsightsViewController: UIViewController {
     var interactor:InsightsInteractorProtocol?
     
@@ -38,6 +45,7 @@ class InsightsViewController: UIViewController {
     func setupSwiftUIView(){
         // Create an instance of SwiftUIViewController
         let insightsSwiftUIViewController = InsightsSwiftUIViewController()
+        insightsSwiftUIViewController.interactor = interactor
         
         // Set the frame and add the SwiftUI view
         insightsSwiftUIViewController.view.frame = view.bounds
@@ -121,9 +129,16 @@ class InsightsViewController: UIViewController {
 }
 
 extension InsightsViewController: InsightsViewProtocol{
+    var data: InsightsDataView {
+        get {
+            return self.data
+        }
+        set (newValue){
+            self.data = newValue
+        }
+    }
     
-    
-    
+  
 }
 
 #Preview {
