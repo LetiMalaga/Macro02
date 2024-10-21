@@ -15,26 +15,27 @@ class InsightsNotifications {
     func scheduleEndOfDayNotification(insights: InsightsDataModel){
         let content = UNMutableNotificationContent()
         content.title = "Resumo do seu dia"
-//        if let savedData = UserDefaults.standard.data(forKey: "Insights"),
-//           let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
-//            content.body = "Você focou por \(decodedInsights.timeFocusedInMinutes[.focus] ?? 0) minutos hoje. Continue assim!"
-//        } else {
-//            print("No data found")
-//        }
+        if let savedData = UserDefaults.standard.data(forKey: "Insights"),
+           let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
+            content.body = "Você focou por \(decodedInsights.timeFocusedInMinutes[.focus] ?? 0) minutos hoje. Continue assim!"
+        } else {
+            print("No data found")
+        }
         print("Found data")
-
+        
         content.body = "Você focou por \(250) minutos hoje. Continue assim!"
         content.sound = .default
         
-        // Configurar para notificar ao final do dia (23:59)
         var dateComponents = DateComponents()
-        dateComponents.hour = 17
-        dateComponents.minute = 53
+        dateComponents.hour = 16
+        dateComponents.minute = 22
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         print("Notificação diária agendada para: \(trigger.nextTriggerDate()!)")
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
+        UNUserNotificationCenter.current().add(request) { error in
+            print("Error: \(error?.localizedDescription ?? "No error")")
+        }
     }
     
     func scheduleEndOfWeekNotification(insights: InsightsDataModel) {
@@ -49,31 +50,32 @@ class InsightsNotifications {
         }
         content.sound = .default
         
-        // Configura para o último dia da semana (Domingo às 23:59)
         var dateComponents = DateComponents()
-        dateComponents.weekday = 1  // Domingo
+        dateComponents.weekday = 1
         dateComponents.hour = 23
         dateComponents.minute = 59
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         print("Notificação semanal agendada para: \(trigger.nextTriggerDate()!)")
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
+        UNUserNotificationCenter.current().add(request) { error in
+            print("Error: \(error?.localizedDescription ?? "No error")")
+        }
     }
     
     func registerBackgroundTasks() {
-            BGTaskScheduler.shared.register(forTaskWithIdentifier: "DayNotification", using: nil) { task in
-                self.handleDailyTask(task: task as! BGAppRefreshTask)
-            }
-            BGTaskScheduler.shared.register(forTaskWithIdentifier: "WeekNotification", using: nil) { task in
-                self.handleWeeklyTask(task: task as! BGAppRefreshTask)
-            }
+        
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "DayNotification", using: nil) { task in
+            self.handleDailyTask(task: task as! BGAppRefreshTask)
         }
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "WeekNotification", using: nil) { task in
+            self.handleWeeklyTask(task: task as! BGAppRefreshTask)
+        }
+    }
     func scheduleDailyBackgroundTask() {
         let request = BGAppRefreshTaskRequest(identifier: "DayNotification")
         
-        // Definir a hora mais cedo para começar (por exemplo, ao final do dia)
-        request.earliestBeginDate = Calendar.current.date(bySettingHour: 17, minute: 53, second: 0, of: Date())
+        request.earliestBeginDate = Calendar.current.date(bySettingHour: 16, minute: 22, second: 0, of: Date())
         
         do {
             try BGTaskScheduler.shared.submit(request)
@@ -82,11 +84,10 @@ class InsightsNotifications {
             print("Failed to schedule daily task: \(error)")
         }
     }
-
+    
     func scheduleWeeklyBackgroundTask() {
         let request = BGAppRefreshTaskRequest(identifier: "WeekNotification")
         
-        // Definir a hora para o final da semana (por exemplo, domingo às 23h59)
         if let nextSunday = getNextSunday() {
             request.earliestBeginDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 0, of: nextSunday)
             
@@ -100,33 +101,28 @@ class InsightsNotifications {
     }
     
     func handleDailyTask(task: BGAppRefreshTask) {
-        // Agendar a próxima execução
         scheduleDailyBackgroundTask()
         
-        // Buscar dados da nuvem e calcular os insights
         if let savedData = UserDefaults.standard.data(forKey: "Insights"),
            let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
             scheduleEndOfDayNotification(insights: decodedInsights)
         } else {
             print("No data found")
         }
-            // Finalizar a tarefa
-            task.setTaskCompleted(success: true)
+        task.setTaskCompleted(success: true)
         
     }
-
+    
     func handleWeeklyTask(task: BGAppRefreshTask) {
-        // Agendar a próxima execução
         scheduleWeeklyBackgroundTask()
         
-        // Buscar dados da nuvem e calcular os insights
         if let savedData = UserDefaults.standard.data(forKey: "Insights"),
            let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
             scheduleEndOfWeekNotification(insights: decodedInsights)
         } else {
             print("No data found")
         }
-            task.setTaskCompleted(success: true)
+        task.setTaskCompleted(success: true)
         
     }
     func getNextSunday() -> Date? {

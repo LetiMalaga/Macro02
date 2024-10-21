@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let insightsNotifications = InsightsNotifications()
         insightsNotifications.registerBackgroundTasks()
         insightsNotifications.scheduleDailyBackgroundTask()
+        insightsNotifications.scheduleWeeklyBackgroundTask()
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
