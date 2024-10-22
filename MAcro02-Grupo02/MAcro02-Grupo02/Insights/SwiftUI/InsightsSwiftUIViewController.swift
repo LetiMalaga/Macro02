@@ -12,7 +12,7 @@ class InsightsSwiftUIViewController: UIHostingController<InsightsSwiftUIView> {
         super.init(coder: coder, rootView: InsightsSwiftUIView())
     }
     
-    init() {
+    init() {git com
         super.init(rootView: InsightsSwiftUIView())
     }
     
