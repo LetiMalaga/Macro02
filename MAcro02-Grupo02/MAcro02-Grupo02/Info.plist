@@ -4,8 +4,8 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>WeekNotification</string>
-		<string>DayNotification</string>
+		<string>WeekNotification.PomoBreak.Notification</string>
+		<string>DayNotification.PomoBreak.Notification</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
