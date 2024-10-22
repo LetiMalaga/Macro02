@@ -10,6 +10,8 @@ import UserNotifications
 import BackgroundTasks
 
 protocol InsightsInteractorProtocol: AnyObject {
+    var presenter: InsightsPresenterProtocol? { get }
+    var dataManager: InsightsDataProtocol? { get }
     
     func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void)
     func getInsights(predicate: NSPredicate) -> InsightsDataModel
@@ -23,15 +25,16 @@ protocol InsightsInteractorProtocol: AnyObject {
 
 class InsightsInteractor : InsightsInteractorProtocol {
     
-    private var presenter: InsightsPresenterProtocol?
-    private var dataManager: InsightsDataProtocol?
+    var presenter: InsightsPresenterProtocol?
+    var dataManager: InsightsDataProtocol?
     
     private var insights: InsightsDataModel?
     
-    init(presenter: InsightsPresenterProtocol, dataManager: InsightsDataProtocol) {
-        self.presenter = presenter
-        self.dataManager = dataManager
-    }
+//    init(presenter: InsightsPresenterProtocol, dataManager: InsightsDataProtocol) {
+//        self.presenter = presenter
+//        self.dataManager = dataManager
+//        print("iterator: \(#function)")
+//    }
     
     func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void) {
         var focusData: [FocusDataModel] = []
@@ -100,6 +103,9 @@ class InsightsInteractor : InsightsInteractorProtocol {
     func insightsPerDay() {
         let predicate = NSPredicate(format: "data == %@ ",Date() as CVarArg)
         insights = getInsights(predicate: predicate)
+        
+        print("insightsPerDay is called")
+
         apliedInsights(insights: insights!)
     }
     
@@ -111,7 +117,8 @@ class InsightsInteractor : InsightsInteractorProtocol {
         
         let today = Date()
         let predicate = NSPredicate(format: "data >= %@ AND data <= %@", lastSunday as CVarArg, today as CVarArg)
-        
+        print("insightsPerWeek is called")
+
         apliedInsights(insights: getInsights(predicate: predicate))
     }
     
@@ -122,6 +129,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         guard let firstDayOfMonth = calendar.date(from: components) else {return }
         let predicate = NSPredicate(format: "creationDate >= %@ AND creationDate <= %@", argumentArray: [firstDayOfMonth, currentDate])
         
+        print("insightsPerMonth is called")
         apliedInsights(insights: getInsights(predicate: predicate))
     }
     

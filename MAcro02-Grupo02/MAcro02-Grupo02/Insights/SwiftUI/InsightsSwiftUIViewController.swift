@@ -7,18 +7,21 @@
 
 import SwiftUI
 
-class InsightsSwiftUIViewController: UIHostingController<InsightsSwiftUIView> {
-    var interactor:InsightsInteractorProtocol?
+class InsightsSwiftUIViewController: UIHostingController<InsightsSwiftUIView> , InsightsViewProtocol{
+    var interactor:InsightsInteractorProtocol!
+    var data: InsightsDataView?
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder, rootView: InsightsSwiftUIView(interactor: interactor))
+        super.init(coder: coder, rootView: InsightsSwiftUIView())
     }
     
-    init() {
+    init(interactor: InsightsInteractorProtocol?) {
         super.init(rootView: InsightsSwiftUIView(interactor: interactor))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
 }
+

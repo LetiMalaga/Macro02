@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
           let window = UIWindow(windowScene: windowScene)
         let pomodoroVC = PomodoroModuleBuilder().build()
-        let insightVC = InsightsViewController()
+        let insightVC = InsightsFactory.makeInsights()
         window.rootViewController = insightVC
         
         let navControler = UINavigationController(rootViewController: insightVC)
