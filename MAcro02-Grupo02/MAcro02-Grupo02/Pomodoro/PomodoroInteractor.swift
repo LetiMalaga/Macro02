@@ -5,7 +5,7 @@
 //  Created by Luca on 23/09/24.
 //
 
-import Foundation
+import UIKit
 import UserNotifications
 
 protocol PomodoroInteractorProtocol {
@@ -20,6 +20,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     
     var presenter: PomodoroPresenterProtocol?
     var timer: Timer?
+    var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     var remainingTime = 0
     var isRunning = false
     var isPaused = false
@@ -44,15 +45,16 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         remainingTime = workDuration * 60
         isRunning = true
         isPaused = false
-        if wantsBreathing == true {
+        if wantsBreathing {
             startBreathingExercise() // Start breathing before work session
             presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
             presenter?.updateStateLabel("Time to Breathe!")
         } else {
-            self.startTimer()
+            startTimer()
             presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
-            self.presenter?.updateStateLabel("Time to Work!")
+            presenter?.updateStateLabel("Time to Work!")
         }
+        registerForAppStateNotifications()
     }
     
     func pausePomodoro() {
@@ -62,6 +64,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         breathingTimer?.invalidate() // Stop the breathing timer if it’s running
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        endBackgroundTask()
     }
     
     func resumePomodoro() {
@@ -81,6 +84,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
         isBreakCompleted = false // Reset after resuming
+        startBackgroundTask()
     }
     
     func stopPomodoro() {
@@ -89,6 +93,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         timer?.invalidate()
         breathingTimer?.invalidate()
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        endBackgroundTask()
     }
     
     private func startBreathingExercise() {
@@ -118,6 +123,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.updateTimer()
         }
+        startBackgroundTask() // Start background task when the timer starts
     }
     
     internal func updateTimer() {
@@ -186,13 +192,11 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         }
     }
 
-
     func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let seconds = seconds % 60
         return String(format: "%02d:%02d", minutes, seconds)
     }
-    
     
     private func scheduleNotification(title: String, body: String) {
         let content = UNMutableNotificationContent()
@@ -213,5 +217,33 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             }
         }
     }
+    
+    // MARK: - Background Task Management
+    
+    private func registerForAppStateNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
+    @objc private func appMovedToBackground() {
+        startBackgroundTask()
+    }
+    
+    @objc private func appMovedToForeground() {
+        endBackgroundTask()
+    }
+    
+    private func startBackgroundTask() {
+        backgroundTask = UIApplication.shared.beginBackgroundTask {
+            // End the task if time expires
+            self.endBackgroundTask()
+        }
+    }
+    
+    private func endBackgroundTask() {
+        if backgroundTask != .invalid {
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = .invalid
+        }
+    }
 }
-

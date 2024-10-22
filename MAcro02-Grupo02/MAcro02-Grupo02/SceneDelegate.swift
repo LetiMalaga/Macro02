@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
           let window = UIWindow(windowScene: windowScene)
           let pomodoroVC = PomodoroRouter().build()
-          window.rootViewController = pomodoroVC
+        window.rootViewController = MainTabBarController()
           window.makeKeyAndVisible()
 
 //        let window = UIWindow(windowScene: windowScene)
