@@ -167,6 +167,7 @@ class ConfigCell: UICollectionViewCell {
         // Dois pontos ":"
         colonLabel.translatesAutoresizingMaskIntoConstraints = false
         colonLabel.text = ":"
+        colonLabel.textColor = .black
         colonLabel.font = UIFont.boldSystemFont(ofSize: 64)
         colonLabel.textAlignment = .center
         contentView.addSubview(colonLabel)
@@ -220,6 +221,7 @@ class ConfigCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 64)
         label.textAlignment = .center
+        label.textColor = .black
         label.layer.borderColor = UIColor.black.cgColor
         label.layer.borderWidth = 2
         label.layer.cornerRadius = 10
