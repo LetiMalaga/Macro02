@@ -38,10 +38,8 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         (.intervaloLongo, "Intervalo Longo", 0),
         (.ciclosPomodoro, "Ciclos de Pomodoro", 0)
     ]
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    
+    override func viewWillAppear(_ animated: Bool) {
         // Definindo cor de fundo da view principal
         view.backgroundColor = .white
         
@@ -65,7 +63,10 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         
         setupCollectionView()
         setupView()
-        
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
     
     func setupView() {
@@ -141,7 +142,7 @@ class ConfigCell: UICollectionViewCell {
     let titleLabel = UILabel()
     let minutesLabel = UILabel()
     let secondsLabel = UILabel()
-    let colonLabel = UILabel() // Para exibir os dois pontos ":"
+    let colonLabel = UILabel()
     let arrowImageView = UIImageView()
     
     override init(frame: CGRect) {
