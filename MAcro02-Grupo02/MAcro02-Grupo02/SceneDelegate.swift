@@ -22,6 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navControler = UINavigationController(rootViewController: insightVC)
           
+
           window.makeKeyAndVisible()
 
 //        let window = UIWindow(windowScene: windowScene)

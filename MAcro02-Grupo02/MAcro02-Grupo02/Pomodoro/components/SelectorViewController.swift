@@ -38,10 +38,8 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         (.intervaloLongo, "Intervalo Longo", 0),
         (.ciclosPomodoro, "Ciclos de Pomodoro", 0)
     ]
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    
+    override func viewWillAppear(_ animated: Bool) {
         // Definindo cor de fundo da view principal
         view.backgroundColor = .white
         
@@ -65,7 +63,10 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         
         setupCollectionView()
         setupView()
-        
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
     
     func setupView() {
@@ -141,7 +142,7 @@ class ConfigCell: UICollectionViewCell {
     let titleLabel = UILabel()
     let minutesLabel = UILabel()
     let secondsLabel = UILabel()
-    let colonLabel = UILabel() // Para exibir os dois pontos ":"
+    let colonLabel = UILabel()
     let arrowImageView = UIImageView()
     
     override init(frame: CGRect) {
@@ -167,6 +168,7 @@ class ConfigCell: UICollectionViewCell {
         // Dois pontos ":"
         colonLabel.translatesAutoresizingMaskIntoConstraints = false
         colonLabel.text = ":"
+        colonLabel.textColor = .black
         colonLabel.font = UIFont.boldSystemFont(ofSize: 64)
         colonLabel.textAlignment = .center
         contentView.addSubview(colonLabel)
@@ -220,6 +222,7 @@ class ConfigCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 64)
         label.textAlignment = .center
+        label.textColor = .black
         label.layer.borderColor = UIColor.black.cgColor
         label.layer.borderWidth = 2
         label.layer.cornerRadius = 10

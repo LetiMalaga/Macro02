@@ -15,8 +15,10 @@ class InsightsSwiftUIViewController: UIHostingController<InsightsSwiftUIView> , 
         super.init(coder: coder, rootView: InsightsSwiftUIView())
     }
     
+
     init(interactor: InsightsInteractorProtocol?) {
         super.init(rootView: InsightsSwiftUIView(interactor: interactor))
+
     }
     
     override func viewDidLoad() {

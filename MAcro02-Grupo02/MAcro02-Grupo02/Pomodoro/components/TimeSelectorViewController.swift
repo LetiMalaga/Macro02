@@ -61,22 +61,8 @@ class TimeSelectorViewController: UIViewController {
         
     }()
     
-    let timeLabel: UILabel = {
-        
-        let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 96)
-        label.textColor = .black
-        
-        return label
-        
-    }()
-    
-    let scrollerView: UIView = {
-        
-        let view = UIView()
-        return view
-        
-    }()
+    private let timeSlider: GearBarView
+
     
     let infiniteLabel: UILabel = {
         
@@ -104,10 +90,12 @@ class TimeSelectorViewController: UIViewController {
         self.time = atualTime
         self.titlle = title
         
+        timeSlider = GearBarView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), initialTime: time)
+        
         super.init(nibName: nil, bundle: nil)
         
         titleLabel.text = title
-        timeLabel.text = PomodoroInteractor().formatTime(atualTime)
+        timeSlider.isUserInteractionEnabled = true
         
         switch type {
         case .foco:
@@ -135,11 +123,7 @@ class TimeSelectorViewController: UIViewController {
             
             predefinitions = ["2", "4", "6", "8"]
             
-            timeLabel.text = "\(atualTime)" 
         }
-        
-        
-        
         
         print(title, type, atualTime)
         
@@ -161,20 +145,19 @@ class TimeSelectorViewController: UIViewController {
         
     }
     
-    override func willChange(_ changeKind: NSKeyValueChange, valuesAt indexes: IndexSet, forKey key: String) {
-    }
-    
     func setupLayout() {
         
         view.addSubview(titleLabel)
         view.addSubview(explanationLabel)
         view.addSubview(predefinedLabel)
         view.addSubview(saveButton)
+        view.addSubview(timeSlider)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         explanationLabel.translatesAutoresizingMaskIntoConstraints = false
         predefinedLabel.translatesAutoresizingMaskIntoConstraints = false
         saveButton.translatesAutoresizingMaskIntoConstraints = false
+        timeSlider.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -189,9 +172,12 @@ class TimeSelectorViewController: UIViewController {
             predefinedLabel.topAnchor.constraint(equalTo: explanationLabel.bottomAnchor, constant: 40),
             
             saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            saveButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+            saveButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             
-            
+            timeSlider.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            timeSlider.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            timeSlider.widthAnchor.constraint(equalToConstant: 358),
+            timeSlider.heightAnchor.constraint(equalToConstant: 32),
             
         ])
         
@@ -201,13 +187,13 @@ class TimeSelectorViewController: UIViewController {
         
         switch type {
         case .foco:
-            pomoDefaults.setTime(for: "workDuration", value: 1)
+            pomoDefaults.setTime(for: "workDuration", value: timeSlider.timeInMinutes)
         case .intervaloCurto:
-            pomoDefaults.setTime(for: "breakDuration", value: 1)
+            pomoDefaults.setTime(for: "breakDuration", value: timeSlider.timeInMinutes)
         case .intervaloLongo:
-            pomoDefaults.setTime(for: "longBreakDuration", value: 2)
+            pomoDefaults.setTime(for: "longBreakDuration", value: timeSlider.timeInMinutes)
         case .ciclosPomodoro:
-            pomoDefaults.setTime(for: "loopsQuantity", value: time)
+            pomoDefaults.setTime(for: "loopsQuantity", value: timeSlider.timeInMinutes)
         }
         
         navigationController?.popViewController(animated: true)
