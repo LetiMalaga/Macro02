@@ -9,6 +9,9 @@ import SwiftUI
 import Charts
 
 struct InsightsSwiftUIView: View {
+    
+    var interactor:InsightsInteractorProtocol?
+    var insightsData: InsightsDataView?
     var timeFrame = ["Dia", "Semana", "Mês"]
     @State private var selectedTimeFrame: String = "Dia"
     
@@ -20,6 +23,21 @@ struct InsightsSwiftUIView: View {
                 }
             }
             .pickerStyle(.segmented)
+            .onChange(of: selectedTimeFrame){
+                switch selectedTimeFrame {
+                case "Dia":
+                    interactor?.insightsPerDay()
+                    print("insightsPerDay")
+                case "Semana":
+                    interactor?.insightsPerWeek()
+                    print("insightsPerWeek")
+                case "Mês":
+                    interactor?.insightsPerMonth()
+                    print("insightsPerMonth")
+                default:
+                    print("erro")
+                }
+            }
             
             HStack{
                 Button{
@@ -48,131 +66,140 @@ struct InsightsSwiftUIView: View {
                         .foregroundStyle(.black)
                 }
                 .padding(.vertical)
+            }
+            // Retângulo foco
+            ZStack{
+                RoundedRectangle(cornerRadius: 15)
+                    .foregroundStyle(Color(UIColor.systemGray4))
                 
-                // Retângulo foco
-                ZStack{
-                    RoundedRectangle(cornerRadius: 15)
-                        .foregroundStyle(Color(UIColor.systemGray4))
+                VStack{
+                    HStack{
+                        Text("Foco")
+                            .font(.title)
+                            .bold()
+                            .minimumScaleFactor(0.5)
+                        Spacer()
+                    }
                     
-                    VStack{
-                        HStack{
-                            Text("Foco")
-                                .font(.title)
+                    Spacer()
+                    
+                    HStack(alignment: .bottom){
+                        Text(insightsData?.foco ?? "0")
+                            .font(.system(size: 64, weight: .bold))
+                            .minimumScaleFactor(0.5)
+                        Text("horas")
+                            .minimumScaleFactor(0.5)
+                        Spacer()
+                    }
+                    
+                }
+                .padding()
+                
+                // Quadrado sessões
+                HStack{
+                    Spacer()
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 15)
+                            .foregroundStyle(Color(UIColor.systemGray2))
+                        VStack{
+                            Text("Sessões")
+                                .font(.caption2)
                                 .bold()
                                 .minimumScaleFactor(0.5)
                             Spacer()
-                        }
-                        
-                        Spacer()
-                        
-                        HStack(alignment: .bottom){
-                            Text(String(Date().formatted(date: .omitted, time: .shortened)))
+                            Text("\(insightsData?.session ?? 0)")
                                 .font(.system(size: 64, weight: .bold))
-                                .minimumScaleFactor(0.5)
-                            Text("Horas")
                                 .minimumScaleFactor(0.5)
                             Spacer()
                         }
-                        
+                        .padding(8)
                     }
-                    .padding()
-                    
-                    // Quadrado sessões
+                    .frame(width: (UIScreen.main.bounds.height * .bgRectangleTopHeightCtt - 16))
+                    .padding(8)
+                }
+            }
+            .frame(height: UIScreen.main.bounds.height * .bgRectangleTopHeightCtt)
+            
+            HStack(spacing: 20){
+                // Retângulo Pausa
+                ZStack{
+                    RoundedRectangle(cornerRadius: 15)
+                        .foregroundStyle(Color(UIColor.systemGray4))
                     HStack{
-                        Spacer()
-                        ZStack{
-                            RoundedRectangle(cornerRadius: 15)
-                                .foregroundStyle(Color(UIColor.systemGray2))
-                            VStack{
-                                Text("Sessões")
-                                    .font(.caption2)
+                        VStack{
+                            HStack{
+                                Text("Pausa")
+                                    .font(.title3)
                                     .bold()
                                     .minimumScaleFactor(0.5)
                                 Spacer()
-                                Text("3")
-                                    .font(.system(size: 64, weight: .bold))
+                            }
+                            HStack{
+                                Text(insightsData?.pause ?? "0")
+                                    .font(.title)
+                                    .bold()
                                     .minimumScaleFactor(0.5)
                                 Spacer()
                             }
-                            .padding(8)
                         }
-                        .frame(width: (UIScreen.main.bounds.height * .bgRectangleTopHeightCtt - 16))
-                        .padding(8)
+                        Spacer()
+                        Image(systemName: "face.smiling")
+                            .font(.system(size: 50))
+                            .minimumScaleFactor(0.5)
                     }
+                    .padding(8)
+                    .scaledToFill()
                 }
-                .frame(height: UIScreen.main.bounds.height * .bgRectangleTopHeightCtt)
+                .frame(width: (UIScreen.main.bounds.width * .bgPauseAndTotalRectanglesWidthCtt - .bgPauseAndTotalRectanglesWidthSubtractionCtt), height: UIScreen.main.bounds.height * .bgPauseAndTotalRectanglesHeightCtt)
                 
-                HStack(spacing: 20){
-                    // Retângulo Pausa
-                    ZStack{
-                        RoundedRectangle(cornerRadius: 15)
-                            .foregroundStyle(Color(UIColor.systemGray4))
-                        HStack{
-                            VStack{
-                                HStack{
-                                    Text("Pausa")
-                                        .font(.title3)
-                                        .bold()
-                                        .minimumScaleFactor(0.5)
-                                    Spacer()
-                                }
-                                HStack{
-                                    Text("10m")
-                                        .font(.title)
-                                        .bold()
-                                        .minimumScaleFactor(0.5)
-                                    Spacer()
-                                }
+                // Retângulo Total
+                ZStack{
+                    RoundedRectangle(cornerRadius: 15)
+                        .foregroundStyle(Color(UIColor.systemGray4))
+                    HStack{
+                        VStack{
+                            HStack{
+                                Text("Total")
+                                    .font(.title3)
+                                    .bold()
+                                    .minimumScaleFactor(0.5)
+                                Spacer()
                             }
-                            Spacer()
-                            Image(systemName: "face.smiling")
-                                .font(.system(size: 50))
-                                .minimumScaleFactor(0.5)
-                        }
-                        .padding(8)
-                        .scaledToFill()
-                    }
-                    .frame(width: (UIScreen.main.bounds.width * .bgPauseAndTotalRectanglesWidthCtt - .bgPauseAndTotalRectanglesWidthSubtractionCtt), height: UIScreen.main.bounds.height * .bgPauseAndTotalRectanglesHeightCtt)
-                    
-                    // Retângulo Total
-                    ZStack{
-                        RoundedRectangle(cornerRadius: 15)
-                            .foregroundStyle(Color(UIColor.systemGray4))
-                        HStack{
-                            VStack{
-                                HStack{
-                                    Text("Total")
-                                        .font(.title3)
-                                        .bold()
-                                        .minimumScaleFactor(0.5)
-                                    Spacer()
-                                }
-                                HStack{
-                                    Text("2:30h")
-                                        .font(.title)
-                                        .bold()
-                                        .minimumScaleFactor(0.5)
-                                    Spacer()
-                                }
+                            HStack{
+                                Text("\(insightsData?.total ?? "0")")
+                                    .font(.title)
+                                    .bold()
+                                    .minimumScaleFactor(0.5)
+                                Spacer()
                             }
-                            Spacer()
-                            Image(systemName: "face.smiling")
-                                .font(.system(size: 50))
-                                .minimumScaleFactor(0.5)
                         }
-                        .padding(8)
-                        .scaledToFill()
+                        Spacer()
+                        Image(systemName: "face.smiling")
+                            .font(.system(size: 50))
+                            .minimumScaleFactor(0.5)
                     }
-                    .frame(width: (UIScreen.main.bounds.width * .bgPauseAndTotalRectanglesWidthCtt - .bgPauseAndTotalRectanglesWidthSubtractionCtt), height: UIScreen.main.bounds.height * .bgPauseAndTotalRectanglesHeightCtt)
+                    .padding(8)
+                    .scaledToFill()
                 }
-                
-                FocoPorTagChartView()
-                //                .frame(width: CGFloat(UIScreen.main.bounds.width-40), height: CGFloat(UIScreen.main.bounds.height/3))
-                Spacer()
+                .frame(width: (UIScreen.main.bounds.width * .bgPauseAndTotalRectanglesWidthCtt - .bgPauseAndTotalRectanglesWidthSubtractionCtt), height: UIScreen.main.bounds.height * .bgPauseAndTotalRectanglesHeightCtt)
             }
-            .padding()
-            .navigationTitle("Resultados")
+            
+            ZStack{
+                FocoPorTagChartView(data: insightsData?.tags ?? [ChartData(type: "Estudos", count: 2), ChartData(type: "Trabalho", count: 5 ), ChartData(type: "Projetos", count: 10), ChartData(type: "Outros", count: 1)])
+                //                .frame(width: CGFloat(UIScreen.main.bounds.width-40), height: CGFloat(UIScreen.main.bounds.height/3))
+                
+                    if insightsData == nil {
+                        RoundedRectangle(cornerRadius: 15)
+//                            .frame(width: x, height: y)
+                            .foregroundStyle(.black)
+                            .opacity(0.25)
+                            
+                    }
+            }
+            Spacer()
         }
+        .padding()
+        .navigationTitle("Resultados")
     }
 }
 

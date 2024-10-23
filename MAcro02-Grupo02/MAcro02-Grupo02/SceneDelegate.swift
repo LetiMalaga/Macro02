@@ -17,12 +17,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
         let pomodoroVC = PomodoroRouter().build()
-        let insightVC = InsightsViewController()
+        let insightVC = InsightsFactory.makeInsights()
         let tabBar =  MainTabBarController()
+        window.rootViewController = tabBar
         
-        let navControler = UINavigationController(rootViewController: tabBar)
+        let navControler = UINavigationController(rootViewController: insightVC)
           
-        window.rootViewController = navControler
+
           window.makeKeyAndVisible()
 
 //        let window = UIWindow(windowScene: windowScene)

@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 protocol InsightsPresenterProtocol {
+    var view: InsightsViewProtocol? { get }
+    
     func presentTagInsights(insights: InsightsDataModel)
     func presentFocusedInsights(insights: InsightsDataModel)
     func presenteBreakdownInsights(insights: InsightsDataModel)
@@ -17,38 +19,59 @@ protocol InsightsPresenterProtocol {
 }
 
 class InsightsPresenter: InsightsPresenterProtocol {
-    private var view: InsightsViewProtocol?
+    var view: InsightsViewProtocol?
     
-    init(view: InsightsViewProtocol) {
-        self.view = view
-    }
+//    init(view: InsightsViewProtocol) {
+//        self.view = view
+//    }
     
     func presentTagInsights(insights: InsightsDataModel) {
-        let tags = insights.timeFocusedInMinutes
-    
+        var formatData:[ChartData] = []
+        insights.timeFocusedInMinutes.forEach { key, value in
+            formatData.append(ChartData(type: key.rawValue, count: value))
+        }
+        
+        view?.data?.tags = formatData
         
     }
     
     func presentFocusedInsights(insights: InsightsDataModel) {
-        let timeInHours = convertMinutesToHours(minutes: insights.timeFocusedInMinutes.values.reduce(0, +))
+        var time = insights.timeFocusedInMinutes.values.reduce(0, +)
+        if time > 60 {
+            let timeInHours = formatMinutesToHours(minutes: time)
+            view?.data?.foco = timeInHours
+        }else{
+            view?.data?.foco = String(format: "%d min", time)
+        }
     }
     
     func presenteBreakdownInsights(insights: InsightsDataModel) {
-        let timeInHours = convertMinutesToHours(minutes: insights.timeBreakInMinutes)
+        var time = insights.timeBreakInMinutes
+        if time > 60 {
+            let timeInHours = formatMinutesToHours(minutes: time)
+            view?.data?.pause = timeInHours
+        }else{
+            view?.data?.pause = String(format: "%d min", time)
+        }
     }
     func presentSessionInsights(insights: InsightsDataModel) {
         let totalSessions = insights.value
+        view?.data?.session = totalSessions ?? 0
     }
     
     func presenteTotalTimeInsights(insights: InsightsDataModel) {
-        let totalTime = insights.timeTotalInMinutes
+        var time = insights.timeTotalInMinutes
+        if time > 60 {
+            let timeInHours = formatMinutesToHours(minutes: time)
+            view?.data?.total = timeInHours
+        }else{
+            view?.data?.total = String(format: "%d min", time)
+        }
     }
     
-    func convertMinutesToHours(minutes: Int) -> Double {
-        let hours = minutes / 60               
+    func formatMinutesToHours(minutes: Int) -> String {
+        let hours = minutes / 60
         let remainingMinutes = minutes % 60
-        let decimalMinutes = Double(remainingMinutes) / 60.0
-        
-        return Double(hours) + decimalMinutes
+        return String(format: "%d:%02d h", hours, remainingMinutes)
     }
 }

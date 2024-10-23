@@ -183,6 +183,9 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				KnownAssetTags = (
+					New,
+				);
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
@@ -297,7 +300,6 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZQ6R8GYU9Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MAcro02-Grupo02/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Macro 02";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -332,7 +334,6 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZQ6R8GYU9Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MAcro02-Grupo02/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Macro 02";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
