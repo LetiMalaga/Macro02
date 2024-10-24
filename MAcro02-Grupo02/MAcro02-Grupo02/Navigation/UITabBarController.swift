@@ -25,7 +25,12 @@ class MainTabBarController: UITabBarController {
         let activitiesNavController = UINavigationController(rootViewController: activitiesVC)
         activitiesNavController.tabBarItem = UITabBarItem(title: "Activities", image: UIImage(systemName: "list.bullet"), tag: 1)
         
+        let insightsInteractor = InsightsInteractor()
+        let insightsVC = InsightsSwiftUIViewController(interactor: insightsInteractor)
+        let insightsNavController = UINavigationController(rootViewController: insightsVC)
+        insightsNavController.tabBarItem = UITabBarItem(title: "Insights", image: UIImage(systemName: "chart.bar"), tag: 2)
+        
         // Add the view controllers to the tab bar
-        viewControllers = [pomodoroNavController, activitiesNavController]
+        viewControllers = [pomodoroNavController, activitiesNavController, insightsNavController]
     }
 }
