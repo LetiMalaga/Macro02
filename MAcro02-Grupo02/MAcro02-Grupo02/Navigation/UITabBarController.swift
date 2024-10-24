@@ -1,0 +1,31 @@
+//
+//  UITabBarController.swift
+//  MAcro02-Grupo02
+//
+//  Created by Luca on 21/10/24.
+//
+
+import UIKit
+
+class MainTabBarController: UITabBarController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupTabBar()
+    }
+    
+    private func setupTabBar() {
+        // Create the Pomodoro View Controller
+        let pomodoroVC = PomodoroRouter().build()
+        let pomodoroNavController = UINavigationController(rootViewController: pomodoroVC)
+        pomodoroNavController.tabBarItem = UITabBarItem(title: "Pomodoro", image: UIImage(systemName: "timer"), tag: 0)
+        
+        // Create the Activities View Controller
+        let activitiesVC = ActivitiesViewController()
+        let activitiesNavController = UINavigationController(rootViewController: activitiesVC)
+        activitiesNavController.tabBarItem = UITabBarItem(title: "Activities", image: UIImage(systemName: "list.bullet"), tag: 1)
+        
+        // Add the view controllers to the tab bar
+        viewControllers = [pomodoroNavController, activitiesNavController]
+    }
+}

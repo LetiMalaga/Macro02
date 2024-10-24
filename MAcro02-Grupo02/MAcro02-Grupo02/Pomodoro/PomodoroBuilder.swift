@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PomodoroModuleBuilder {
+class PomodoroRouter {
     func build() -> UIViewController {
         let viewController = PomodoroViewController()
         let presenter = PomodoroPresenter()
