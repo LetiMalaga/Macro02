@@ -13,7 +13,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     let pomoConfig = PomoDefaults()
     
     public var isRuning = false
-
+    
     // UI Elements
     private let pauseLabel: UILabel = {
         let label = UILabel()
@@ -218,19 +218,29 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         }
     }
     
-    func displayTime(_ time: String) {
-           timeLabel.text = time
-       }
-       
-       func updateCircle(percentage: Float) {
-           progressCircleView.progress = percentage
-       }
+    func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool = false) {
+        timeLabel.text = time
+        
+        // Update the interval label based on the current phase
+        if isLongBreak {
+            intervaloLabel.text = "Long Break"
+        } else if isWorkPhase {
+            intervaloLabel.text = "Work Time"
+        } else {
+            intervaloLabel.text = "Break Time"
+        }
+        
+    }
+    
+    func updateCircle(percentage: Float) {
+        progressCircleView.progress = percentage
+    }
     
     @objc func tags() {
         let vc = TagModalsViewController()
         vc.modalPresentationStyle = .custom
         vc.transitioningDelegate = self
-
+        
         if let popoverController = vc.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .up
@@ -246,7 +256,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-
+    
 }
 
 extension PomodoroViewController: UIViewControllerTransitioningDelegate {

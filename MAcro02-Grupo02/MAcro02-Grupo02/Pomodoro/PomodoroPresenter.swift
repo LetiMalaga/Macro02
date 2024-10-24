@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 protocol PomodoroPresenterProtocol {
-    func displayTime(_ time: String)
+    func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool)
     func resetPomodoro()
     func updateButton(isRunning: Bool, isPaused: Bool)
-    func updateTimer(percentage:Float)
+    func updateTimer(percentage: Float)
     func completePomodoro()
 }
 
@@ -20,12 +20,13 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
     weak var viewController: PomodoroViewController?
     let pomoDefaults = PomoDefaults()
 
-    func displayTime(_ time: String) {
-        viewController?.displayTime(time)
-    }
+    func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool = false) {
+            viewController?.displayTime(time, isWorkPhase: isWorkPhase, isLongBreak: isLongBreak)
+        }
 
     func resetPomodoro() {
-        viewController?.displayTime(String(format: "%02d:00", pomoDefaults.workDuration))
+        let initialTime = String(format: "%02d:00", pomoDefaults.workDuration)
+        viewController?.displayTime(initialTime, isWorkPhase: true, isLongBreak: false)
     }
 
     func updateButton(isRunning: Bool, isPaused: Bool) {

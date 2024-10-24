@@ -76,7 +76,7 @@ class GearBarView: UIView {
     }
     
     func updateTime(time: Int) {
-        timeInMinutes = min(max(5, time), 60)
+        timeInMinutes = min(max(2, time), 60)
         
     }
     
