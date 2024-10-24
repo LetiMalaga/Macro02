@@ -10,28 +10,27 @@ import UserNotifications
 import BackgroundTasks
 
 class InsightsNotifications {
-    
-    
+    var insightsInteractor: InsightsInteractorProtocol?
     func scheduleEndOfDayNotification(insights: InsightsDataModel){
         let content = UNMutableNotificationContent()
         content.title = "Resumo do seu dia"
-//        if let savedData = UserDefaults.standard.data(forKey: "Insights"),
-//           let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
-//            content.body = "Você focou por \(decodedInsights.timeFocusedInMinutes[.focus] ?? 0) minutos hoje. Continue assim!"
-//        } else {
-//            print("No data found")
-//        }
-        print("Found data")
-        
-        content.body = "Você focou por \(250) minutos hoje. Continue assim!"
+        if let savedData = UserDefaults.standard.data(forKey: "InsightsDay"),
+           let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
+            if decodedInsights.timeFocusedInMinutes.values.reduce(0, +) > 0 {
+                content.body = "Você focou por \(decodedInsights.timeFocusedInMinutes.values.reduce(0, +)) minutos hoje. Continue assim!"
+            }else {
+                content.body = "Venha conferir seus insights!"
+            }
+        } else {
+            content.body = "Venha conferir seus insights!"
+        }
         content.sound = .default
         
         var dateComponents = DateComponents()
-        dateComponents.hour = 14
-        dateComponents.minute = 43
+        dateComponents.hour = 15
+        dateComponents.minute = 06
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        print("Notificação diária agendada para: \(trigger.nextTriggerDate()!)")
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request) { error in
             print("Error: \(error?.localizedDescription ?? "No error")")
@@ -41,15 +40,16 @@ class InsightsNotifications {
     func scheduleEndOfWeekNotification(insights: InsightsDataModel) {
         let content = UNMutableNotificationContent()
         content.title = "Resumo da sua semana"
-//        if let savedData = UserDefaults.standard.data(forKey: "Insights"),
-//           let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
-//            content.body = "Você focou por \(decodedInsights.timeFocusedInMinutes.values.max() ?? 0) minutos nesta semana. Continue melhorando!"
-//            print("Found data")
-//        } else {
-//            print("No data found")
-//        }
-        content.sound = .default
         
+        if let savedData = UserDefaults.standard.data(forKey: "InsightsWeek"),
+           let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
+            content.body = "Você focou por \(decodedInsights.timeFocusedInMinutes.values.max() ?? 0) minutos nesta semana. Continue melhorando!"
+            print("Found data")
+        } else {
+            print("No data found")
+        }
+        
+        content.sound = .default
         var dateComponents = DateComponents()
         dateComponents.weekday = 1
         dateComponents.hour = 23
@@ -65,17 +65,19 @@ class InsightsNotifications {
     
     func registerBackgroundTasks() {
         
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "DayNotification.PomoBreak.Notification", using: nil) { task in
-            self.handleDailyTask(task: task as! BGAppRefreshTask)
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "DayNotification.PomoBreak.Notification.Teste", using: nil) { [weak self] task in
+            guard let task = task as? BGProcessingTask else { return }
+            self?.handleDailyTask(task: task)
         }
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "WeekNotification.PomoBreak.Notification", using: nil) { task in
-            self.handleWeeklyTask(task: task as! BGAppRefreshTask)
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "WeekNotification.PomoBreak.Notification", using: nil) {[weak self] task in
+            guard let task = task as? BGProcessingTask else { return }
+            self?.handleWeeklyTask(task: task)
         }
     }
     func scheduleDailyBackgroundTask() {
-        let request = BGAppRefreshTaskRequest(identifier: "DayNotification.PomoBreak.Notification")
+        let request = BGProcessingTaskRequest(identifier: "DayNotification.PomoBreak.Notification.Teste")
         
-        request.earliestBeginDate = Calendar.current.date(bySettingHour: 14, minute: 42, second: 0, of: Date())
+        request.earliestBeginDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 0, of: Date())
         
         do {
             try BGTaskScheduler.shared.submit(request)
@@ -86,11 +88,12 @@ class InsightsNotifications {
     }
     
     func scheduleWeeklyBackgroundTask() {
-        let request = BGAppRefreshTaskRequest(identifier: "WeekNotification.PomoBreak.Notification")
+        let request = BGProcessingTaskRequest(identifier: "WeekNotification.PomoBreak.Notification")
         
+        insightsInteractor?.insightsPerWeek()
         if let nextSunday = getNextSunday() {
             request.earliestBeginDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 0, of: nextSunday)
-            
+            request.requiresNetworkConnectivity = true
             do {
                 try BGTaskScheduler.shared.submit(request)
                 print("Weekly task scheduled")
@@ -100,27 +103,29 @@ class InsightsNotifications {
         }
     }
     
-    func handleDailyTask(task: BGAppRefreshTask) {
+    func handleDailyTask(task: BGProcessingTask) {
         scheduleDailyBackgroundTask()
         
+        insightsInteractor?.insightsPerDay()
         if let savedData = UserDefaults.standard.data(forKey: "Insights"),
            let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
             scheduleEndOfDayNotification(insights: decodedInsights)
         } else {
-            print("No data found")
+            scheduleEndOfDayNotification(insights: InsightsDataModel(title: "nulo", timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0))
+
         }
         task.setTaskCompleted(success: true)
         
     }
     
-    func handleWeeklyTask(task: BGAppRefreshTask) {
+    func handleWeeklyTask(task: BGProcessingTask) {
         scheduleWeeklyBackgroundTask()
         
         if let savedData = UserDefaults.standard.data(forKey: "Insights"),
            let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
             scheduleEndOfWeekNotification(insights: decodedInsights)
         } else {
-            print("No data found")
+            scheduleEndOfDayNotification(insights: InsightsDataModel(title: "nulo", timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0))
         }
         task.setTaskCompleted(success: true)
         

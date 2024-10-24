@@ -5,7 +5,7 @@
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>WeekNotification.PomoBreak.Notification</string>
-		<string>DayNotification.PomoBreak.Notification</string>
+		<string>DayNotification.PomoBreak.Notification.Teste</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

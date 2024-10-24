@@ -96,16 +96,17 @@ class InsightsInteractor : InsightsInteractorProtocol {
         presenter?.presentSessionInsights(insights: insights)
         presenter?.presenteBreakdownInsights(insights: insights)
         presenter?.presenteTotalTimeInsights(insights: insights)
-        if let encodedData = try? JSONEncoder().encode(insights) {
-            UserDefaults.standard.set(encodedData, forKey: "Insights")
-        }else{
-            print("Erro ao salvar os insights")
-        }
+        
     }
     func insightsPerDay() {
         let predicate = NSPredicate(format: "data == %@ ",Date() as CVarArg)
         insights = getInsights(predicate: predicate)
         apliedInsights(insights: insights!)
+        if let encodedData = try? JSONEncoder().encode(insights) {
+            UserDefaults.standard.set(encodedData, forKey: "InsightsDay")
+        }else{
+            print("Erro ao salvar os insights para notifications")
+        }
     }
     
     func insightsPerWeek() {
@@ -116,8 +117,14 @@ class InsightsInteractor : InsightsInteractorProtocol {
         
         let today = Date()
         let predicate = NSPredicate(format: "data >= %@ AND data <= %@", lastSunday as CVarArg, today as CVarArg)
+        let insights = getInsights(predicate: predicate)
+        apliedInsights(insights: insights)
         
-        apliedInsights(insights: getInsights(predicate: predicate))
+        if let encodedData = try? JSONEncoder().encode(insights) {
+            UserDefaults.standard.set(encodedData, forKey: "InsightsWeek")
+        }else{
+            print("Erro ao salvar os insights para notifications")
+        }
     }
     
     func insightsPerMonth(){
