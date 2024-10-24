@@ -76,7 +76,7 @@ class GearBarView: UIView {
     }
     
     func updateTime(time: Int) {
-        timeInMinutes = max(5, time)  // Garantir que o tempo não seja negativo
+        timeInMinutes = min(max(5, time), 60)
         
     }
     
@@ -86,7 +86,7 @@ class GearBarView: UIView {
         
         if gesture.state == .changed || gesture.state == .ended {
             // Incremento baseado no gesto de arraste
-            let increment = Int(translation.x / 5)  // Ajuste o divisor para ajustar a sensibilidade do arraste
+            let increment = Int(translation.x / 4) * 5  // Ajuste o divisor para ajustar a sensibilidade do arraste
             let newTime = timeInMinutes + increment
             
             // Atualiza o valor de time no GearBarView
