@@ -8,7 +8,9 @@
 import UIKit
 
 class PomodoroViewController: UIViewController, UIPopoverPresentationControllerDelegate {
+    
     var interactor: PomodoroInteractorProtocol?
+    let pomoConfig = PomoDefaults()
     
     public var isRuning = false
 
@@ -17,6 +19,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         let label = UILabel()
         label.text = "Mantenha pressionado para pausar"
         label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.textColor = .black
         label.textAlignment = .center
         label.isHidden = true
         return label
@@ -24,17 +27,19 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "25:00"
         label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
+        label.textColor = .black
         label.textAlignment = .center
+        label.isUserInteractionEnabled = true
+        
         return label
     }()
     
     private let intervaloLabel: UILabel = {
         let label = UILabel()
-        label.text = "Intervalo: 05:00"
         label.font = .boldSystemFont(ofSize: 22)
         label.layer.opacity = 0.3
+        label.textColor = .black
         
         return label
     }()
@@ -76,9 +81,23 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     // MARK: - Lifecycle
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+        let workDuration = pomoConfig.workDuration
+        let breakDuration = pomoConfig.breakDuration
+        
+        timeLabel.text = PomodoroInteractor().formatTime(workDuration * 60)
+        intervaloLabel.text = "Intervalo: \(PomodoroInteractor().formatTime(breakDuration * 60))"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
+        // Gestures
+        
+        let openConfigsGesture = UITapGestureRecognizer(target: self, action: #selector(configTime))
+        timeLabel.addGestureRecognizer(openConfigsGesture)
         
         let pauseHold = UILongPressGestureRecognizer(target: self, action: #selector(pause))
         pauseHold.minimumPressDuration = 2.0
@@ -117,7 +136,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         // Set constraints
         NSLayoutConstraint.activate([
             // Title Label
-            pauseLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            pauseLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             pauseLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             // Time Label
@@ -133,7 +152,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             progressCircleView.heightAnchor.constraint(equalToConstant: 150),
             
             tagframe.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tagframe.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 135),
+            tagframe.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
             
             // Play/Pause Button
             playButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
@@ -156,7 +175,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         isRuning = true
         intervaloLabel.isHidden = true
         pauseLabel.isHidden = false
-        interactor?.startPomodoro(workDuration: 1, breakDuration: 1, loopCount: 4)
+        interactor?.startPomodoro()
     }
     
     @objc func resume() {
@@ -164,6 +183,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         resumeButton.isHidden = true
         isRuning = true
         resetButton.isHidden = true
+        pauseLabel.isHidden = false
     }
     
     @objc func reset() {
@@ -193,6 +213,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
                 
                 resumeButton.isHidden = false
                 resetButton.isHidden = false
+                pauseLabel.isHidden = true
             }
         }
     }
@@ -216,6 +237,14 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         }
         
         present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func configTime() {
+        if !isRuning {
+            let vc = SelectorViewController()
+            
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
 }

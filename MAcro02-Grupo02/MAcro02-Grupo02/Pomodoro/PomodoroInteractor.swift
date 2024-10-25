@@ -9,7 +9,7 @@ import Foundation
 import UserNotifications
 
 protocol PomodoroInteractorProtocol {
-    func startPomodoro(workDuration: Int, breakDuration: Int, loopCount: Int)
+    func startPomodoro()
     func pausePomodoro()
     func resumePomodoro()
     func stopPomodoro()
@@ -18,6 +18,7 @@ protocol PomodoroInteractorProtocol {
 class PomodoroInteractor: PomodoroInteractorProtocol {
     var dataManager: PomodoroData = PomodoroData()
     var presenter: PomodoroPresenterProtocol?
+    var pomoDefaults = PomoDefaults()
     var timer: Timer?
     var remainingTime = 0
     var isRunning = false
@@ -29,10 +30,10 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
 
     private var pendingPhaseSwitch: Bool = false // Track if the phase switch is pending
 
-    func startPomodoro(workDuration: Int, breakDuration: Int, loopCount: Int) {
-        self.workDuration = workDuration
-        self.breakDuration = breakDuration
-        remainingLoops = loopCount
+    func startPomodoro() {
+        self.workDuration = pomoDefaults.workDuration
+        self.breakDuration = pomoDefaults.breakDuration
+        remainingLoops = pomoDefaults.loops
         isWorkPhase = true
         remainingTime = workDuration * 60
         isRunning = true
@@ -56,6 +57,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         // Only start the timer if a phase switch is pending
         if pendingPhaseSwitch {
             pendingPhaseSwitch = false // Reset the pending phase switch
+            switchPhase()
             startTimer()
         } else {
             startTimer() // Start the timer normally if no phase switch is pending
@@ -126,14 +128,14 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 pendingPhaseSwitch = true // Mark that we need to wait for user to resume
             } else {
                 // All loops completed, stop Pomodoro
-                dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: "nil")
+                dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil")
                 stopPomodoro()
                 scheduleNotification(title: "Pomodoro Complete!", body: "You've completed all loops. Good job!"); // Notification for completion
             }
         }
     }
 
-    private func formatTime(_ seconds: Int) -> String {
+    func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let seconds = seconds % 60
         return String(format: "%02d:%02d", minutes, seconds)

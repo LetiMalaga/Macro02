@@ -18,13 +18,14 @@ protocol PomodoroPresenterProtocol {
 
 class PomodoroPresenter: PomodoroPresenterProtocol {
     weak var viewController: PomodoroViewController?
+    let pomoDefaults = PomoDefaults()
 
     func displayTime(_ time: String) {
         viewController?.displayTime(time)
     }
 
     func resetPomodoro() {
-        viewController?.displayTime("25:00")
+        viewController?.displayTime(String(format: "%02d:00", pomoDefaults.workDuration))
     }
 
     func updateButton(isRunning: Bool, isPaused: Bool) {

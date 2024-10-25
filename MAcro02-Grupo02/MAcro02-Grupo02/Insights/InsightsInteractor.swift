@@ -10,6 +10,8 @@ import Foundation
 
 protocol InsightsInteractorProtocol: AnyObject {
     var insights: InsightsDataModel? { get }
+    var presenter: InsightsPresenterProtocol? { get }
+    var dataManager: InsightsDataProtocol? { get }
     
     func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void)
     func getInsights(predicate: NSPredicate) -> InsightsDataModel
@@ -23,15 +25,16 @@ protocol InsightsInteractorProtocol: AnyObject {
 
 class InsightsInteractor : InsightsInteractorProtocol {
     
-    private var presenter: InsightsPresenterProtocol?
-    private var dataManager: InsightsDataProtocol?
+    var presenter: InsightsPresenterProtocol?
+    var dataManager: InsightsDataProtocol?
     
     var insights: InsightsDataModel?
     
-    init(presenter: InsightsPresenterProtocol, dataManager: InsightsDataProtocol) {
-        self.presenter = presenter
-        self.dataManager = dataManager
-    }
+//    init(presenter: InsightsPresenterProtocol, dataManager: InsightsDataProtocol) {
+//        self.presenter = presenter
+//        self.dataManager = dataManager
+//        print("iterator: \(#function)")
+//    }
     
     func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void) {
         var focusData: [FocusDataModel] = []
@@ -86,7 +89,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         }
         
         guard let data else { print("dados nulos")
-            return InsightsDataModel(title: "test", timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0)}
+            return InsightsDataModel(timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0)}
         
         return data
     }
@@ -101,6 +104,9 @@ class InsightsInteractor : InsightsInteractorProtocol {
     func insightsPerDay() {
         let predicate = NSPredicate(format: "data == %@ ",Date() as CVarArg)
         insights = getInsights(predicate: predicate)
+        
+        print("insightsPerDay is called")
+
         apliedInsights(insights: insights!)
         
         if let encodedData = try? JSONEncoder().encode(insights) {
@@ -126,6 +132,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         }else{
             print("Erro ao salvar os insights para notifications")
         }
+
     }
     
     func insightsPerMonth(){
@@ -135,6 +142,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         guard let firstDayOfMonth = calendar.date(from: components) else {return }
         let predicate = NSPredicate(format: "creationDate >= %@ AND creationDate <= %@", argumentArray: [firstDayOfMonth, currentDate])
         
+        print("insightsPerMonth is called")
         apliedInsights(insights: getInsights(predicate: predicate))
     }
     
@@ -151,7 +159,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         let daysToLastSunday = (weekday == 1) ? 0 : weekday - 1
         return calendar.date(byAdding: .day, value: -daysToLastSunday, to: today)
     }
-    
+
 }
 
 
@@ -175,7 +183,6 @@ enum Tags: String, Codable {
 
 struct InsightsDataModel: Identifiable, Encodable, Decodable{
     var id = UUID()
-    var title: String
     
     var timeFocusedInMinutes: [Tags:Int]
     var timeTotalInMinutes: Int
