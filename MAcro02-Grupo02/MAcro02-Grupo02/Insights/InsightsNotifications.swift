@@ -114,7 +114,7 @@ class InsightsNotifications {
            let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
             scheduleEndOfWeekNotification(insights: decodedInsights)
         } else {
-            scheduleEndOfDayNotification(insights: InsightsDataModel(title: "nulo", timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0))
+            scheduleEndOfDayNotification(insights: InsightsDataModel(timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0))
         }
         task.setTaskCompleted(success: true)
         
