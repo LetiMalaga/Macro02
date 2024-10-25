@@ -11,6 +11,7 @@ import BackgroundTasks
 
 class InsightsNotifications {
     var insightsInteractor: InsightsInteractorProtocol?
+    
     func scheduleEndOfDayNotification(insights: InsightsDataModel){
         let content = UNMutableNotificationContent()
         content.title = "Resumo do seu dia"

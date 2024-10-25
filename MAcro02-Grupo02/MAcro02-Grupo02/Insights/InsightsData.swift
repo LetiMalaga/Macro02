@@ -9,27 +9,38 @@ import Foundation
 import CloudKit
 
 protocol InsightsDataProtocol {
-    func queryTestData(predicate: NSPredicate, closure: @escaping ([(CKRecord.ID, Result<CKRecord, any Error>)])-> Void)
+    func queryTestData(predicate: NSPredicate) async throws ->[CKRecord]
 }
 
 class InsightsData:InsightsDataProtocol{
     
     let privateDatabase = CKContainer.default().privateCloudDatabase
     let zone = CKRecordZone(zoneName: "PomoInsightsZone")
-    var records = [CKRecord]()
+    var records:[CKRecord] = []
 
-    func queryTestData(predicate: NSPredicate, closure: @escaping ([(CKRecord.ID, Result<CKRecord, any Error>)])-> Void){
+    func queryTestData(predicate: NSPredicate) async throws -> [CKRecord]{
         
         let query = CKQuery(recordType: TimerRecord.recordType, predicate: predicate)
-        privateDatabase.fetch(withQuery: query, inZoneWith: zone.zoneID) { result in
-            switch result {
-            case .success(let records):
-                closure(records.matchResults)
-            case .failure(let error):
-                print("Error fetching records: \(error)")
+        return try await withCheckedThrowingContinuation { continuation in
+            privateDatabase.fetch(withQuery: query, inZoneWith: zone.zoneID) { result in
+                switch result {
+                case .success(let records):
+                    records.matchResults.forEach { record, result in
+                        switch result {
+                        case .success (let data):
+                            self.records.append(data)
+                        case .failure:
+                            break
+                        }
+                    }
+                    print("success fetching records")
+                    continuation.resume(returning: self.records)
+                case .failure(let error):
+                    print("error fetching records")
+                    continuation.resume(throwing: error)
+                }
             }
         }
-        
     }
 }
 

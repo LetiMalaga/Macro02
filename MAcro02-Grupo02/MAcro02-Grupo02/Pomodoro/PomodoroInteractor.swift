@@ -7,7 +7,7 @@
 
 import Foundation
 import UserNotifications
-
+import UIKit
 protocol PomodoroInteractorProtocol {
     func startPomodoro()
     func pausePomodoro()
@@ -27,7 +27,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     var remainingLoops = 0
     var workDuration = 0   // Store the work duration
     var breakDuration = 0  // Store the break duration
-
+    let controlAssin = DispatchGroup()
     private var pendingPhaseSwitch: Bool = false // Track if the phase switch is pending
 
     func startPomodoro() {
@@ -128,13 +128,22 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 pendingPhaseSwitch = true // Mark that we need to wait for user to resume
             } else {
                 // All loops completed, stop Pomodoro
-                dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil")
+                Task {
+                    await saveTimeData()
+                }
                 stopPomodoro()
                 scheduleNotification(title: "Pomodoro Complete!", body: "You've completed all loops. Good job!"); // Notification for completion
             }
         }
     }
-
+    func saveTimeData() async {
+        do{
+            let savedData = try await dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil")
+            print("Registro salvo com sucesso: \(savedData)")
+        } catch {
+            print("Erro ao salvar o registro: \(error)")
+        }
+    }
     func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let seconds = seconds % 60
