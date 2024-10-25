@@ -102,6 +102,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         let predicate = NSPredicate(format: "data == %@ ",Date() as CVarArg)
         insights = getInsights(predicate: predicate)
         apliedInsights(insights: insights!)
+        
         if let encodedData = try? JSONEncoder().encode(insights) {
             UserDefaults.standard.set(encodedData, forKey: "InsightsDay")
         }else{
@@ -159,7 +160,6 @@ struct FocusDataModel: Identifiable {
     var id = UUID()
     var focusTimeInMinutes: Int
     var breakTimeinMinutes: Int
-    //    var longBreakTimeinMinutes: Int
     var category: Tags
     var date: Date
     

@@ -14,16 +14,12 @@ class InsightsNotifications {
     func scheduleEndOfDayNotification(insights: InsightsDataModel){
         let content = UNMutableNotificationContent()
         content.title = "Resumo do seu dia"
-        if let savedData = UserDefaults.standard.data(forKey: "InsightsDay"),
-           let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
-            if decodedInsights.timeFocusedInMinutes.values.reduce(0, +) > 0 {
-                content.body = "Você focou por \(decodedInsights.timeFocusedInMinutes.values.reduce(0, +)) minutos hoje. Continue assim!"
-            }else {
-                content.body = "Venha conferir seus insights!"
-            }
-        } else {
+        if insights.timeFocusedInMinutes.values.reduce(0, +) > 0 {
+            content.body = "Você focou por \(insights.timeFocusedInMinutes.values.reduce(0, +)) minutos hoje. Continue assim!"
+        }else {
             content.body = "Venha conferir seus insights!"
         }
+        
         content.sound = .default
         
         var dateComponents = DateComponents()
@@ -40,15 +36,11 @@ class InsightsNotifications {
     func scheduleEndOfWeekNotification(insights: InsightsDataModel) {
         let content = UNMutableNotificationContent()
         content.title = "Resumo da sua semana"
-        
-        if let savedData = UserDefaults.standard.data(forKey: "InsightsWeek"),
-           let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
-            content.body = "Você focou por \(decodedInsights.timeFocusedInMinutes.values.max() ?? 0) minutos nesta semana. Continue melhorando!"
-            print("Found data")
+        if insights.timeFocusedInMinutes.values.reduce(0, +) > 0 {
+            content.body = "Você focou por \(insights.timeFocusedInMinutes.values.max() ?? 0) minutos nesta semana. Continue melhorando!"
         } else {
-            print("No data found")
+            content.body = "Venha conferir seus insights!"
         }
-        
         content.sound = .default
         var dateComponents = DateComponents()
         dateComponents.weekday = 1
@@ -77,7 +69,7 @@ class InsightsNotifications {
     func scheduleDailyBackgroundTask() {
         let request = BGProcessingTaskRequest(identifier: "DayNotification.PomoBreak.Notification.Teste")
         
-        request.earliestBeginDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 0, of: Date())
+        request.earliestBeginDate = Calendar.current.date(bySettingHour: 20, minute: 59, second: 0, of: Date())
         
         do {
             try BGTaskScheduler.shared.submit(request)
@@ -92,7 +84,7 @@ class InsightsNotifications {
         
         insightsInteractor?.insightsPerWeek()
         if let nextSunday = getNextSunday() {
-            request.earliestBeginDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 0, of: nextSunday)
+            request.earliestBeginDate = Calendar.current.date(bySettingHour: 20, minute: 59, second: 0, of: nextSunday)
             request.requiresNetworkConnectivity = true
             do {
                 try BGTaskScheduler.shared.submit(request)
@@ -107,12 +99,9 @@ class InsightsNotifications {
         scheduleDailyBackgroundTask()
         
         insightsInteractor?.insightsPerDay()
-        if let savedData = UserDefaults.standard.data(forKey: "Insights"),
+        if let savedData = UserDefaults.standard.data(forKey: "InsightsDay"),
            let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
             scheduleEndOfDayNotification(insights: decodedInsights)
-        } else {
-            scheduleEndOfDayNotification(insights: InsightsDataModel(title: "nulo", timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0))
-
         }
         task.setTaskCompleted(success: true)
         
@@ -121,7 +110,7 @@ class InsightsNotifications {
     func handleWeeklyTask(task: BGProcessingTask) {
         scheduleWeeklyBackgroundTask()
         
-        if let savedData = UserDefaults.standard.data(forKey: "Insights"),
+        if let savedData = UserDefaults.standard.data(forKey: "InsightsWeek"),
            let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
             scheduleEndOfWeekNotification(insights: decodedInsights)
         } else {
