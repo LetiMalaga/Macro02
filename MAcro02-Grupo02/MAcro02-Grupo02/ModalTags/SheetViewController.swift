@@ -12,12 +12,12 @@ class SheetViewController: UIViewController {
     private let modalIdentifierLine = UIView()
     private let modalTagLabel = UILabel()
     private let ellipsisButton = UIButton(type: .system)
-    private let tagWorkButton = UIButton()
-    private let tagStudyButton = UIButton()
-    private let tagFocusButton = UIButton()
-    private let tagWorkoutButton = UIButton()
-    private let tagMeditationButton = UIButton()
-    private let tagNewTagButton = UIButton()
+    private let tagWorkButton = UIButton(type: .system)
+    private let tagStudyButton = UIButton(type: .system)
+    private let tagFocusButton = UIButton(type: .system)
+    private let tagWorkoutButton = UIButton(type: .system)
+    private let tagMeditationButton = UIButton(type: .system)
+    private let tagNewTagButton = UIButton(type: .system)
     
     override func viewDidLoad() {
         super.viewDidLoad()
