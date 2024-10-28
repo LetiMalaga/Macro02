@@ -4,7 +4,8 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.MAcro02-Grupo02.dailyInsights</string>
+		<string>WeekNotification.PomoBreak.Notification</string>
+		<string>DayNotification.PomoBreak.Notification.Teste</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
@@ -25,5 +26,11 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+		<string>fetch</string>
+		<string>processing</string>
+	</array>
 </dict>
 </plist>
