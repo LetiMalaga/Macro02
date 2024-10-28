@@ -30,8 +30,10 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     var longBreakDuration = 0 // Store the long break duration
     var longBreakInterval = 4 // Loops until a long break
     var previousPhase = ""
-    var breathingDuration: Int = 2 // Total time in seconds for the breathing exercise
+    var breathingDuration: Int = 30 // Total time in seconds for the breathing exercise
     var isBreathingPhase: Bool = false // Tracks if currently in the breathing phase
+    private var breathPhase: Int = 0 // Tracks current breath phase (0 for inhale, 1 for exhale)
+
 
     private var pendingPhaseSwitch: Bool = false // Track if the phase switch is pending
 
@@ -48,7 +50,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         remainingTime = breathingDuration  // Set remaining time for breathing exercise
         
         // Notify the presenter to display the breathing exercise UI
-        presenter?.displayBreathingExercise()
+        presenter?.displayBreathingExercise("Breathe in...")
         
         // Start the breathing timer
         startTimer()
@@ -103,7 +105,18 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             presenter?.completePomodoro()
         } else {
             if isBreathingPhase {
-                presenter?.displayBreathingExerciseTime(formatTime(remainingTime)) // Display breathing countdown
+                // Change between breathe in and breathe out
+                if breathPhase == 0 {
+                    presenter?.displayBreathingExercise("Breathe In...") // Display inhale
+                    if remainingTime <= 25 { // After 5 seconds
+                        breathPhase = 1 // Switch to exhale
+                    }
+                } else {
+                    presenter?.displayBreathingExercise("Breathe Out...") // Display exhale
+                    if remainingTime <= 20 { // After another 5 seconds
+                        breathPhase = 0 // Switch to inhale again
+                    }
+                }
             } else {
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
             }
@@ -124,7 +137,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             pausePomodoro()
             isBreathingPhase = false
             isWorkPhase = true
-            remainingTime = 5
+            remainingTime = workDuration * 60
             presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
             
             // Notify the user and pause before the work phase begins
@@ -139,19 +152,21 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             // Check if it's the last loop
             if remainingLoops == 0 {
                 // Final long break after last work session, then conclude Pomodoro
-                remainingTime = 20
+                remainingTime = longBreakDuration * 60
+                presenter?.displayBreathingExercise("Breathe in...")
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 scheduleNotification(title: "Final Long Break", body: "You've completed all work sessions. Enjoy a final long break!")
                 pendingPhaseSwitch = true
             } else if remainingLoops % longBreakInterval == 0 && remainingLoops > 0 {
                 // Long break every 4 loops
-                remainingTime = 20
+                remainingTime = longBreakDuration * 60
+                presenter?.displayBreathingExercise("Breathe in...")
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 scheduleNotification(title: "Long Break Time!", body: "You've completed \(longBreakInterval) Pomodoro loops. Time for a long break!")
                 pendingPhaseSwitch = true
             } else {
                 // Normal break
-                remainingTime = 10
+                remainingTime = breakDuration * 60
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: false)
                 scheduleNotification(title: "Break Time!", body: "Your work session has ended. Time for a break!")
                 pendingPhaseSwitch = true
@@ -162,7 +177,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 pausePomodoro()
                 isBreathingPhase = true
                 remainingTime = breathingDuration
-                presenter?.displayBreathingExercise()
+                presenter?.displayBreathingExercise("Breathe in...")
                 pendingPhaseSwitch = true
             } else {
                 // All loops and final long break completed, end the Pomodoro cycle

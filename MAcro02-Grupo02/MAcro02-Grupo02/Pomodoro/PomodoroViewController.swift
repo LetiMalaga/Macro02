@@ -79,10 +79,11 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         return pomo
     }()
     
-    func showBreathingExercise() {
-            intervaloLabel.text = "Breathe In... / Breathe Out..." // Initial breathing text
-            timeLabel.isHidden = true // Hide main timer
-        }
+    func showBreathingExercise(_ time: String) {
+        intervaloLabel.text = time // Breathing exercise text
+        intervaloLabel.isHidden = false // Ensure it's visible during breathing phase
+        timeLabel.isHidden = true // Hide main timer
+    }
     
     func displayBreathingTime(_ time: String) {
             intervaloLabel.text = "Breathing: \(time)" // Display breathing countdown
