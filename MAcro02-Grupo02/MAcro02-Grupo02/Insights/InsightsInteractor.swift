@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import UserNotifications
-import BackgroundTasks
+
 
 protocol InsightsInteractorProtocol: AnyObject {
+    var insights: InsightsDataModel? { get }
     var presenter: InsightsPresenterProtocol? { get }
     var dataManager: InsightsDataProtocol? { get }
     
@@ -28,7 +28,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
     var presenter: InsightsPresenterProtocol?
     var dataManager: InsightsDataProtocol?
     
-    private var insights: InsightsDataModel?
+    var insights: InsightsDataModel?
     
 //    init(presenter: InsightsPresenterProtocol, dataManager: InsightsDataProtocol) {
 //        self.presenter = presenter
@@ -99,6 +99,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         presenter?.presentSessionInsights(insights: insights)
         presenter?.presenteBreakdownInsights(insights: insights)
         presenter?.presenteTotalTimeInsights(insights: insights)
+        
     }
     func insightsPerDay() {
         let predicate = NSPredicate(format: "data == %@ ",Date() as CVarArg)
@@ -107,6 +108,12 @@ class InsightsInteractor : InsightsInteractorProtocol {
         print("insightsPerDay is called")
 
         apliedInsights(insights: insights!)
+        
+        if let encodedData = try? JSONEncoder().encode(insights) {
+            UserDefaults.standard.set(encodedData, forKey: "InsightsDay")
+        }else{
+            print("Erro ao salvar os insights para notifications")
+        }
     }
     
     func insightsPerWeek() {
@@ -117,9 +124,15 @@ class InsightsInteractor : InsightsInteractorProtocol {
         
         let today = Date()
         let predicate = NSPredicate(format: "data >= %@ AND data <= %@", lastSunday as CVarArg, today as CVarArg)
-        print("insightsPerWeek is called")
+        let insights = getInsights(predicate: predicate)
+        apliedInsights(insights: insights)
+        
+        if let encodedData = try? JSONEncoder().encode(insights) {
+            UserDefaults.standard.set(encodedData, forKey: "InsightsWeek")
+        }else{
+            print("Erro ao salvar os insights para notifications")
+        }
 
-        apliedInsights(insights: getInsights(predicate: predicate))
     }
     
     func insightsPerMonth(){
@@ -146,6 +159,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         let daysToLastSunday = (weekday == 1) ? 0 : weekday - 1
         return calendar.date(byAdding: .day, value: -daysToLastSunday, to: today)
     }
+
 }
 
 
@@ -167,7 +181,7 @@ enum Tags: String, Codable {
     case sleep
 }
 
-struct InsightsDataModel: Identifiable{
+struct InsightsDataModel: Identifiable, Encodable, Decodable{
     var id = UUID()
     
     var timeFocusedInMinutes: [Tags:Int]
