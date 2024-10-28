@@ -27,18 +27,37 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     var remainingLoops = 0
     var workDuration = 0   // Store the work duration
     var breakDuration = 0  // Store the break duration
+    var longBreakDuration = 0 // Store the long break duration
+    var longBreakInterval = 4 // Loops until a long break
+    var previousPhase = ""
+    var breathingDuration: Int = 30 // Total time in seconds for the breathing exercise
+    var isBreathingPhase: Bool = false // Tracks if currently in the breathing phase
+    private var breathPhase: Int = 0 // Tracks current breath phase (0 for inhale, 1 for exhale)
+
 
     private var pendingPhaseSwitch: Bool = false // Track if the phase switch is pending
 
     func startPomodoro() {
+        // Initialize durations and loop counts from user defaults
         self.workDuration = pomoDefaults.workDuration
         self.breakDuration = pomoDefaults.breakDuration
-        remainingLoops = pomoDefaults.loops
-        isWorkPhase = true
-        remainingTime = workDuration * 60
+        self.longBreakDuration = pomoDefaults.longBreakDuration
+        self.remainingLoops = pomoDefaults.loops
+        
+        // Start in the breathing phase instead of the work phase
+        isWorkPhase = false
+        isBreathingPhase = true
+        remainingTime = breathingDuration  // Set remaining time for breathing exercise
+        
+        // Notify the presenter to display the breathing exercise UI
+        presenter?.displayBreathingExercise("Breathe in...")
+        
+        // Start the breathing timer
+        startTimer()
+        
         isRunning = true
         isPaused = false
-        startTimer()
+        pendingPhaseSwitch = false  // Ensure no phase switch is pending at start
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
 
@@ -57,10 +76,9 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         // Only start the timer if a phase switch is pending
         if pendingPhaseSwitch {
             pendingPhaseSwitch = false // Reset the pending phase switch
-            switchPhase()
-            startTimer()
+            startTimer()  // Continue to the next phase (work or break)
         } else {
-            startTimer() // Start the timer normally if no phase switch is pending
+            startTimer()  // If no phase switch is pending, resume normally
         }
 
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
@@ -86,64 +104,98 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             switchPhase()
             presenter?.completePomodoro()
         } else {
-            presenter?.displayTime(formatTime(remainingTime))
-            
+            if isBreathingPhase {
+                // Change between breathe in and breathe out
+                if breathPhase == 0 {
+                    presenter?.displayBreathingExercise("Breathe In...") // Display inhale
+                    if remainingTime <= 25 { // After 5 seconds
+                        breathPhase = 1 // Switch to exhale
+                    }
+                } else {
+                    presenter?.displayBreathingExercise("Breathe Out...") // Display exhale
+                    if remainingTime <= 20 { // After another 5 seconds
+                        breathPhase = 0 // Switch to inhale again
+                    }
+                }
+            } else {
+                presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
+            }
         }
-        
-        presenter?.updateTimer(percentage: percentageTime())
-        
-        
-    }
-    
-    private func percentageTime() -> Float {
-        
-        let atual = Float(remainingTime)
-        let total = Float((workDuration * 60))
-        
-        let progress = (1 - atual / total)
 
-        return progress
-        
+        presenter?.updateTimer(percentage: percentageTime())
+    }
+
+    private func percentageTime() -> Float {
+        let atual = Float(remainingTime)
+        let total = Float((isWorkPhase ? workDuration : breakDuration) * 60)
+        return (1 - atual / total)
     }
 
     private func switchPhase() {
-        if isWorkPhase {
-            // Work phase ended, switch to break
-            timer?.invalidate() // Stop the timer
+        if isBreathingPhase {
+            // Breathing phase just ended; set up the next work phase and pause
+            pausePomodoro()
+            isBreathingPhase = false
+            isWorkPhase = true
+            remainingTime = workDuration * 60
+            presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
+            
+            // Notify the user and pause before the work phase begins
+            scheduleNotification(title: "Ready to Work!", body: "Breathing exercise complete. Press continue to start your work.")
+            pendingPhaseSwitch = true
+        } else if isWorkPhase {
+            // Work phase just ended
+            timer?.invalidate()
             isWorkPhase = false
-            remainingTime = breakDuration * 60 // Set remaining time for break
-            presenter?.displayTime(formatTime(remainingTime))
-            scheduleNotification(title: "Break Time!", body: "Your work session has ended. Time for a break!") // Notification for break phase
-            pendingPhaseSwitch = true // Mark that we need to wait for user to resume
-        } else {
-            // Break phase ended
             remainingLoops -= 1
-            if remainingLoops > 0 {
-                // Only switch to work phase if there are remaining loops
-                timer?.invalidate() // Stop the timer
-                isWorkPhase = true
-                remainingTime = workDuration * 60 // Set remaining time for work
-                presenter?.displayTime(formatTime(remainingTime))
-                scheduleNotification(title: "Time to Work!", body: "Your break is over. Time to focus!") // Notification for work phase
-                pendingPhaseSwitch = true // Mark that we need to wait for user to resume
+            
+            // Check if it's the last loop
+            if remainingLoops == 0 {
+                // Final long break after last work session, then conclude Pomodoro
+                remainingTime = longBreakDuration * 60
+                presenter?.displayBreathingExercise("Breathe in...")
+                presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
+                scheduleNotification(title: "Final Long Break", body: "You've completed all work sessions. Enjoy a final long break!")
+                pendingPhaseSwitch = true
+            } else if remainingLoops % longBreakInterval == 0 && remainingLoops > 0 {
+                // Long break every 4 loops
+                remainingTime = longBreakDuration * 60
+                presenter?.displayBreathingExercise("Breathe in...")
+                presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
+                scheduleNotification(title: "Long Break Time!", body: "You've completed \(longBreakInterval) Pomodoro loops. Time for a long break!")
+                pendingPhaseSwitch = true
             } else {
-                // All loops completed, stop Pomodoro
+                // Normal break
+                remainingTime = breakDuration * 60
+                presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: false)
+                scheduleNotification(title: "Break Time!", body: "Your work session has ended. Time for a break!")
+                pendingPhaseSwitch = true
+            }
+        } else {
+            // Break just ended, prepare for breathing exercise before next work
+            if remainingLoops > 0 {
+                pausePomodoro()
+                isBreathingPhase = true
+                remainingTime = breathingDuration
+                presenter?.displayBreathingExercise("Breathe in...")
+                pendingPhaseSwitch = true
+            } else {
+                // All loops and final long break completed, end the Pomodoro cycle
                 dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil")
                 stopPomodoro()
-                scheduleNotification(title: "Pomodoro Complete!", body: "You've completed all loops. Good job!"); // Notification for completion
+                scheduleNotification(title: "Pomodoro Complete!", body: "You've completed all loops and breaks.")
             }
         }
     }
+
+
+
+
 
     func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let seconds = seconds % 60
         return String(format: "%02d:%02d", minutes, seconds)
-    }
-    
-    private func roundedFloat(_ value: Float, toPlaces places: Int) -> Float {
-        let divisor = pow(10.0, Float(places))
-        return round(value * divisor) / divisor
     }
 
     private func scheduleNotification(title: String, body: String) {
@@ -152,13 +204,9 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         content.body = body
         content.sound = .default
 
-        // Create the trigger for an immediate notification
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-
-        // Create the request
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
-        // Schedule the notification
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Error scheduling notification: \(error)")
@@ -166,4 +214,3 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         }
     }
 }
-
