@@ -14,7 +14,7 @@ class TimeSelectorViewController: UIViewController {
     let titlle:String
     let type:ConfigType
     var time: Int
-    var predefinitions:[String] = []
+    var predefinitions:[Int] = []
     
     // pomodoro
     
@@ -54,9 +54,9 @@ class TimeSelectorViewController: UIViewController {
         
     }()
     
-    let selectorView: UIView = {
+    let selectorView: PredefinitionButtonsView = {
         
-        let view = UIView()
+        let view = PredefinitionButtonsView()
         return view
         
     }()
@@ -90,7 +90,7 @@ class TimeSelectorViewController: UIViewController {
         self.time = atualTime
         self.titlle = title
         
-        timeSlider = GearBarView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), initialTime: time)
+        timeSlider = GearBarView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), initialTime: time, cicle: type == .ciclosPomodoro)
         
         super.init(nibName: nil, bundle: nil)
         
@@ -99,29 +99,38 @@ class TimeSelectorViewController: UIViewController {
         
         switch type {
         case .foco:
-            explanationLabel.text = "Durante esse tempo, você se concentra exclusivamente em uma tarefa, evitando distrações."
+            explanationLabel.text = "Hora de focar! Escolha o tempo ideal para mergulhar na sua tarefa e bloquear distrações."
             
-            predefinitions = ["15M", "30M", "45M", "INF"]
+            predefinitions = [15, 30, 45, 60]
             
         case .intervaloCurto:
             
-            explanationLabel.text = "Uma pausa rápida entre os períodos de foco. Ele serve para dar à sua mente uma recuperação imediata e evitar o cansaço mental."
+            explanationLabel.text = "Após um ciclo de foco, o app sugere atividades como alongamentos ou uma respiração profunda para você relaxar e manter o foco renovado."
             
-            predefinitions = ["5M", "10M", "15M", "20M"]
+            predefinitions = [5, 10, 15, 20]
             
         case .intervaloLongo:
             
-            explanationLabel.text = "Após completar os ciclos de foco, Esse intervalo ajuda a garantir que o cérebro tenha tempo suficiente para se recuperar, melhorando a produtividade no longo prazo."
+            explanationLabel.text = "Ao completar alguns ciclos de foco, é hora de um intervalo mais longo. Aproveite essa pausa para descansar mais profundamente."
             
-            predefinitions = ["10M", "20M", "30M", "40M"]
+            predefinitions = [10, 20, 30, 40]
             
         case .ciclosPomodoro:
             
-            explanationLabel.text = "Durante esse tempo, você se concentra exclusivamente em uma tarefa, evitando distrações."
+            explanationLabel.text = "Defina quantos ciclos de foco e intervalos você deseja realizar. O app automatiza essas sessões, permitindo que você se concentre sem precisar se preocupar com os tempos."
             
             predefinedLabel.text = "Ciclos pré definidos"
             
-            predefinitions = ["2", "4", "6", "8"]
+            predefinitions = [2, 4, 6, 8]
+            
+        }
+        
+        selectorView.setupButtons(with: predefinitions)
+        selectorView.buttonAction = {
+            
+            [weak self] selectedValue in
+            
+            self?.timeSlider.timeInMinutes = selectedValue
             
         }
         
@@ -152,12 +161,14 @@ class TimeSelectorViewController: UIViewController {
         view.addSubview(predefinedLabel)
         view.addSubview(saveButton)
         view.addSubview(timeSlider)
+        view.addSubview(selectorView)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         explanationLabel.translatesAutoresizingMaskIntoConstraints = false
         predefinedLabel.translatesAutoresizingMaskIntoConstraints = false
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         timeSlider.translatesAutoresizingMaskIntoConstraints = false
+        selectorView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -171,11 +182,15 @@ class TimeSelectorViewController: UIViewController {
             predefinedLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             predefinedLabel.topAnchor.constraint(equalTo: explanationLabel.bottomAnchor, constant: 40),
             
+            selectorView.topAnchor.constraint(equalTo: predefinedLabel.bottomAnchor, constant: 10),
+            selectorView.widthAnchor.constraint(equalToConstant: 328),
+            selectorView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            
             saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             saveButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             
             timeSlider.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            timeSlider.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            timeSlider.topAnchor.constraint(equalTo: selectorView.bottomAnchor, constant: 150),
             timeSlider.widthAnchor.constraint(equalToConstant: 358),
             timeSlider.heightAnchor.constraint(equalToConstant: 32),
             
