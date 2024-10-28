@@ -10,6 +10,8 @@ import SwiftUI
 
 protocol PomodoroPresenterProtocol {
     func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool)
+    func displayBreathingExercise() // New method to show breathing start
+    func displayBreathingExerciseTime(_ time: String) // Show countdown for breathing
     func resetPomodoro()
     func updateButton(isRunning: Bool, isPaused: Bool)
     func updateTimer(percentage: Float)
@@ -28,6 +30,15 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
         let initialTime = String(format: "%02d:00", pomoDefaults.workDuration)
         viewController?.displayTime(initialTime, isWorkPhase: true, isLongBreak: false)
     }
+    
+    func displayBreathingExercise() {
+            viewController?.showBreathingExercise() // New method in view controller
+        }
+    
+    func displayBreathingExerciseTime(_ time: String) {
+            viewController?.displayBreathingTime(time) // Show breathing countdown
+        }
+
 
     func updateButton(isRunning: Bool, isPaused: Bool) {
     }

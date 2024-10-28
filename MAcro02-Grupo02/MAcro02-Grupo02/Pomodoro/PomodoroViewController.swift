@@ -79,6 +79,15 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         return pomo
     }()
     
+    func showBreathingExercise() {
+            intervaloLabel.text = "Breathe In... / Breathe Out..." // Initial breathing text
+            timeLabel.isHidden = true // Hide main timer
+        }
+    
+    func displayBreathingTime(_ time: String) {
+            intervaloLabel.text = "Breathing: \(time)" // Display breathing countdown
+        }
+    
     // MARK: - Lifecycle
     
     override func viewDidAppear(_ animated: Bool) {
@@ -220,8 +229,8 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool = false) {
         timeLabel.text = time
+        timeLabel.isHidden = false // Show main timer once breathing is done
         
-        // Update the interval label based on the current phase
         if isLongBreak {
             intervaloLabel.text = "Long Break"
         } else if isWorkPhase {
@@ -229,7 +238,6 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         } else {
             intervaloLabel.text = "Break Time"
         }
-        
     }
     
     func updateCircle(percentage: Float) {
