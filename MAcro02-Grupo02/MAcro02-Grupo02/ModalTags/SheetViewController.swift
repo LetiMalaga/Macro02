@@ -5,6 +5,8 @@
 //  Created by Letícia Malagutti on 22/10/24.
 //
 
+// Tela já com proporções corretas
+
 import UIKit
 
 class SheetViewController: UIViewController {
@@ -18,6 +20,19 @@ class SheetViewController: UIViewController {
     private let tagWorkoutButton = UIButton(type: .system)
     private let tagMeditationButton = UIButton(type: .system)
     private let tagNewTagButton = UIButton(type: .system)
+    private var isEditingMode: Bool = false
+    private var removeButton = UIButton(type: .system)
+    
+    private var tags: [String] = [
+        // Buttons
+        "tagWorkButton",
+        "tagStudyButton",
+        "tagFocusButton",
+        "tagWorkoutButton",
+        "tagMeditationButton",
+        "tagNewTagButton"
+    ]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,12 +59,9 @@ class SheetViewController: UIViewController {
         
         // MARK: Buttons
         ellipsisButton.center = view.center
-//        if selectedEllipsisButton {
-            
-//        } else {
-            ellipsisButton.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
-//        }
+        ellipsisButton.setBackgroundImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
         ellipsisButton.tintColor = .black
+        
         
         tagWorkButton.center = view.center
         tagWorkButton.layer.borderWidth = 3
@@ -63,6 +75,12 @@ class SheetViewController: UIViewController {
             .layerMaxXMinYCorner,
             .layerMaxXMaxYCorner
         ]
+        
+        removeButton.center = view.center
+        removeButton.setBackgroundImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
+        removeButton.tintColor = .systemRed
+        
+        //        tagWorkButton.addSubview(removeButton)
         
         tagStudyButton.center = view.center
         tagStudyButton.layer.borderWidth = 3
@@ -124,36 +142,39 @@ class SheetViewController: UIViewController {
         tagNewTagButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         tagNewTagButton.layer.cornerRadius = .tagCornerRadius
         
-        
     }
     
     private func setupButtons(){
-        self.ellipsisButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        self.ellipsisButton.addTarget(self, action: #selector(toggleState), for: .touchUpInside)
         self.tagWorkButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         self.tagStudyButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         self.tagFocusButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         self.tagWorkoutButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         self.tagMeditationButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         self.tagNewTagButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        self.removeButton.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
     }
     
     private func setupConstraints() {
         let subviews = [
-                        // Modal Identifier line
-                        modalIdentifierLine,
-                        
-                        // Label
-                        modalTagLabel,
-                        
-                        // Buttons
-                        ellipsisButton,
-                        tagWorkButton,
-                        tagStudyButton,
-                        tagFocusButton,
-                        tagWorkoutButton,
-                        tagMeditationButton,
-                        tagNewTagButton
+            // Modal Identifier line
+            modalIdentifierLine,
+            
+            // Label
+            modalTagLabel,
+            
+            // Buttons
+            ellipsisButton,
+            tagWorkButton,
+            tagStudyButton,
+            tagFocusButton,
+            tagWorkoutButton,
+            tagMeditationButton,
+            tagNewTagButton,
+            removeButton
         ]
+        
+        //        let arrayOfTags = [tagWorkButton, tagFocusButton, tagStudyButton, tagWorkoutButton, tagMeditationButton]
         
         subviews.forEach {
             view.addSubview($0)
@@ -176,7 +197,7 @@ class SheetViewController: UIViewController {
             // Ellipsis
             ellipsisButton.leadingAnchor.constraint(equalTo: modalTagLabel.trailingAnchor, constant: 80),
             ellipsisButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .ellipsisButtonWidthCtt),
-            ellipsisButton.topAnchor.constraint(equalTo: modalIdentifierLine.bottomAnchor, constant: 12),
+            ellipsisButton.topAnchor.constraint(equalTo: modalIdentifierLine.bottomAnchor, constant: 20),
             ellipsisButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .ellipsisButtonHeightCtt),
             
             // Work
@@ -215,7 +236,12 @@ class SheetViewController: UIViewController {
             tagNewTagButton.topAnchor.constraint(equalTo: tagWorkoutButton.bottomAnchor, constant: 12),
             tagNewTagButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .tagHeightCtt),
             
-            
+            // Remove Button
+            removeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            removeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            //            removeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            removeButton.heightAnchor.constraint(equalToConstant: 100/*tagWorkButton.bounds.height * .removeButtonHeightCtt*/),
+            removeButton.widthAnchor.constraint(equalToConstant: 100/*tagWorkButton.bounds.width * .removeButtonWidthCtt*/)
         ])
     }
     
@@ -223,6 +249,37 @@ class SheetViewController: UIViewController {
         print("Button Tapped")
     }
     
+    // Faz o botão de ... mudar de estado e chama a função changeToEditingMode
+    @objc private func toggleState(){
+        isEditingMode.toggle()
+        changeToEditingMode()
+    }
+    
+    // Remove a tag do Array ao clicar no botão de -
+    @objc private func removeButtonTapped(){
+        tagWorkButton.removeFromSuperview()
+    }
+    
+    // Muda para o modo de edição, onde as tags ppodem ser removidas
+    func changeToEditingMode() {
+        if isEditingMode {
+            removeButton.isHidden = false
+        } else {
+            removeButton.isHidden = true
+        }
+        //        let arrayOfTags = [tagWorkButton, tagFocusButton, tagStudyButton, tagWorkoutButton, tagMeditationButton]
+        //
+        //        if isEditingMode {
+        //            arrayOfTags.forEach { tag in
+        //                //                removeButton.isHidden = false
+        //                tag.addSubview(removeButton)
+        //            }
+        //        } else {
+        //            arrayOfTags.forEach { tag in
+        //                removeButton.isHidden = true
+        //            }
+        //        }
+    }
     
 }
 
@@ -230,12 +287,16 @@ class SheetViewController: UIViewController {
     SheetViewController()
 }
 
+// MARK: Extensões para manter o app proporcional em todos os dispositivos
 extension Double {
     public static let modalIdentifierLineWidthCtt = 0.23
     public static let modalIdentifierLineHeightCtt = 0.01
     
     public static let ellipsisButtonWidthCtt = 0.07
     public static let ellipsisButtonHeightCtt = 0.03
+    
+    public static let removeButtonWidthCtt = 0.06
+    public static let removeButtonHeightCtt = 0.03
 }
 
 extension CGFloat {
@@ -247,6 +308,7 @@ extension CGFloat {
     public static let tagHeightCtt = 0.06
 }
 
+//MARK: Extensão para fazer o texto ficar em negrito
 extension UIFont {
     
     static func preferredFont(for style: TextStyle, weight: Weight, italic: Bool = false) -> UIFont {
