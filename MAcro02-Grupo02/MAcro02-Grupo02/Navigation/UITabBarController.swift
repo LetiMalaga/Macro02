@@ -30,6 +30,6 @@ class MainTabBarController: UITabBarController {
         insightsNavController.tabBarItem = UITabBarItem(title: "Insights", image: UIImage(systemName: "chart.bar"), tag: 2)
         
         // Add the view controllers to the tab bar
-        viewControllers = [pomodoroNavController, activitiesNavController, insightsNavController]
+        viewControllers = [pomodoroNavController, insightsNavController, activitiesNavController]
     }
 }

@@ -13,7 +13,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     let pomoConfig = PomoDefaults()
     
     public var isRuning = false
-
+    
     // UI Elements
     private let pauseLabel: UILabel = {
         let label = UILabel()
@@ -78,6 +78,16 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         pomo.isHidden = true // Inicialmente oculto
         return pomo
     }()
+    
+    func showBreathingExercise(_ time: String) {
+        intervaloLabel.text = time // Breathing exercise text
+        intervaloLabel.isHidden = false // Ensure it's visible during breathing phase
+        timeLabel.isHidden = true // Hide main timer
+    }
+    
+    func displayBreathingTime(_ time: String) {
+            intervaloLabel.text = "Breathing: \(time)" // Display breathing countdown
+        }
     
     // MARK: - Lifecycle
     
@@ -218,19 +228,28 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         }
     }
     
-    func displayTime(_ time: String) {
-           timeLabel.text = time
-       }
-       
-       func updateCircle(percentage: Float) {
-           progressCircleView.progress = percentage
-       }
+    func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool = false) {
+        timeLabel.text = time
+        timeLabel.isHidden = false // Show main timer once breathing is done
+        
+        if isLongBreak {
+            intervaloLabel.text = "Long Break"
+        } else if isWorkPhase {
+            intervaloLabel.text = "Work Time"
+        } else {
+            intervaloLabel.text = "Break Time"
+        }
+    }
+    
+    func updateCircle(percentage: Float) {
+        progressCircleView.progress = percentage
+    }
     
     @objc func tags() {
         let vc = TagModalsViewController()
         vc.modalPresentationStyle = .custom
         vc.transitioningDelegate = self
-
+        
         if let popoverController = vc.popoverPresentationController {
             popoverController.delegate = self
             popoverController.permittedArrowDirections = .up
@@ -246,7 +265,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-
+    
 }
 
 extension PomodoroViewController: UIViewControllerTransitioningDelegate {

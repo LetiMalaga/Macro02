@@ -11,10 +11,15 @@ import UIKit
 class GearBarView: UIView {
     
     let pomoDefaults = PomoDefaults()
+    let cicle:Bool
 
     var timeInMinutes: Int {
         didSet {
-            timeLabel.text = String(format: "%02d:00", timeInMinutes)
+            if cicle {
+                timeLabel.text = String(timeInMinutes)
+            } else {
+                timeLabel.text = String(format: "%02d:00", timeInMinutes)
+            }
         }
     }
     
@@ -30,17 +35,25 @@ class GearBarView: UIView {
     // Barra dentada como um componente separado
     private let dentsView = DentsView()
 
-    init(frame: CGRect, initialTime: Int) {
+    init(frame: CGRect, initialTime: Int, cicle: Bool) {
+        self.cicle = cicle
         self.timeInMinutes = initialTime
-        
-        timeLabel.text = String(format: "%02d:00", initialTime)
+
+        if cicle {
+            timeLabel.text = String(timeInMinutes)
+        } else {
+            timeLabel.text = String(format: "%02d:00", timeInMinutes)
+        }
         
         super.init(frame: frame)
+        
         setupView()
     }
 
     required init?(coder: NSCoder) {
         self.timeInMinutes = 25
+        self.cicle = false
+        
         super.init(coder: coder)
         
         isUserInteractionEnabled = true
@@ -76,17 +89,29 @@ class GearBarView: UIView {
     }
     
     func updateTime(time: Int) {
-        timeInMinutes = min(max(5, time), 60)
+        if !cicle {
+            timeInMinutes = min(max(5, time), 60)
+        } else {
+            timeInMinutes = min(max(1, time), 60)
+        }
         
     }
     
     // Método para manipular o gesto de arraste
     @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
         let translation = gesture.translation(in: self)
+        var increment = Int(translation.x / 4)
         
         if gesture.state == .changed || gesture.state == .ended {
             // Incremento baseado no gesto de arraste
-            let increment = Int(translation.x / 4) * 5  // Ajuste o divisor para ajustar a sensibilidade do arraste
+            
+            if cicle {
+                increment = Int(translation.x / 7)
+            } else {
+                increment = Int(translation.x / 7) * 5
+            }
+            
+            // Ajuste o divisor para ajustar a sensibilidade do arraste
             let newTime = timeInMinutes + increment
             
             // Atualiza o valor de time no GearBarView
