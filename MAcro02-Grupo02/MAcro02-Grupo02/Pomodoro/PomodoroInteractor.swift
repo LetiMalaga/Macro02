@@ -138,7 +138,14 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     }
     func saveTimeData() async {
         do{
-            let savedData = try await dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil")
+            let savedData = try await dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil"){ result in
+                if case .success(let data) = result {
+                    print("Registro salvo com sucesso: \(data)")
+                }else {
+                    print("Erro ao salvar o registro: \(result)")
+                }
+                
+            }
             print("Registro salvo com sucesso: \(savedData)")
         } catch {
             print("Erro ao salvar o registro: \(error)")

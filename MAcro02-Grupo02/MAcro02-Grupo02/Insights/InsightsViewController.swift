@@ -10,15 +10,15 @@ import UIKit
 import SwiftUI
 
 protocol InsightsViewProtocol: AnyObject {
-    var data: InsightsDataView? {get set}
+    var data: InsightsDataView {get set}
 }
 
-struct InsightsDataView{
-    var foco: String
-    var pause: String
-    var session:Int
-    var total: String
-    var tags: [ChartData]
+class InsightsDataView: ObservableObject{
+    @Published var foco: String = "0"
+    @Published var session: Int = 0
+    @Published var pause: String = "0"
+    @Published var total: String = "0"
+    @Published var tags: [ChartData] = []
 }
 //class InsightsViewController: UIViewController {
 //    var interactor:InsightsInteractorProtocol?

@@ -12,7 +12,7 @@ import CloudKit
 class PomodoroData {
     let privateDatabase = CKContainer.default().privateCloudDatabase
     
-    func savePomodoro(focusTime: Int, breakTime: Int, date: Date, tag: String)async throws -> CKRecord {
+    func savePomodoro(focusTime: Int, breakTime: Int, date: Date, tag: String, completion: @escaping (Result<CKRecord, Error>) -> Void)async throws -> CKRecord {
         
         let zoneID = CKRecordZone.ID(zoneName: "PomoInsightsZone")
         let record = CKRecord(recordType: TimerRecord.recordType, recordID: CKRecord.ID(zoneID: zoneID))
@@ -22,33 +22,40 @@ class PomodoroData {
         record[TimerRecord.dateKey] = date as CKRecordValue
         record[TimerRecord.tagKey] = tag as CKRecordValue
         
-        try await ensureZoneExists(zoneID: zoneID)
+        ensureZoneExists(zoneID: zoneID)
         
         return try await withCheckedThrowingContinuation { continuation in
             privateDatabase.save(record) { savedRecord, error in
                 if let error = error {
                     print("Erro ao salvar record: \(error)")
+                    completion(.failure(error))
                     continuation.resume(throwing: error)
                 } else if let savedRecord = savedRecord {
                     print("Record salvo com sucesso.")
+                    completion( .success(savedRecord))
                     continuation.resume(returning: savedRecord)
                 }
             }
         }
     }
     
-    func ensureZoneExists(zoneID: CKRecordZone.ID) async throws {
-        do {
-            _ = try await privateDatabase.fetch(withRecordZoneID: zoneID){(fetchedZone, error) in}
-            print("Zona já existe.")
-        } catch let error as CKError where error.code == .zoneNotFound {
-            // Se a zona não for encontrada, cria uma nova zona
-            let customZone = CKRecordZone(zoneID: zoneID)
-            try await privateDatabase.save(customZone)
-            print("Zona criada com sucesso.")
-        } catch {
-            throw error // Lança outros erros se houver
+    func ensureZoneExists(zoneID: CKRecordZone.ID) {
+        privateDatabase.fetchAllRecordZones{ zones, error in
+            if let zones{
+                if ((zones.contains(where: {$0.zoneID == zoneID}))){
+                    print("Zone already exists")
+                }else{
+                    let newZone = CKRecordZone(zoneID: zoneID)
+                    self.privateDatabase.save(newZone){ _, error in
+                        if let error{
+                            print("Error saving new zone: \(error)")
+                        }
+                    }
+                    
+                }
+            }
         }
+        
     }
 }
 
@@ -59,4 +66,3 @@ struct TimerRecord {
     static let dateKey = "date"
     static let tagKey = "tag"
 }
-
