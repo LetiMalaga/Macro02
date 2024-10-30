@@ -14,25 +14,26 @@ final class InsightsInteractorTests: XCTestCase {
     func testFetchInsightsDataCallsQueryTestData(){
         let mockData = MockInsightsData()
         let mockPresenter = MockInsightsPresenter()
-        let interactor = InsightsInteractor(presenter: mockPresenter, dataManager: mockData)
+        let interactor = InsightsInteractor()
         
         let expectation = self.expectation(description: "queryInsights")
         
         let predicate = NSPredicate(format: "data == %@", Date() as CVarArg)
         
-        interactor.fetchInsightsData(predicate: predicate) { _ in }
-        
-        XCTAssertTrue(mockData.queryTestDataCalled, "O método queryTestData deveria ter sido chamado.")
-        expectation.fulfill()
-        
+        Task{
+             await interactor.fetchInsightsData(predicate: predicate) { _ in
+                XCTAssertTrue(mockData.queryTestDataCalled, "O método queryTestData deveria ter sido chamado.")
+                expectation.fulfill()
+            }
+        }
         wait(for: [expectation], timeout: 1.0)
     }
     
     func testInsightsPerDayPresentsData(){
         let mockData = MockInsightsData()
         let mockPresenter = MockInsightsPresenter()
-        let interactor = InsightsInteractor(presenter: mockPresenter, dataManager: mockData)
-        
+        let interactor = InsightsInteractor()
+
         let expectation = self.expectation(description: "queryInsights")
         
         let predicate = NSPredicate(format: "data == %@", Date() as CVarArg)
@@ -51,7 +52,8 @@ final class InsightsInteractorTests: XCTestCase {
     }
 }
 
-class MockInsightsData: InsightsDataProtocol {
+class MockInsightsData {
+    
     var queryTestDataCalled = false
     var mockResult: [(CKRecord.ID, Result<CKRecord, any Error>)] = []
     
@@ -63,6 +65,8 @@ class MockInsightsData: InsightsDataProtocol {
 
 // Mock para o protocolo InsightsPresenterProtocol
 class MockInsightsPresenter: InsightsPresenterProtocol {
+    var view: (any MAcro02_Grupo02.InsightsViewProtocol)?
+    
     var insightsPresented = false
     
     func presentTagInsights(insights: InsightsDataModel) {
