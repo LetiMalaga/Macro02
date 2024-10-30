@@ -32,6 +32,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     var previousPhase = ""
     var breathingDuration: Int = 30 // Total time in seconds for the breathing exercise
     var isBreathingPhase: Bool = false // Tracks if currently in the breathing phase
+    var wantsBreathing: Bool = true
     private var breathPhase: Int = 0 // Tracks current breath phase (0 for inhale, 1 for exhale)
 
 
@@ -44,13 +45,21 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         self.longBreakDuration = pomoDefaults.longBreakDuration
         self.remainingLoops = pomoDefaults.loops
         
-        // Start in the breathing phase instead of the work phase
-        isWorkPhase = false
-        isBreathingPhase = true
-        remainingTime = breathingDuration  // Set remaining time for breathing exercise
-        
-        // Notify the presenter to display the breathing exercise UI
-        presenter?.displayBreathingExercise("Breathe in...")
+        if wantsBreathing {
+            // Start in the breathing phase instead of the work phase
+            isWorkPhase = false
+            isBreathingPhase = true
+            remainingTime = breathingDuration  // Set remaining time for breathing exercise
+            
+            // Notify the presenter to display the breathing exercise UI
+            presenter?.displayBreathingExercise("Breathing Exercise")
+        } else {
+            isWorkPhase = true
+            isBreathingPhase = false
+            remainingTime = workDuration * 60
+            
+            presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
+        }
         
         // Start the breathing timer
         startTimer()
@@ -108,12 +117,12 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 // Change between breathe in and breathe out
                 if breathPhase == 0 {
                     presenter?.displayBreathingExercise("Breathe In...") // Display inhale
-                    if remainingTime <= 25 { // After 5 seconds
+                    if remainingTime % 5 == 0 && remainingTime % 10 != 0 {
                         breathPhase = 1 // Switch to exhale
                     }
                 } else {
                     presenter?.displayBreathingExercise("Breathe Out...") // Display exhale
-                    if remainingTime <= 20 { // After another 5 seconds
+                    if remainingTime % 10 == 0 {
                         breathPhase = 0 // Switch to inhale again
                     }
                 }
@@ -174,11 +183,19 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         } else {
             // Break just ended, prepare for breathing exercise before next work
             if remainingLoops > 0 {
-                pausePomodoro()
-                isBreathingPhase = true
-                remainingTime = breathingDuration
-                presenter?.displayBreathingExercise("Breathe in...")
-                pendingPhaseSwitch = true
+                if wantsBreathing {
+                    pausePomodoro()
+                    isBreathingPhase = true
+                    remainingTime = breathingDuration
+                    presenter?.displayBreathingExercise("Breathing Exercise")
+                    pendingPhaseSwitch = true
+                } else {
+                    pausePomodoro()
+                    isBreathingPhase = false
+                    isWorkPhase = true
+                    remainingTime = 5
+                    presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
+                }
             } else {
                 // All loops and final long break completed, end the Pomodoro cycle
                 dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil")
