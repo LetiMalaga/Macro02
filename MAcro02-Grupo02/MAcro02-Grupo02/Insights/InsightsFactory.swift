@@ -11,15 +11,15 @@ import UIKit
 class InsightsFactory {
     static func makeInsights() -> UIViewController {
 
-        let data = InsightsData()
+//        let data = InsightsData()
         let presenter = InsightsPresenter()
         let interactor = InsightsInteractor()
         let viewController = InsightsSwiftUIViewController(interactor: interactor)
 
         presenter.view = viewController
-        interactor.dataManager = data
+//        interactor.dataManager = data
         interactor.presenter = presenter
-        viewController.interactor = interactor
+//        viewController.interactor = interactor
         
         return viewController
     }

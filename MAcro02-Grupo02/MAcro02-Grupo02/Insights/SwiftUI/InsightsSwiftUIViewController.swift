@@ -9,15 +9,15 @@ import SwiftUI
 
 class InsightsSwiftUIViewController: UIHostingController<InsightsSwiftUIView> , InsightsViewProtocol{
     var interactor:InsightsInteractorProtocol!
-    var data: InsightsDataView?
+    var data: InsightsDataView = InsightsDataView()
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder, rootView: InsightsSwiftUIView())
+        super.init(coder: coder, rootView: InsightsSwiftUIView(data: data))
     }
     
 
     init(interactor: InsightsInteractorProtocol?) {
-        super.init(rootView: InsightsSwiftUIView(interactor: interactor))
+        super.init(rootView: InsightsSwiftUIView(interactor: interactor, data: data))
 
     }
     

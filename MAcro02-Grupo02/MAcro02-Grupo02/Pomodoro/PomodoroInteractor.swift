@@ -8,6 +8,7 @@
 import Foundation
 import UserNotifications
 import SwiftUI
+import UIKit
 
 protocol PomodoroInteractorProtocol {
     func startPomodoro()
@@ -232,6 +233,9 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 pendingPhaseSwitch = true
             } else {
+                // All loops completed, stop Pomodoro
+                
+
                 // Normal break
                 remainingTime = breakDuration * 60
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: false)
@@ -255,12 +259,30 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 }
             } else {
                 // All loops and final long break completed, end the Pomodoro cycle
-                dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil")
+                Task {
+                    await saveTimeData()
+                }
                 stopPomodoro()
             }
         }
     }
-    
+
+    func saveTimeData() async {
+        do{
+            let savedData = try await dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil"){ result in
+                if case .success(let data) = result {
+                    print("Registro salvo com sucesso: \(data)")
+                }else {
+                    print("Erro ao salvar o registro: \(result)")
+                }
+                
+            }
+            print("Registro salvo com sucesso: \(savedData)")
+        } catch {
+            print("Erro ao salvar o registro: \(error)")
+        }
+    }
+
     func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let seconds = seconds % 60

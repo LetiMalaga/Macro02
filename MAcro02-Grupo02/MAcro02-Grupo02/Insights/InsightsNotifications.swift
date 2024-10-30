@@ -10,7 +10,7 @@ import UserNotifications
 import BackgroundTasks
 
 class InsightsNotifications {
-    var insightsInteractor: InsightsInteractorProtocol?
+    
     func scheduleEndOfDayNotification(insights: InsightsDataModel){
         let content = UNMutableNotificationContent()
         content.title = "Resumo do seu dia"
@@ -23,8 +23,8 @@ class InsightsNotifications {
         content.sound = .default
         
         var dateComponents = DateComponents()
-        dateComponents.hour = 15
-        dateComponents.minute = 06
+        dateComponents.hour = 20
+        dateComponents.minute = 00
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
@@ -44,8 +44,8 @@ class InsightsNotifications {
         content.sound = .default
         var dateComponents = DateComponents()
         dateComponents.weekday = 1
-        dateComponents.hour = 23
-        dateComponents.minute = 59
+        dateComponents.hour = 20
+        dateComponents.minute = 00
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         print("Notificação semanal agendada para: \(trigger.nextTriggerDate()!)")
@@ -69,7 +69,7 @@ class InsightsNotifications {
     func scheduleDailyBackgroundTask() {
         let request = BGProcessingTaskRequest(identifier: "DayNotification.PomoBreak.Notification.Teste")
         
-        request.earliestBeginDate = Calendar.current.date(bySettingHour: 20, minute: 59, second: 0, of: Date())
+        request.earliestBeginDate = Calendar.current.date(bySettingHour: 20, minute: 0, second: 0, of: Date())
         
         do {
             try BGTaskScheduler.shared.submit(request)
@@ -80,11 +80,13 @@ class InsightsNotifications {
     }
     
     func scheduleWeeklyBackgroundTask() {
+        let insightsInteractor: InsightsInteractorProtocol = InsightsInteractor()
+
         let request = BGProcessingTaskRequest(identifier: "WeekNotification.PomoBreak.Notification")
         
-        insightsInteractor?.insightsPerWeek()
+        insightsInteractor.insightsPerWeek()
         if let nextSunday = getNextSunday() {
-            request.earliestBeginDate = Calendar.current.date(bySettingHour: 20, minute: 59, second: 0, of: nextSunday)
+            request.earliestBeginDate = Calendar.current.date(bySettingHour: 20, minute: 0, second: 0, of: nextSunday)
             request.requiresNetworkConnectivity = true
             do {
                 try BGTaskScheduler.shared.submit(request)
@@ -96,9 +98,11 @@ class InsightsNotifications {
     }
     
     func handleDailyTask(task: BGProcessingTask) {
+        let insightsInteractor: InsightsInteractorProtocol = InsightsInteractor()
+
         scheduleDailyBackgroundTask()
         
-        insightsInteractor?.insightsPerDay()
+        insightsInteractor.insightsPerDay()
         if let savedData = UserDefaults.standard.data(forKey: "InsightsDay"),
            let decodedInsights = try? JSONDecoder().decode(InsightsDataModel.self, from: savedData) {
             scheduleEndOfDayNotification(insights: decodedInsights)
