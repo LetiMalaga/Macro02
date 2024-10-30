@@ -7,6 +7,7 @@
 
 import Foundation
 import UserNotifications
+import SwiftUI
 
 protocol PomodoroInteractorProtocol {
     func startPomodoro()
@@ -32,12 +33,16 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     var previousPhase = ""
     var breathingDuration: Int = 30 // Total time in seconds for the breathing exercise
     var isBreathingPhase: Bool = false // Tracks if currently in the breathing phase
-    var wantsBreathing: Bool = true
+    @AppStorage("breathing") var wantsBreathing: Bool = true
     private var breathPhase: Int = 0 // Tracks current breath phase (0 for inhale, 1 for exhale)
-
-
+    
+    
     private var pendingPhaseSwitch: Bool = false // Track if the phase switch is pending
-
+    
+    func toggleBreathing() {
+        wantsBreathing.toggle()
+    }
+    
     func startPomodoro() {
         // Initialize durations and loop counts from user defaults
         self.workDuration = pomoDefaults.workDuration
@@ -69,7 +74,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         pendingPhaseSwitch = false  // Ensure no phase switch is pending at start
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
-
+    
     func pausePomodoro() {
         isRunning = false
         isPaused = true
@@ -77,11 +82,11 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // Cancel notifications on pause
     }
-
+    
     func resumePomodoro() {
         isRunning = true
         isPaused = false
-
+        
         // Only start the timer if a phase switch is pending
         if pendingPhaseSwitch {
             pendingPhaseSwitch = false // Reset the pending phase switch
@@ -89,10 +94,10 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         } else {
             startTimer()  // If no phase switch is pending, resume normally
         }
-
+        
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
     }
-
+    
     func stopPomodoro() {
         isRunning = false
         isPaused = false
@@ -100,13 +105,13 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         presenter?.resetPomodoro()
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // Cancel all pending notifications
     }
-
+    
     private func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.updateTimer()
         }
     }
-
+    
     private func updateTimer() {
         remainingTime -= 1
         if remainingTime <= 0 {
@@ -130,16 +135,16 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
             }
         }
-
+        
         presenter?.updateTimer(percentage: percentageTime())
     }
-
+    
     private func percentageTime() -> Float {
         let atual = Float(remainingTime)
         let total = Float((isWorkPhase ? workDuration : breakDuration) * 60)
         return (1 - atual / total)
     }
-
+    
     private func switchPhase() {
         if isBreathingPhase {
             // Breathing phase just ended; set up the next work phase and pause
@@ -204,26 +209,22 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             }
         }
     }
-
-
-
-
-
+    
     func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let seconds = seconds % 60
         return String(format: "%02d:%02d", minutes, seconds)
     }
-
+    
     private func scheduleNotification(title: String, body: String) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
-
+        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-
+        
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Error scheduling notification: \(error)")
