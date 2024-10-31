@@ -11,10 +11,10 @@ import Foundation
 protocol InsightsInteractorProtocol: AnyObject {
     var insights: InsightsDataModel? { get }
     var presenter: InsightsPresenterProtocol? { get }
-    var dataManager: InsightsDataProtocol? { get }
+    //    var dataManager: InsightsDataProtocol? { get }
     
-    func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void)
-    func getInsights(predicate: NSPredicate) -> InsightsDataModel
+    func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void) async
+    func getInsights(predicate: NSPredicate, completion: @escaping(InsightsDataModel) -> Void)
     
     func insightsPerDay()
     func insightsPerMonth()
@@ -26,74 +26,71 @@ protocol InsightsInteractorProtocol: AnyObject {
 class InsightsInteractor : InsightsInteractorProtocol {
     
     var presenter: InsightsPresenterProtocol?
-    var dataManager: InsightsDataProtocol?
-    
     var insights: InsightsDataModel?
-    
-//    init(presenter: InsightsPresenterProtocol, dataManager: InsightsDataProtocol) {
-//        self.presenter = presenter
-//        self.dataManager = dataManager
-//        print("iterator: \(#function)")
-//    }
-    
-    func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void) {
+
+    func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void) async{
+        let dataManager = InsightsData()
         var focusData: [FocusDataModel] = []
-        
-        dataManager?.queryTestData(predicate: predicate) { result in
-            result.forEach { id, data in
-                switch data {
-                case .success(let focusResult):
-                    if let tagString = focusResult[TimerRecord.tagKey] as? String,
+        Task {
+            do{
+                let focusResult = try await dataManager.queryTestData(predicate: predicate)
+                
+                focusResult.forEach({ result in
+                    if let tagString = result[TimerRecord.tagKey] as? String,
                        let tag = Tags(rawValue: tagString) {
-                        let focus = FocusDataModel(focusTimeInMinutes: focusResult[TimerRecord.focusTimeKey] as? Int ?? 0, breakTimeinMinutes: focusResult[TimerRecord.breakTimeKey] as? Int ?? 0, category: tag, date: focusResult[TimerRecord.dateKey] as? Date ?? Date())
+                        let focus = FocusDataModel(focusTimeInMinutes: result[TimerRecord.focusTimeKey] as? Int ?? 0, breakTimeinMinutes: result[TimerRecord.breakTimeKey] as? Int ?? 0, category: tag, date: result[TimerRecord.dateKey] as? Date ?? Date())
                         focusData.append(focus)
-                        print("success in fetching data")
-                    } else {
-                        print("error in fetching data")
+                        
                     }
-                    
-                case .failure:
-                    break
-                }
+                    print("success in fetching data \(result)")
+                })
+                print("resultado do fetching: \(focusData)")
+                completion(focusData)
             }
-            completion(focusData)
+            catch{
+                print("error \(error) in fetching data")
+            }
         }
+        
     }
     
-    func getInsights(predicate: NSPredicate) -> InsightsDataModel{
-        var data: InsightsDataModel?
-        self.fetchInsightsData(predicate: predicate) { result in
-            var timeBreakInMinutes: Int = 0
-            var timeFocusedInMinutes: Int = 0
-            
-            result.forEach { response in
-                // Verifica se a categoria já existe no array de dicionários
-                if let tempoAtual = data?.timeFocusedInMinutes[response.category] {
-                    // Se a categoria já existe, soma o tempo
-                    data?.timeFocusedInMinutes[response.category] = tempoAtual + response.focusTimeInMinutes
-                } else {
-                    // Se a categoria não existe, adiciona uma nova entrada
-                    data?.timeFocusedInMinutes[response.category] = response.focusTimeInMinutes
+    func getInsights(predicate: NSPredicate, completion: @escaping (InsightsDataModel) -> Void) {
+        var data: InsightsDataModel = InsightsDataModel(timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0)
+        Task {
+            await self.fetchInsightsData(predicate: predicate) { result in
+                var timeBreakInMinutes: Int = 0
+                var timeFocusedInMinutes: Int = 0
+                
+                result.forEach { response in
+                    // Verifica se a categoria já existe no array de dicionários
+                    if let tempoAtual = data.timeFocusedInMinutes[response.category] {
+                        // Se a categoria já existe, soma o tempo
+                        data.timeFocusedInMinutes[response.category] = tempoAtual + response.focusTimeInMinutes
+                    } else {
+                        // Se a categoria não existe, adiciona uma nova entrada
+                        data.timeFocusedInMinutes[response.category] = response.focusTimeInMinutes
+                    }
+                    timeBreakInMinutes += response.breakTimeinMinutes
+                    timeFocusedInMinutes += response.focusTimeInMinutes
+                    
                 }
-                timeBreakInMinutes += response.breakTimeinMinutes
-                timeFocusedInMinutes += response.focusTimeInMinutes
+                
+                data.timeFocusedInMinutes.forEach({ tag in
+                    data.timeFocusedInMinutes[tag.key] = data.timeFocusedInMinutes[tag.key]
+                })
+                data.value = result.count
+                data.timeBreakInMinutes = timeBreakInMinutes
+                data.timeTotalInMinutes = timeFocusedInMinutes + timeBreakInMinutes
+                
+                print("resultado do getInsights: \(data)")
+                completion(data)
                 
             }
-            
-            data?.timeFocusedInMinutes.forEach({ tag in
-                data!.timeFocusedInMinutes[tag.key] = data?.timeFocusedInMinutes[tag.key]
-            })
-            data?.value = result.count
-            data?.timeBreakInMinutes = timeBreakInMinutes
-            data?.timeTotalInMinutes = timeFocusedInMinutes + timeBreakInMinutes
         }
-        
-        guard let data else { print("dados nulos")
-            return InsightsDataModel(timeFocusedInMinutes: [:], timeTotalInMinutes: 0, timeBreakInMinutes: 0)}
-        
-        return data
     }
+    
     func apliedInsights(insights: InsightsDataModel){
+        print(insights)
         presenter?.presentTagInsights(insights: insights)
         presenter?.presentFocusedInsights(insights: insights)
         presenter?.presentSessionInsights(insights: insights)
@@ -101,19 +98,24 @@ class InsightsInteractor : InsightsInteractorProtocol {
         presenter?.presenteTotalTimeInsights(insights: insights)
         
     }
+    
     func insightsPerDay() {
-        let predicate = NSPredicate(format: "data == %@ ",Date() as CVarArg)
-        insights = getInsights(predicate: predicate)
-        
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: Date())
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+        let predicate = NSPredicate(format: "date >= %@ AND date < %@", startOfDay as CVarArg, endOfDay as CVarArg)
+        getInsights(predicate: predicate) { data in
+            self.insights = data
+            self.apliedInsights(insights: self.insights!)
+        }
         print("insightsPerDay is called")
-
-        apliedInsights(insights: insights!)
         
         if let encodedData = try? JSONEncoder().encode(insights) {
             UserDefaults.standard.set(encodedData, forKey: "InsightsDay")
         }else{
             print("Erro ao salvar os insights para notifications")
         }
+        
     }
     
     func insightsPerWeek() {
@@ -123,16 +125,19 @@ class InsightsInteractor : InsightsInteractorProtocol {
         }
         
         let today = Date()
-        let predicate = NSPredicate(format: "data >= %@ AND data <= %@", lastSunday as CVarArg, today as CVarArg)
-        let insights = getInsights(predicate: predicate)
-        apliedInsights(insights: insights)
+        let predicate = NSPredicate(format: "date >= %@ AND date <= %@", lastSunday as CVarArg, today as CVarArg)
+        getInsights(predicate: predicate) { data in
+            self.insights = data
+            self.apliedInsights(insights: self.insights!)
+        }
         
         if let encodedData = try? JSONEncoder().encode(insights) {
             UserDefaults.standard.set(encodedData, forKey: "InsightsWeek")
         }else{
             print("Erro ao salvar os insights para notifications")
         }
-
+        
+        
     }
     
     func insightsPerMonth(){
@@ -140,10 +145,13 @@ class InsightsInteractor : InsightsInteractorProtocol {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month], from: currentDate)
         guard let firstDayOfMonth = calendar.date(from: components) else {return }
-        let predicate = NSPredicate(format: "creationDate >= %@ AND creationDate <= %@", argumentArray: [firstDayOfMonth, currentDate])
+        let predicate = NSPredicate(format: "date >= %@ AND date <= %@", argumentArray: [firstDayOfMonth, currentDate])
         
         print("insightsPerMonth is called")
-        apliedInsights(insights: getInsights(predicate: predicate))
+        getInsights(predicate: predicate) { data in
+            self.insights = data
+            self.apliedInsights(insights: self.insights!)
+        }
     }
     
     
@@ -159,7 +167,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
         let daysToLastSunday = (weekday == 1) ? 0 : weekday - 1
         return calendar.date(byAdding: .day, value: -daysToLastSunday, to: today)
     }
-
+    
 }
 
 

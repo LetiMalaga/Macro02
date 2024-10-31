@@ -11,7 +11,7 @@ import Charts
 struct InsightsSwiftUIView: View {
     
     var interactor:InsightsInteractorProtocol?
-    var insightsData: InsightsDataView?
+    @ObservedObject var data: InsightsDataView
     var timeFrame = ["Dia", "Semana", "Mês"]
     @State private var selectedTimeFrame: String = "Dia"
     
@@ -51,10 +51,30 @@ struct InsightsSwiftUIView: View {
                 
                 Spacer()
                 
-                Text("Hoje")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                
+                HStack{
+                    Text("Hoje")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                    
+                    Button {
+                        switch selectedTimeFrame {
+                        case "Dia":
+                            interactor?.insightsPerDay()
+                            print("insightsPerDay")
+                        case "Semana":
+                            interactor?.insightsPerWeek()
+                            print("insightsPerWeek")
+                        case "Mês":
+                            interactor?.insightsPerMonth()
+                            print("insightsPerMonth")
+                        default:
+                            print("erro")
+                        }
+                    } label: {
+                        Text("Refresh")
+                    }
+
+                }
                 Spacer()
                 
                 Button{
@@ -84,7 +104,7 @@ struct InsightsSwiftUIView: View {
                     Spacer()
                     
                     HStack(alignment: .bottom){
-                        Text(insightsData?.foco ?? "0")
+                        Text(data.foco)
                             .font(.system(size: 64, weight: .bold))
                             .minimumScaleFactor(0.5)
                         Text("horas")
@@ -107,7 +127,7 @@ struct InsightsSwiftUIView: View {
                                 .bold()
                                 .minimumScaleFactor(0.5)
                             Spacer()
-                            Text("\(insightsData?.session ?? 0)")
+                            Text("\(data.session)")
                                 .font(.system(size: 64, weight: .bold))
                                 .minimumScaleFactor(0.5)
                             Spacer()
@@ -135,7 +155,7 @@ struct InsightsSwiftUIView: View {
                                 Spacer()
                             }
                             HStack{
-                                Text(insightsData?.pause ?? "0")
+                                Text(data.pause)
                                     .font(.title)
                                     .bold()
                                     .minimumScaleFactor(0.5)
@@ -166,7 +186,7 @@ struct InsightsSwiftUIView: View {
                                 Spacer()
                             }
                             HStack{
-                                Text("\(insightsData?.total ?? "0")")
+                                Text("\(data.total )")
                                     .font(.title)
                                     .bold()
                                     .minimumScaleFactor(0.5)
@@ -185,10 +205,10 @@ struct InsightsSwiftUIView: View {
             }
             
             ZStack{
-                FocoPorTagChartView(data: insightsData?.tags ?? [ChartData(type: "Estudos", count: 2), ChartData(type: "Trabalho", count: 5 ), ChartData(type: "Projetos", count: 10), ChartData(type: "Outros", count: 1)])
+                FocoPorTagChartView(data: data.tags.isEmpty ? [ChartData(type: "Estudos", count: 2), ChartData(type: "Trabalho", count: 5 ), ChartData(type: "Projetos", count: 10), ChartData(type: "Outros", count: 1)] : data.tags)
                 //                .frame(width: CGFloat(UIScreen.main.bounds.width-40), height: CGFloat(UIScreen.main.bounds.height/3))
                 
-                    if insightsData == nil {
+                if data.session == 0 {
                         RoundedRectangle(cornerRadius: 15)
 //                            .frame(width: x, height: y)
                             .foregroundStyle(.black)
@@ -200,13 +220,16 @@ struct InsightsSwiftUIView: View {
         }
         .padding()
         .navigationTitle("Resultados")
+        .onAppear {
+            interactor?.insightsPerDay()
+        }
     }
 }
 
 
-#Preview {
-    InsightsSwiftUIView()
-}
+//#Preview {
+//    InsightsSwiftUIView()
+//}
 
 extension Double {
     public static let bgRectangleTopHeightCtt = 0.15

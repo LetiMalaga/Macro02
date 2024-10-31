@@ -21,51 +21,62 @@ protocol InsightsPresenterProtocol {
 class InsightsPresenter: InsightsPresenterProtocol {
     var view: InsightsViewProtocol?
     
-//    init(view: InsightsViewProtocol) {
-//        self.view = view
-//    }
-    
     func presentTagInsights(insights: InsightsDataModel) {
         var formatData:[ChartData] = []
         insights.timeFocusedInMinutes.forEach { key, value in
             formatData.append(ChartData(type: key.rawValue, count: value))
         }
-        
-        view?.data?.tags = formatData
+        DispatchQueue.main.async {
+            self.view?.data.tags = formatData
+        }
         
     }
     
     func presentFocusedInsights(insights: InsightsDataModel) {
-        var time = insights.timeFocusedInMinutes.values.reduce(0, +)
+        let time = insights.timeFocusedInMinutes.values.reduce(0, +)
         if time > 60 {
             let timeInHours = formatMinutesToHours(minutes: time)
-            view?.data?.foco = timeInHours
+            DispatchQueue.main.async {
+                self.view?.data.foco = timeInHours
+            }
         }else{
-            view?.data?.foco = String(format: "%d min", time)
+            DispatchQueue.main.async {
+                self.view?.data.foco = String(format: "%d min", time)
+            }
         }
     }
     
     func presenteBreakdownInsights(insights: InsightsDataModel) {
-        var time = insights.timeBreakInMinutes
+        let time = insights.timeBreakInMinutes
         if time > 60 {
             let timeInHours = formatMinutesToHours(minutes: time)
-            view?.data?.pause = timeInHours
+            DispatchQueue.main.async {
+                self.view?.data.pause = timeInHours
+            }
         }else{
-            view?.data?.pause = String(format: "%d min", time)
+            DispatchQueue.main.async {
+                self.view?.data.pause = String(format: "%d min", time)
+            }
         }
     }
     func presentSessionInsights(insights: InsightsDataModel) {
         let totalSessions = insights.value
-        view?.data?.session = totalSessions ?? 0
+        DispatchQueue.main.async {
+            self.view?.data.session = totalSessions ?? 0
+        }
     }
     
     func presenteTotalTimeInsights(insights: InsightsDataModel) {
-        var time = insights.timeTotalInMinutes
+        let time = insights.timeTotalInMinutes
         if time > 60 {
             let timeInHours = formatMinutesToHours(minutes: time)
-            view?.data?.total = timeInHours
+            DispatchQueue.main.async {
+                self.view?.data.total = timeInHours
+            }
         }else{
-            view?.data?.total = String(format: "%d min", time)
+            DispatchQueue.main.async {
+                self.view?.data.total = String(format: "%d min", time)
+            }
         }
     }
     
