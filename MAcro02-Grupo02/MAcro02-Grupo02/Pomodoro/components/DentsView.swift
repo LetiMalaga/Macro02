@@ -10,10 +10,10 @@ import UIKit
 
 class DentsView: UIView {
 
-    private let shapeLayer = CAShapeLayer() // Camada para a barra dentada
-    private let shadowView = UIView() // View para a sombra
-    private let leftChevronImageView = UIImageView() // Imagem para o chevron esquerdo
-    private let rightChevronImageView = UIImageView() // Imagem para o chevron direito
+    private let shapeLayer = CAShapeLayer()
+    private let shadowView = UIView()
+    private let leftChevronImageView = UIImageView()
+    private let rightChevronImageView = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)

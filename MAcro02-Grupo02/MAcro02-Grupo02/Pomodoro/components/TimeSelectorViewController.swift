@@ -36,7 +36,7 @@ class TimeSelectorViewController: UIViewController {
         
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
-        label.numberOfLines = 3
+        label.numberOfLines = 4
         label.textColor = .black
         
         return label
@@ -77,7 +77,7 @@ class TimeSelectorViewController: UIViewController {
     }()
     
     let saveButton: PomoButton = {
-        let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 290, height: 60), titulo: "Salvar")
+        let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 292, height: 60), titulo: "Salvar")
         button.addTarget(self, action: #selector(save), for: .touchUpInside)
         
         return button
