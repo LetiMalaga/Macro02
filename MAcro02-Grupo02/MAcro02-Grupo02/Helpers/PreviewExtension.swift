@@ -20,7 +20,6 @@ extension UIViewController {
         func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
             
         }
-        
     }
     
     func showLivePreview() -> some View {
