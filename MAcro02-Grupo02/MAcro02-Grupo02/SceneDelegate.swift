@@ -16,14 +16,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 // POMODORO
 
         let window = UIWindow(windowScene: windowScene)
-        let pomodoroVC = PomodoroModuleBuilder().build()
+      
+        let pomodoroVC = PomodoroRouter().build()
+        let insightVC = InsightsFactory.makeInsights()
+        let tabBar =  MainTabBarController()
+        window.rootViewController = tabBar
+      
         let insightVC = InsightsSwiftUIViewController()
         let modalTagsVC = ModalTagsViewController()
         let sheetVC = SheetViewController()
         
         let navControler = UINavigationController(rootViewController: modalTagsVC )
-          
-        window.rootViewController = navControler
+
+
           window.makeKeyAndVisible()
 
 //        let window = UIWindow(windowScene: windowScene)

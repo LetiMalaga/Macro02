@@ -9,6 +9,9 @@ import SwiftUI
 import Charts
 
 struct InsightsSwiftUIView: View {
+    
+    var interactor:InsightsInteractorProtocol?
+    @ObservedObject var data: InsightsDataView
     var timeFrame = ["Dia", "Semana", "Mês"]
     @State private var selectedTimeFrame: String = "Dia"
     
@@ -20,6 +23,21 @@ struct InsightsSwiftUIView: View {
                 }
             }
             .pickerStyle(.segmented)
+            .onChange(of: selectedTimeFrame){
+                switch selectedTimeFrame {
+                case "Dia":
+                    interactor?.insightsPerDay()
+                    print("insightsPerDay")
+                case "Semana":
+                    interactor?.insightsPerWeek()
+                    print("insightsPerWeek")
+                case "Mês":
+                    interactor?.insightsPerMonth()
+                    print("insightsPerMonth")
+                default:
+                    print("erro")
+                }
+            }
             
             HStack{
                 Button{
@@ -33,10 +51,30 @@ struct InsightsSwiftUIView: View {
                 
                 Spacer()
                 
-                Text("Hoje")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                
+                HStack{
+                    Text("Hoje")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                    
+                    Button {
+                        switch selectedTimeFrame {
+                        case "Dia":
+                            interactor?.insightsPerDay()
+                            print("insightsPerDay")
+                        case "Semana":
+                            interactor?.insightsPerWeek()
+                            print("insightsPerWeek")
+                        case "Mês":
+                            interactor?.insightsPerMonth()
+                            print("insightsPerMonth")
+                        default:
+                            print("erro")
+                        }
+                    } label: {
+                        Text("Refresh")
+                    }
+
+                }
                 Spacer()
                 
                 Button{
@@ -66,6 +104,12 @@ struct InsightsSwiftUIView: View {
                     Spacer()
                     
                     HStack(alignment: .bottom){
+
+                        Text(data.foco)
+                            .font(.system(size: 64, weight: .bold))
+                            .minimumScaleFactor(0.5)
+                        Text("horas")
+
                         Text(String(Date().formatted(date: .omitted, time: .shortened)))
                             .font(.system(size: 64, weight: .bold))
                             .minimumScaleFactor(0.5)
@@ -89,7 +133,11 @@ struct InsightsSwiftUIView: View {
                                 .bold()
                                 .minimumScaleFactor(0.5)
                             Spacer()
+
+                            Text("\(data.session)")
+
                             Text("3")
+
                                 .font(.system(size: 64, weight: .bold))
                                 .minimumScaleFactor(0.5)
                             Spacer()
@@ -117,7 +165,11 @@ struct InsightsSwiftUIView: View {
                                 Spacer()
                             }
                             HStack{
+
+                                Text(data.pause)
+
                                 Text("10m")
+
                                     .font(.title)
                                     .bold()
                                     .minimumScaleFactor(0.5)
@@ -148,7 +200,11 @@ struct InsightsSwiftUIView: View {
                                 Spacer()
                             }
                             HStack{
+
+                                Text("\(data.total )")
+
                                 Text("2:30h")
+
                                     .font(.title)
                                     .bold()
                                     .minimumScaleFactor(0.5)
@@ -164,11 +220,34 @@ struct InsightsSwiftUIView: View {
                     .scaledToFill()
                 }
                 .frame(width: (UIScreen.main.bounds.width * .bgPauseAndTotalRectanglesWidthCtt - .bgPauseAndTotalRectanglesWidthSubtractionCtt), height: UIScreen.main.bounds.height * .bgPauseAndTotalRectanglesHeightCtt)
+
+            }
+            
+            ZStack{
+                FocoPorTagChartView(data: data.tags.isEmpty ? [ChartData(type: "Estudos", count: 2), ChartData(type: "Trabalho", count: 5 ), ChartData(type: "Projetos", count: 10), ChartData(type: "Outros", count: 1)] : data.tags)
+                //                .frame(width: CGFloat(UIScreen.main.bounds.width-40), height: CGFloat(UIScreen.main.bounds.height/3))
+                
+                if data.session == 0 {
+                        RoundedRectangle(cornerRadius: 15)
+//                            .frame(width: x, height: y)
+                            .foregroundStyle(.black)
+                            .opacity(0.25)
+                            
+                    }
+            }
+            Spacer()
+        }
+        .padding()
+        .navigationTitle("Resultados")
+        .onAppear {
+            interactor?.insightsPerDay()
+
             }
             
             FocoPorTagChartView()
             //                .frame(width: CGFloat(UIScreen.main.bounds.width-40), height: CGFloat(UIScreen.main.bounds.height/3))
             Spacer()
+
         }
         .padding()
         .navigationTitle("Resultados")
@@ -176,9 +255,9 @@ struct InsightsSwiftUIView: View {
 }
 
 
-#Preview {
-    InsightsSwiftUIView()
-}
+//#Preview {
+//    InsightsSwiftUIView()
+//}
 
 extension Double {
     public static let bgRectangleTopHeightCtt = 0.15

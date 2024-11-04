@@ -29,7 +29,7 @@ class PomoButton: UIButton {
         print(frame.size)
         
     
-        self.layer.cornerRadius = 35
+        self.layer.cornerRadius = 30
         self.titleLabel?.font = .boldSystemFont(ofSize: 24)
         self.backgroundColor = .black
         self.setTitleColor(.white, for: .normal)
