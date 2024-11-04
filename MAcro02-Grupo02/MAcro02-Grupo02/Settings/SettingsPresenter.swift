@@ -23,18 +23,21 @@ class SettingsPresenter: SettingsPresenterProtocol {
     
     func uploadActivitys(_ activity: [ActivitiesModel]) {
         view?.activitys = activity
+        view?.reloadData()
     }
     
     func addActivity(_ activity: ActivitiesModel) {
         view?.activitys.append(activity)
+        view?.reloadData()
     }
     
     func returnActivity(activity: ActivitiesModel) {
-        <#code#>
+        print(activity)
     }
     
     func deleteActivity(at index: Int) {
         view?.activitys.remove(at: index)
+        view?.reloadData()
     }
     
     func toggleButtonSound(value: Bool) {
@@ -61,4 +64,6 @@ protocol SettingsViewProtocol: AnyObject {
     var breathingButton: Bool { get set }
     var recommendationButton: Bool { get set }
     var activitys: [ActivitiesModel] { get set }
+    
+    func reloadData()
 }

@@ -5,10 +5,15 @@
 //  Created by Luiz Felipe on 30/10/24.
 //
 import Foundation
-
+enum ActivitiesType: String, Codable {
+    case long
+    case short
+}
 struct ActivitiesModel: Codable {
     var id = UUID()
-    var tittle: String
+    var type: ActivitiesType
+    var Description: String
+    
 }
 protocol SettingsDataProtocol {
     func fetchActivities(completion: @escaping ([ActivitiesModel]) -> Void)
@@ -16,22 +21,19 @@ protocol SettingsDataProtocol {
     func deleteActivity(at id: UUID, completion: @escaping (Bool) -> Void)
 }
 
-// Data management class using UserDefaults
 class SettingsData: SettingsDataProtocol{
     private let userDefaultsKey = "activitiesData"
     
-    // Fetch stored activities from UserDefaults
     func fetchActivities(completion: @escaping ([ActivitiesModel]) -> Void) {
         if let savedData = UserDefaults.standard.data(forKey: userDefaultsKey),
-           let decodedActivities = try? JSONDecoder().decode([ActivitiesModel].self, from: savedData) {
+           var decodedActivities = try? JSONDecoder().decode([ActivitiesModel].self, from: savedData) {
+            decodedActivities.removeLast()
             completion(decodedActivities)
         } else {
-            // Return an empty list if nothing is stored yet
             completion([])
         }
     }
     
-    // Add a new activity and save it in UserDefaults
     func addActivity(_ activity: ActivitiesModel, completion: @escaping (Bool) -> Void) {
         fetchActivities { activities in
             var updatedActivities = activities

@@ -29,7 +29,6 @@ class InsightsData:InsightsDataProtocol{
                         switch result {
                         case .success (let data):
                             self.records.append(data)
-                            print("success fetching records with data")
                         case .failure:
                             print("failure fetching records")
                             break

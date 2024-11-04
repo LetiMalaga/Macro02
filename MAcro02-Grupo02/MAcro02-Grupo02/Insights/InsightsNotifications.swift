@@ -48,7 +48,6 @@ class InsightsNotifications {
         dateComponents.minute = 00
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        print("Notificação semanal agendada para: \(trigger.nextTriggerDate()!)")
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request) { error in
             print("Error: \(error?.localizedDescription ?? "No error")")
@@ -57,7 +56,7 @@ class InsightsNotifications {
     
     func registerBackgroundTasks() {
         
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "DayNotification.PomoBreak.Notification.Teste", using: nil) { [weak self] task in
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "DayNotification.PomoBreak.Notification", using: nil) { [weak self] task in
             guard let task = task as? BGProcessingTask else { return }
             self?.handleDailyTask(task: task)
         }
@@ -67,13 +66,12 @@ class InsightsNotifications {
         }
     }
     func scheduleDailyBackgroundTask() {
-        let request = BGProcessingTaskRequest(identifier: "DayNotification.PomoBreak.Notification.Teste")
+        let request = BGProcessingTaskRequest(identifier: "DayNotification.PomoBreak.Notification")
         
         request.earliestBeginDate = Calendar.current.date(bySettingHour: 20, minute: 0, second: 0, of: Date())
         
         do {
             try BGTaskScheduler.shared.submit(request)
-            print("Daily task scheduled")
         } catch {
             print("Failed to schedule daily task: \(error)")
         }
@@ -90,7 +88,6 @@ class InsightsNotifications {
             request.requiresNetworkConnectivity = true
             do {
                 try BGTaskScheduler.shared.submit(request)
-                print("Weekly task scheduled")
             } catch {
                 print("Failed to schedule weekly task: \(error)")
             }

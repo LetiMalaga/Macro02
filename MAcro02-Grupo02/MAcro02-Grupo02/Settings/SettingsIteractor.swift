@@ -25,6 +25,7 @@ protocol SettingsIteractorProtocol: AnyObject {
 }
 
 class SettingsIteractor: SettingsIteractorProtocol {
+    
     var activities: [ActivitiesModel] = []
     var presenter: SettingsPresenterProtocol?
     var dataModel: SettingsDataProtocol?
@@ -67,7 +68,7 @@ class SettingsIteractor: SettingsIteractorProtocol {
     }
     
     func addActivity(_ activity: ActivitiesModel) {
-        if validateActivityName(activity.tittle) {
+        if validateActivityName(activity.Description) {
             dataModel?.addActivity(activity) { success in
                 self.presenter?.addActivity(activity)
             }
@@ -93,6 +94,5 @@ class SettingsIteractor: SettingsIteractorProtocol {
     func validateActivityName(_ name: String) -> Bool {
         return !name.isEmpty
     }
-    
     
 }

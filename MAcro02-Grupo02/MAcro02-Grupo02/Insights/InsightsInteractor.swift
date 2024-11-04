@@ -42,9 +42,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
                         focusData.append(focus)
                         
                     }
-                    print("success in fetching data \(result)")
                 })
-                print("resultado do fetching: \(focusData)")
                 completion(focusData)
             }
             catch{
@@ -82,7 +80,6 @@ class InsightsInteractor : InsightsInteractorProtocol {
                 data.timeBreakInMinutes = timeBreakInMinutes
                 data.timeTotalInMinutes = timeFocusedInMinutes + timeBreakInMinutes
                 
-                print("resultado do getInsights: \(data)")
                 completion(data)
                 
             }
@@ -108,7 +105,6 @@ class InsightsInteractor : InsightsInteractorProtocol {
             self.insights = data
             self.apliedInsights(insights: self.insights!)
         }
-        print("insightsPerDay is called")
         
         if let encodedData = try? JSONEncoder().encode(insights) {
             UserDefaults.standard.set(encodedData, forKey: "InsightsDay")
@@ -147,7 +143,6 @@ class InsightsInteractor : InsightsInteractorProtocol {
         guard let firstDayOfMonth = calendar.date(from: components) else {return }
         let predicate = NSPredicate(format: "date >= %@ AND date <= %@", argumentArray: [firstDayOfMonth, currentDate])
         
-        print("insightsPerMonth is called")
         getInsights(predicate: predicate) { data in
             self.insights = data
             self.apliedInsights(insights: self.insights!)
