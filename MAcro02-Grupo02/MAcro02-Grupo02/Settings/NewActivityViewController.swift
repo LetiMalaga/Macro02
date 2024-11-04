@@ -100,7 +100,7 @@ class NewActivityViewController: UIViewController {
     @objc private func saveButtonTapped() {
         let activityDescription = descriptionTextField.text ?? ""
         guard let activityType else { return }
-        interactor?.addActivity(ActivitiesModel(type: activityType, Description: activityDescription))
+        interactor?.addActivity(ActivitiesModel(type: activityType, description: activityDescription))
         
         dismiss(animated: true, completion: nil)
     }
