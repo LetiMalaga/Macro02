@@ -11,32 +11,58 @@ import UIKit
 
 class SheetViewController: UIViewController {
     
+    // MARK: Variables
     private let modalIdentifierLine = UIView()
     private let modalTagLabel = UILabel()
-    private let ellipsisButton = UIButton(type: .system)
-    private let tagWorkButton = UIButton(type: .system)
-    private let tagStudyButton = UIButton(type: .system)
-    private let tagFocusButton = UIButton(type: .system)
-    private let tagWorkoutButton = UIButton(type: .system)
-    private let tagMeditationButton = UIButton(type: .system)
     private let tagNewTagButton = UIButton(type: .system)
     private var isEditingMode: Bool = false
-    private var removeButton = UIButton(type: .system)
+    private var isAddingNewTag: Bool = false
     
-    private var tags: [String] = [
-        // Buttons
-        "tagWorkButton",
-        "tagStudyButton",
-        "tagFocusButton",
-        "tagWorkoutButton",
-        "tagMeditationButton",
-        "tagNewTagButton"
-    ]
+    var tags: [String] = []
+    var arraybuttons: [UIButton] = []
+    var arrayQqr: [String] = []
+    
+    // MARK: UI Components
+    
+    private let textFieldTag: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Adicionar Tag"
+        textField.borderStyle = .roundedRect
+        textField.backgroundColor = .secondarySystemBackground
+        textField.textColor = .label
+        textField.font = .preferredFont(forTextStyle: .caption1)
+        
+        return textField
+    }()
+    
+    private let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
+        
+        return collectionView
+    }()
     
     
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: isEditingMode ? "ellipsis.circle.fill" : "ellipsis.circle"), style: .plain, target: self, action: #selector(toggleState))
+        navigationItem.rightBarButtonItem?.tintColor = .black
+        
+        tags.append("Work")
+        tags.append("Study")
+        tags.append("Focus")
+        tags.append("Workout")
+        tags.append("Meditation")
+        
+        
+        self.collectionView.dataSource = self
+        self.collectionView.delegate = self
     }
     
     private func setupView(){
@@ -57,83 +83,8 @@ class SheetViewController: UIViewController {
         modalTagLabel.text = "Escolha uma Etiqueta"
         modalTagLabel.font = .preferredFont(for: .title2, weight: .bold)
         
-        // MARK: Buttons
-        ellipsisButton.center = view.center
-        ellipsisButton.setBackgroundImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
-        ellipsisButton.tintColor = .black
         
-        
-        tagWorkButton.center = view.center
-        tagWorkButton.layer.borderWidth = 3
-        tagWorkButton.layer.borderColor = UIColor.black.cgColor
-        tagWorkButton.setTitleColor(.black, for: .normal)
-        tagWorkButton.setTitle("Work", for: .normal)
-        tagWorkButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
-        tagWorkButton.layer.cornerRadius = .tagCornerRadius
-        tagWorkButton.layer.maskedCorners = [
-            .layerMinXMaxYCorner,
-            .layerMaxXMinYCorner,
-            .layerMaxXMaxYCorner
-        ]
-        
-        removeButton.center = view.center
-        removeButton.setBackgroundImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
-        removeButton.tintColor = .systemRed
-        
-        //        tagWorkButton.addSubview(removeButton)
-        
-        tagStudyButton.center = view.center
-        tagStudyButton.layer.borderWidth = 3
-        tagStudyButton.layer.borderColor = UIColor.black.cgColor
-        tagStudyButton.setTitleColor(.black, for: .normal)
-        tagStudyButton.setTitle("Study", for: .normal)
-        tagStudyButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
-        tagStudyButton.layer.cornerRadius = .tagCornerRadius
-        tagStudyButton.layer.maskedCorners = [
-            .layerMinXMaxYCorner,
-            .layerMaxXMinYCorner,
-            .layerMaxXMaxYCorner
-        ]
-        
-        tagFocusButton.center = view.center
-        tagFocusButton.layer.borderWidth = 3
-        tagFocusButton.layer.borderColor = UIColor.black.cgColor
-        tagFocusButton.setTitleColor(.black, for: .normal)
-        tagFocusButton.setTitle("Focus", for: .normal)
-        tagFocusButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
-        tagFocusButton.layer.cornerRadius = .tagCornerRadius
-        tagFocusButton.layer.maskedCorners = [
-            .layerMinXMaxYCorner,
-            .layerMaxXMinYCorner,
-            .layerMaxXMaxYCorner
-        ]
-        
-        tagWorkoutButton.center = view.center
-        tagWorkoutButton.layer.borderWidth = 3
-        tagWorkoutButton.layer.borderColor = UIColor.black.cgColor
-        tagWorkoutButton.setTitleColor(.black, for: .normal)
-        tagWorkoutButton.setTitle("Workout", for: .normal)
-        tagWorkoutButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
-        tagWorkoutButton.layer.cornerRadius = .tagCornerRadius
-        tagWorkoutButton.layer.maskedCorners = [
-            .layerMinXMaxYCorner,
-            .layerMaxXMinYCorner,
-            .layerMaxXMaxYCorner
-        ]
-        
-        tagMeditationButton.center = view.center
-        tagMeditationButton.layer.borderWidth = 3
-        tagMeditationButton.layer.borderColor = UIColor.black.cgColor
-        tagMeditationButton.setTitleColor(.black, for: .normal)
-        tagMeditationButton.setTitle("Meditation", for: .normal)
-        tagMeditationButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
-        tagMeditationButton.layer.cornerRadius = .tagCornerRadius
-        tagMeditationButton.layer.maskedCorners = [
-            .layerMinXMaxYCorner,
-            .layerMaxXMinYCorner,
-            .layerMaxXMaxYCorner
-        ]
-        
+        // MARK: Button & TextField
         tagNewTagButton.center = view.center
         tagNewTagButton.layer.borderWidth = 3
         tagNewTagButton.layer.borderColor = UIColor.black.cgColor
@@ -142,17 +93,13 @@ class SheetViewController: UIViewController {
         tagNewTagButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         tagNewTagButton.layer.cornerRadius = .tagCornerRadius
         
+        textFieldTag.center = view.center
+        textFieldTag.isHidden = true
+        
     }
     
     private func setupButtons(){
-        self.ellipsisButton.addTarget(self, action: #selector(toggleState), for: .touchUpInside)
-        self.tagWorkButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        self.tagStudyButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        self.tagFocusButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        self.tagWorkoutButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        self.tagMeditationButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        self.tagNewTagButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        self.removeButton.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
+        self.tagNewTagButton.addTarget(self, action: #selector(didTapNewTagButton), for: .touchUpInside)
     }
     
     private func setupConstraints() {
@@ -163,23 +110,17 @@ class SheetViewController: UIViewController {
             // Label
             modalTagLabel,
             
-            // Buttons
-            ellipsisButton,
-            tagWorkButton,
-            tagStudyButton,
-            tagFocusButton,
-            tagWorkoutButton,
-            tagMeditationButton,
+            // Buttons & TextField
             tagNewTagButton,
-            removeButton
+            textFieldTag,
+            collectionView
         ]
-        
-        //        let arrayOfTags = [tagWorkButton, tagFocusButton, tagStudyButton, tagWorkoutButton, tagMeditationButton]
         
         subviews.forEach {
             view.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
+        
         
         NSLayoutConstraint.activate([
             // Modal Identifier Line
@@ -190,63 +131,53 @@ class SheetViewController: UIViewController {
             modalIdentifierLine.widthAnchor.constraint(equalToConstant: view.bounds.width * .modalIdentifierLineWidthCtt),
             
             // Label
-            modalTagLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            modalTagLabel.topAnchor.constraint(equalTo: modalIdentifierLine.bottomAnchor, constant: 12),
+            modalTagLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            modalTagLabel.topAnchor.constraint(equalTo: modalIdentifierLine.bottomAnchor, constant: 16),
             
-            // MARK: Buttons
-            // Ellipsis
-            ellipsisButton.leadingAnchor.constraint(equalTo: modalTagLabel.trailingAnchor, constant: 80),
-            ellipsisButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .ellipsisButtonWidthCtt),
-            ellipsisButton.topAnchor.constraint(equalTo: modalIdentifierLine.bottomAnchor, constant: 20),
-            ellipsisButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .ellipsisButtonHeightCtt),
+            // MARK: Buttons & Text Field
             
-            // Work
-            tagWorkButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            tagWorkButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .tagWidthCtt),
-            tagWorkButton.topAnchor.constraint(equalTo: modalTagLabel.bottomAnchor, constant: 28),
-            tagWorkButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .tagHeightCtt),
-            
-            // Study
-            tagStudyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            tagStudyButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .tagWidthCtt),
-            tagStudyButton.topAnchor.constraint(equalTo: modalTagLabel.bottomAnchor, constant: 28),
-            tagStudyButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .tagHeightCtt),
-            
-            // Focus
-            tagFocusButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            tagFocusButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .tagWidthCtt),
-            tagFocusButton.topAnchor.constraint(equalTo: tagWorkButton.bottomAnchor, constant: 12),
-            tagFocusButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .tagHeightCtt),
-            
-            // Workout
-            tagWorkoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            tagWorkoutButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .tagWidthCtt),
-            tagWorkoutButton.topAnchor.constraint(equalTo: tagStudyButton.bottomAnchor, constant: 12),
-            tagWorkoutButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .tagHeightCtt),
-            
-            // Meditation
-            tagMeditationButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            tagMeditationButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .tagWidthCtt),
-            tagMeditationButton.topAnchor.constraint(equalTo: tagFocusButton.bottomAnchor, constant: 12),
-            tagMeditationButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .tagHeightCtt),
-            
-            // Workout
-            tagNewTagButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            tagNewTagButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .tagWidthCtt),
-            tagNewTagButton.topAnchor.constraint(equalTo: tagWorkoutButton.bottomAnchor, constant: 12),
+            // New Tag
+            tagNewTagButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            tagNewTagButton.widthAnchor.constraint(equalToConstant: view.bounds.width - 60),
+            tagNewTagButton.topAnchor.constraint(equalTo: modalTagLabel.bottomAnchor, constant: 12),
             tagNewTagButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .tagHeightCtt),
             
-            // Remove Button
-            removeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            removeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            //            removeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            removeButton.heightAnchor.constraint(equalToConstant: 100/*tagWorkButton.bounds.height * .removeButtonHeightCtt*/),
-            removeButton.widthAnchor.constraint(equalToConstant: 100/*tagWorkButton.bounds.width * .removeButtonWidthCtt*/)
+            // Text Field
+            textFieldTag.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            textFieldTag.widthAnchor.constraint(equalToConstant: view.bounds.width - 60),
+            textFieldTag.topAnchor.constraint(equalTo: tagNewTagButton.bottomAnchor, constant: 12),
+            textFieldTag.heightAnchor.constraint(equalToConstant: view.bounds.height * .tagHeightCtt),
+            
+            // Collection View
+            
+            collectionView.topAnchor.constraint(equalTo: textFieldTag.bottomAnchor, constant: 16),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            
         ])
     }
     
-    @objc private func didTapButton(){
-        print("Button Tapped")
+    // MARK: Functions
+    
+    // Faz o botão de nova tag aparecer e desaparecer com o textField
+    @objc private func didTapNewTagButton(){
+        guard let unwrappedTextFieldText = textFieldTag.text else{ return }
+        if !unwrappedTextFieldText.isEmpty{
+            tags.append(unwrappedTextFieldText)
+            
+            // Voltando ao estado original onde o textField está escondido
+            isAddingNewTag.toggle()
+            changeToAddingNewTagMode()
+        } else {
+            // Voltando ao estado original onde o textField está escondido
+            isAddingNewTag.toggle()
+            changeToAddingNewTagMode()
+        }
+    }
+    
+    func changeToAddingNewTagMode(){
+        textFieldTag.isHidden = !isAddingNewTag
     }
     
     // Faz o botão de ... mudar de estado e chama a função changeToEditingMode
@@ -255,30 +186,11 @@ class SheetViewController: UIViewController {
         changeToEditingMode()
     }
     
-    // Remove a tag do Array ao clicar no botão de -
-    @objc private func removeButtonTapped(){
-        tagWorkButton.removeFromSuperview()
-    }
-    
     // Muda para o modo de edição, onde as tags ppodem ser removidas
     func changeToEditingMode() {
-        if isEditingMode {
-            removeButton.isHidden = false
-        } else {
-            removeButton.isHidden = true
+        for i in arraybuttons{
+            i.isHidden = !isEditingMode
         }
-        //        let arrayOfTags = [tagWorkButton, tagFocusButton, tagStudyButton, tagWorkoutButton, tagMeditationButton]
-        //
-        //        if isEditingMode {
-        //            arrayOfTags.forEach { tag in
-        //                //                removeButton.isHidden = false
-        //                tag.addSubview(removeButton)
-        //            }
-        //        } else {
-        //            arrayOfTags.forEach { tag in
-        //                removeButton.isHidden = true
-        //            }
-        //        }
     }
     
 }
@@ -287,51 +199,105 @@ class SheetViewController: UIViewController {
     SheetViewController()
 }
 
-// MARK: Extensões para manter o app proporcional em todos os dispositivos
-extension Double {
-    public static let modalIdentifierLineWidthCtt = 0.23
-    public static let modalIdentifierLineHeightCtt = 0.01
-    
-    public static let ellipsisButtonWidthCtt = 0.07
-    public static let ellipsisButtonHeightCtt = 0.03
-    
-    public static let removeButtonWidthCtt = 0.06
-    public static let removeButtonHeightCtt = 0.03
-}
 
-extension CGFloat {
-    public static let modalIdentifierLineCornerRadius = 5.00
-    
-    public static let tagCornerRadius = 15.00
-    
-    public static let tagWidthCtt = 0.36
-    public static let tagHeightCtt = 0.06
-}
+// MARK: SheetViewController Extension
 
-//MARK: Extensão para fazer o texto ficar em negrito
-extension UIFont {
-    
-    static func preferredFont(for style: TextStyle, weight: Weight, italic: Bool = false) -> UIFont {
-
-        // Get the style's default pointSize
-        let traits = UITraitCollection(preferredContentSizeCategory: .large)
-        let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style, compatibleWith: traits)
-
-        // Get the font at the default size and preferred weight
-        var font = UIFont.systemFont(ofSize: desc.pointSize, weight: weight)
-        if italic == true {
-            font = font.with([.traitItalic])
-        }
-
-        // Setup the font to be auto-scalable
-        let metrics = UIFontMetrics(forTextStyle: style)
-        return metrics.scaledFont(for: font)
+extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    // Remove a tag do Array ao clicar no botão de -
+    @objc private func removeButtonTapped(_ sender: UIButton){
+        let index = sender.tag
+        tags.remove(at: index)
+        collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+        collectionView.reloadData()
     }
     
-    private func with(_ traits: UIFontDescriptor.SymbolicTraits...) -> UIFont {
-        guard let descriptor = fontDescriptor.withSymbolicTraits(UIFontDescriptor.SymbolicTraits(traits).union(fontDescriptor.symbolicTraits)) else {
-            return self
+    // Ação para o botão dentro da collectionView
+    @objc private func didTapButtonCV(_ sender: UIButton){
+        print("\(tags[sender.tag]) tapped!")
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.tags.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as? CustomCollectionViewCell else {
+            fatalError("Failed to dequeue cell")
         }
-        return UIFont(descriptor: descriptor, size: 0)
+        
+//        // Pega o número de itens no array de etiquetas e chama a célula x vezes com os nomes das tags
+        
+        cell.contentView.subviews.forEach { $0.removeFromSuperview() }
+        
+        // Configuração do botão principal
+        let myTagsView = UIButton(type: .system)
+        myTagsView.setTitle(tags[indexPath.item], for: .normal)
+        myTagsView.layer.borderWidth = 3
+        myTagsView.layer.borderColor = UIColor.black.cgColor
+        myTagsView.setTitleColor(.black, for: .normal)
+        myTagsView.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
+        myTagsView.layer.cornerRadius = .tagCornerRadius
+        myTagsView.layer.maskedCorners = [
+            .layerMinXMaxYCorner,
+            .layerMaxXMinYCorner,
+            .layerMaxXMaxYCorner
+        ]
+        
+        // Adjusting title label size to fit button width with padding
+        myTagsView.titleLabel?.adjustsFontSizeToFitWidth = true
+        myTagsView.titleLabel?.minimumScaleFactor = 0.3
+        myTagsView.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        
+        myTagsView.translatesAutoresizingMaskIntoConstraints = false
+        myTagsView.tag = indexPath.item
+        myTagsView.addTarget(self, action: #selector(didTapButtonCV), for: .touchUpInside)
+        
+        cell.contentView.addSubview(myTagsView)
+        
+        NSLayoutConstraint.activate([
+            myTagsView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+            myTagsView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+            myTagsView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            myTagsView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
+        ])
+        
+        // Botão de remoção (X)
+        let removeButton = UIButton(type: .system)
+        removeButton.setBackgroundImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
+        removeButton.tintColor = .systemGray
+        removeButton.translatesAutoresizingMaskIntoConstraints = false
+        removeButton.tag = indexPath.item
+        removeButton.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
+        removeButton.isHidden = !isEditing
+        
+        cell.contentView.addSubview(removeButton)
+        arraybuttons.append(removeButton)
+        
+        NSLayoutConstraint.activate([
+            removeButton.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            removeButton.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+            removeButton.widthAnchor.constraint(equalToConstant: 24),
+            removeButton.heightAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        return cell
+    }
+}
+
+extension SheetViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = view.bounds.width * .tagWidthCtt
+        let height = tagNewTagButton.bounds.height
+        
+        return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 12
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 40
     }
 }
