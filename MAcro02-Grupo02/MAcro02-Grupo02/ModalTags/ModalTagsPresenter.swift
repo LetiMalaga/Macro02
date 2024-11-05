@@ -9,7 +9,6 @@ import Foundation
 
 protocol ModalTagsPresenterProtocol: AnyObject {
     func presentTags(_ tags: [String])
-    func updateTags(_ tags: [String])
     func ShowAlert(_ title: String, _ message: String)
 }
 class ModalTagsPresenter: ModalTagsPresenterProtocol {

@@ -56,23 +56,23 @@ struct InsightsSwiftUIView: View {
                         .font(.headline)
                         .fontWeight(.bold)
                     
-                    Button {
-                        switch selectedTimeFrame {
-                        case "Dia":
-                            interactor?.insightsPerDay()
-                            print("insightsPerDay")
-                        case "Semana":
-                            interactor?.insightsPerWeek()
-                            print("insightsPerWeek")
-                        case "Mês":
-                            interactor?.insightsPerMonth()
-                            print("insightsPerMonth")
-                        default:
-                            print("erro")
-                        }
-                    } label: {
-                        Text("Refresh")
-                    }
+//                    Button {
+//                        switch selectedTimeFrame {
+//                        case "Dia":
+//                            interactor?.insightsPerDay()
+//                            print("insightsPerDay")
+//                        case "Semana":
+//                            interactor?.insightsPerWeek()
+//                            print("insightsPerWeek")
+//                        case "Mês":
+//                            interactor?.insightsPerMonth()
+//                            print("insightsPerMonth")
+//                        default:
+//                            print("erro")
+//                        }
+//                    } label: {
+//                        Text("Refresh")
+//                    }
                     
                 }
                 Spacer()
@@ -135,9 +135,6 @@ struct InsightsSwiftUIView: View {
                             Spacer()
                             
                             Text("\(data.session)")
-                            
-                            Text("3")
-                            
                                 .font(.system(size: 64, weight: .bold))
                                 .minimumScaleFactor(0.5)
                             Spacer()
@@ -167,9 +164,6 @@ struct InsightsSwiftUIView: View {
                             HStack{
                                 
                                 Text(data.pause)
-                                
-                                Text("10m")
-                                
                                     .font(.title)
                                     .bold()
                                     .minimumScaleFactor(0.5)
@@ -202,9 +196,7 @@ struct InsightsSwiftUIView: View {
                             HStack{
                                 
                                 Text("\(data.total )")
-                                
-                                Text("2:30h")
-                                
+                                                                
                                     .font(.title)
                                     .bold()
                                     .minimumScaleFactor(0.5)

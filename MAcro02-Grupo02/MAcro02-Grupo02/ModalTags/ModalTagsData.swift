@@ -20,8 +20,8 @@ class ModalTagsData: ModalTagsDataProtocol {
         if let savedData = UserDefaults.standard.stringArray(forKey: userDefaultsKey){
             completion(savedData)
         }else{
-            completion([])
-            print("No tags saved")
+            let tags = ["Trabalho", "Estudo", "Foco", "Treino", "Meditação"]
+            completion(tags)
         }
     }
     
