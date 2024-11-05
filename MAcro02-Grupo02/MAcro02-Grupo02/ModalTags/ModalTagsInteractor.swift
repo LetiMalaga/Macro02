@@ -15,7 +15,7 @@ protocol ModalTagsInteractorProtocol: AnyObject {
     func deleteTag(_ tag: String)
     func addTag(_ tag: String)
     
-    func validateTag(_ tag: String) -> Bool
+    func validateTag(_ tag: String, completion: @escaping (Bool) -> Void)
 }
 
 class ModalTagsInteractor: ModalTagsInteractorProtocol {
@@ -37,29 +37,33 @@ class ModalTagsInteractor: ModalTagsInteractorProtocol {
     
     func deleteTag(_ tag: String) {
         dataManager?.deleteTag(at: tag){ tags in
-            if let index = self.tags.firstIndex(where: { $0 == tag }){
-                self.tags.remove(at: index)
-                self.presenter?.updateTags(self.tags)
-            }
+            self.tags = tags
+            self.presenter?.presentTags(self.tags)
         }
     }
     
     func addTag(_ tag: String) {
-        if validateTag(tag){
-            dataManager?.addTag(tag){ tags in
-                self.tags = tags
-                self.presenter?.updateTags(tags)
+        self.validateTag(tag) { validate in
+            if validate{
+                self.dataManager?.addTag(tag){ tags in
+                    self.tags = tags
+                    self.presenter?.presentTags(tags)
+                }
+            }else {
+                self.presenter?.ShowAlert("Error", "Tag already exists or is empty")
             }
-        }else {
-            presenter?.ShowAlert("Error", "Tag already exists or is empty")
         }
+        
+        
     }
     
-    func validateTag(_ tag: String) -> Bool {
-        if tags.contains(tag) || tag.isEmpty{
-            return false
-        }else{
-            return true
+    func validateTag(_ tag: String, completion: @escaping (Bool) -> Void) {
+        dataManager?.fetchTags(){ tags in
+            if (tags.contains(tag) || tag.isEmpty){
+                completion(false)
+            }else{
+                completion(true)
+            }
         }
     }
 }

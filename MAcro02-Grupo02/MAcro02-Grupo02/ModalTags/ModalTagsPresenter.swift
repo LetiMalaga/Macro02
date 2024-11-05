@@ -20,11 +20,6 @@ class ModalTagsPresenter: ModalTagsPresenterProtocol {
         view?.reloadData()
     }
     
-    func updateTags(_ tags: [String]) {
-        view?.tags = tags
-        view?.reloadData()
-    }
-    
     func ShowAlert(_ title: String, _ message: String) {
         view?.showAlert(with: title, message: message)
     }
