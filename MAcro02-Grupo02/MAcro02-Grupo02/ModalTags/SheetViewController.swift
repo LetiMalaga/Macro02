@@ -20,7 +20,6 @@ class SheetViewController: UIViewController {
     
     var tags: [String] = []
     var arraybuttons: [UIButton] = []
-    var arrayQqr: [String] = []
     
     // MARK: UI Components
     
@@ -165,6 +164,7 @@ class SheetViewController: UIViewController {
         guard let unwrappedTextFieldText = textFieldTag.text else{ return }
         if !unwrappedTextFieldText.isEmpty{
             tags.append(unwrappedTextFieldText)
+//            updateTagsArray(array: tags)
             
             // Voltando ao estado original onde o textField está escondido
             isAddingNewTag.toggle()

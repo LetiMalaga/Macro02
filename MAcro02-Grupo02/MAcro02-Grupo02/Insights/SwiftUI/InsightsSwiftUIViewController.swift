@@ -6,6 +6,19 @@
 //
 
 import SwiftUI
+import Foundation
+
+protocol InsightsViewProtocol: AnyObject {
+    var data: InsightsDataView {get set}
+}
+
+class InsightsDataView: ObservableObject{
+    @Published var foco: String = "0"
+    @Published var session: Int = 0
+    @Published var pause: String = "0"
+    @Published var total: String = "0"
+    @Published var tags: [ChartData] = []
+}
 
 class InsightsSwiftUIViewController: UIHostingController<InsightsSwiftUIView> , InsightsViewProtocol{
     var interactor:InsightsInteractorProtocol!

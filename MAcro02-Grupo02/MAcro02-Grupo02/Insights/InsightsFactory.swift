@@ -17,9 +17,7 @@ class InsightsFactory {
         let viewController = InsightsSwiftUIViewController(interactor: interactor)
 
         presenter.view = viewController
-//        interactor.dataManager = data
         interactor.presenter = presenter
-//        viewController.interactor = interactor
         
         return viewController
     }
