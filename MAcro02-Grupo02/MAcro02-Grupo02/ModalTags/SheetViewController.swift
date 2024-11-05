@@ -26,7 +26,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     private let tagNewTagButton = UIButton(type: .system)
     private var isEditingMode: Bool = false
     private var isAddingNewTag: Bool = false
-    
+    var interactor:ModalTagsInteractorProtocol?
 //    var tags: [String] = []
     var arraybuttons: [UIButton] = []
     
@@ -205,6 +205,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     func reloadData() {
         collectionView.reloadData()
     }
+    
     func showAlert(with title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
