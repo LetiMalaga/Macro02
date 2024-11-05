@@ -28,7 +28,8 @@ class ModalTagsViewController: UIViewController {
     
     func configureSheet(){
         //Modal size and info
-        let vc = SheetViewController()
+//        let vc = SheetViewController()
+        let vc = ModalTagsFactory.makeModalTags()
         let navVC = UINavigationController(rootViewController: vc)
 //        
 //        if let sheet = navVC.sheetPresentationController {
@@ -38,7 +39,6 @@ class ModalTagsViewController: UIViewController {
 //        }
         
 //        navigationController?.present(navVC, animated: true)
-        
     }
     
     func setupButton(){
