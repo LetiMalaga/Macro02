@@ -36,7 +36,7 @@ class ModalTagsInteractor: ModalTagsInteractorProtocol {
     }
     
     func deleteTag(_ tag: String) {
-        dataManager?.deleteTag(at: tag){ success in
+        dataManager?.deleteTag(at: tag){ tags in
             if let index = self.tags.firstIndex(where: { $0 == tag }){
                 self.tags.remove(at: index)
                 self.presenter?.updateTags(self.tags)
@@ -46,9 +46,10 @@ class ModalTagsInteractor: ModalTagsInteractorProtocol {
     
     func addTag(_ tag: String) {
         if validateTag(tag){
-            dataManager?.addTag(tag)
-            tags.append(tag)
-            presenter?.updateTags(tags)
+            dataManager?.addTag(tag){ tags in
+                self.tags = tags
+                self.presenter?.updateTags(tags)
+            }
         }else {
             presenter?.ShowAlert("Error", "Tag already exists or is empty")
         }

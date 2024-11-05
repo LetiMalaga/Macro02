@@ -9,8 +9,8 @@ import Foundation
 
 protocol ModalTagsDataProtocol {
     func fetchTags(completion: @escaping ([String]) -> Void)
-    func addTag(_ tag: String)
-    func deleteTag(at tag: String, completion: @escaping (Bool) -> Void)
+    func addTag(_ tag: String, completion: @escaping ([String]) -> Void)
+    func deleteTag(at tag: String, completion: @escaping ([String]) -> Void)
 }
 
 class ModalTagsData: ModalTagsDataProtocol {
@@ -21,26 +21,29 @@ class ModalTagsData: ModalTagsDataProtocol {
             completion(savedData)
         }else{
             completion([])
+            print("No tags saved")
         }
     }
     
-    func addTag(_ tag: String) {
+    func addTag(_ tag: String, completion: @escaping ([String]) -> Void) {
         self.fetchTags { tags in
             var tagsWithNewTag = tags
             tagsWithNewTag.append(tag)
+            completion(tagsWithNewTag)
             UserDefaults.standard.set(tagsWithNewTag, forKey: self.userDefaultsKey)
         }
     }
     
-    func deleteTag(at tag: String, completion: @escaping (Bool) -> Void) {
+    func deleteTag(at tag: String, completion: @escaping ([String]) -> Void) {
         fetchTags { tags in
             if let index = tags.firstIndex(where: { $0 == tag }) {
                 var tagsWithoutDeletedTag = tags
                 tagsWithoutDeletedTag.remove(at: index)
                 UserDefaults.standard.set(tagsWithoutDeletedTag, forKey: self.userDefaultsKey)
-                completion(true)
+                completion(tagsWithoutDeletedTag)
             }else{
-                completion(false)
+                completion(tags)
+                print("Tag not found")
             }
         }
     }
