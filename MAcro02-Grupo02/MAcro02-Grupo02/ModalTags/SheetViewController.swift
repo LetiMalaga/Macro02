@@ -9,8 +9,17 @@
 
 import UIKit
 
-class SheetViewController: UIViewController {
+protocol SheetViewControllerProtocol: AnyObject {
+    var tags: [String] { get set }
     
+    func reloadData()
+    func showAlert(with title: String, message: String)
+}
+
+class SheetViewController: UIViewController, SheetViewControllerProtocol {
+    var tags: [String] = [] {
+        didSet {collectionView.reloadData()}
+    }
     // MARK: Variables
     private let modalIdentifierLine = UIView()
     private let modalTagLabel = UILabel()
@@ -18,7 +27,7 @@ class SheetViewController: UIViewController {
     private var isEditingMode: Bool = false
     private var isAddingNewTag: Bool = false
     
-    var tags: [String] = []
+//    var tags: [String] = []
     var arraybuttons: [UIButton] = []
     
     // MARK: UI Components
@@ -193,6 +202,14 @@ class SheetViewController: UIViewController {
         }
     }
     
+    func reloadData() {
+        collectionView.reloadData()
+    }
+    func showAlert(with title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 #Preview{
@@ -226,7 +243,7 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
             fatalError("Failed to dequeue cell")
         }
         
-//        // Pega o número de itens no array de etiquetas e chama a célula x vezes com os nomes das tags
+        //        // Pega o número de itens no array de etiquetas e chama a célula x vezes com os nomes das tags
         
         cell.contentView.subviews.forEach { $0.removeFromSuperview() }
         
@@ -285,7 +302,10 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
 }
 
-extension SheetViewController: UICollectionViewDelegateFlowLayout {
+extension SheetViewController: UICollectionViewDelegateFlowLayout{
+
+    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = view.bounds.width * .tagWidthCtt
         let height = tagNewTagButton.bounds.height
@@ -300,4 +320,5 @@ extension SheetViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 40
     }
+
 }

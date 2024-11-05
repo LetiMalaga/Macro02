@@ -12,7 +12,7 @@ enum ActivitiesType: String, Codable {
 struct ActivitiesModel: Codable {
     var id = UUID()
     var type: ActivitiesType
-    var Description: String
+    var description: String
     
 }
 protocol SettingsDataProtocol {

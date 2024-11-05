@@ -68,7 +68,7 @@ class SettingsIteractor: SettingsIteractorProtocol {
     }
     
     func addActivity(_ activity: ActivitiesModel) {
-        if validateActivityName(activity.Description) {
+        if validateActivityName(activity.description) {
             dataModel?.addActivity(activity) { success in
                 self.presenter?.addActivity(activity)
             }
