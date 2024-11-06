@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController, SettingsViewProtocol {
-    
     var soundButton: Bool = false {
         didSet { soundSwitch.isOn = soundButton }
     }
