@@ -9,18 +9,26 @@
 
 import UIKit
 
-class SheetViewController: UIViewController {
+protocol SheetViewControllerProtocol: AnyObject {
+    var tags: [String] { get set }
     
+    func reloadData()
+    func showAlert(with title: String, message: String)
+}
+
+class SheetViewController: UIViewController, SheetViewControllerProtocol {
+    var tags: [String] = [] {
+        didSet {collectionView.reloadData()}
+    }
     // MARK: Variables
     private let modalIdentifierLine = UIView()
     private let modalTagLabel = UILabel()
     private let tagNewTagButton = UIButton(type: .system)
     private var isEditingMode: Bool = false
     private var isAddingNewTag: Bool = false
-    
-    var tags: [String] = []
+    var interactor:ModalTagsInteractorProtocol?
+//    var tags: [String] = []
     var arraybuttons: [UIButton] = []
-    var arrayQqr: [String] = []
     
     // MARK: UI Components
     
@@ -53,13 +61,6 @@ class SheetViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: isEditingMode ? "ellipsis.circle.fill" : "ellipsis.circle"), style: .plain, target: self, action: #selector(toggleState))
         navigationItem.rightBarButtonItem?.tintColor = .black
-        
-        tags.append("Work")
-        tags.append("Study")
-        tags.append("Focus")
-        tags.append("Workout")
-        tags.append("Meditation")
-        
         
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
@@ -164,7 +165,7 @@ class SheetViewController: UIViewController {
     @objc private func didTapNewTagButton(){
         guard let unwrappedTextFieldText = textFieldTag.text else{ return }
         if !unwrappedTextFieldText.isEmpty{
-            tags.append(unwrappedTextFieldText)
+            interactor?.addTag(unwrappedTextFieldText)
             
             // Voltando ao estado original onde o textField está escondido
             isAddingNewTag.toggle()
@@ -193,6 +194,15 @@ class SheetViewController: UIViewController {
         }
     }
     
+    func reloadData() {
+        collectionView.reloadData()
+    }
+    
+    func showAlert(with title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 #Preview{
@@ -226,7 +236,7 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
             fatalError("Failed to dequeue cell")
         }
         
-//        // Pega o número de itens no array de etiquetas e chama a célula x vezes com os nomes das tags
+        //        // Pega o número de itens no array de etiquetas e chama a célula x vezes com os nomes das tags
         
         cell.contentView.subviews.forEach { $0.removeFromSuperview() }
         
@@ -285,7 +295,10 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
 }
 
-extension SheetViewController: UICollectionViewDelegateFlowLayout {
+extension SheetViewController: UICollectionViewDelegateFlowLayout{
+
+    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = view.bounds.width * .tagWidthCtt
         let height = tagNewTagButton.bounds.height
@@ -300,4 +313,5 @@ extension SheetViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 40
     }
+
 }
