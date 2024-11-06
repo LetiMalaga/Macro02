@@ -26,10 +26,9 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     private let tagNewTagButton = UIButton(type: .system)
     private var isEditingMode: Bool = false
     private var isAddingNewTag: Bool = false
-    
+    var interactor:ModalTagsInteractorProtocol?
 //    var tags: [String] = []
     var arraybuttons: [UIButton] = []
-    var arrayQqr: [String] = []
     
     // MARK: UI Components
     
@@ -62,13 +61,6 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: isEditingMode ? "ellipsis.circle.fill" : "ellipsis.circle"), style: .plain, target: self, action: #selector(toggleState))
         navigationItem.rightBarButtonItem?.tintColor = .black
-        
-        tags.append("Work")
-        tags.append("Study")
-        tags.append("Focus")
-        tags.append("Workout")
-        tags.append("Meditation")
-        
         
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
@@ -173,7 +165,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     @objc private func didTapNewTagButton(){
         guard let unwrappedTextFieldText = textFieldTag.text else{ return }
         if !unwrappedTextFieldText.isEmpty{
-            tags.append(unwrappedTextFieldText)
+            interactor?.addTag(unwrappedTextFieldText)
             
             // Voltando ao estado original onde o textField está escondido
             isAddingNewTag.toggle()
@@ -205,6 +197,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     func reloadData() {
         collectionView.reloadData()
     }
+    
     func showAlert(with title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
