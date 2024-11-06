@@ -28,9 +28,10 @@ class ModalTagsViewController: UIViewController {
     
     func configureSheet(){
         //Modal size and info
-//        let vc = SheetViewController()
-        let vc = ModalTagsFactory.makeModalTags()
-        let navVC = UINavigationController(rootViewController: vc)
+////        let vc = SheetViewController()
+//        let vc = ModalTagsFactory.makeModalTags()
+//
+//        let navVC = UINavigationController(rootViewController: vc)
 //        
 //        if let sheet = navVC.sheetPresentationController {
 //            sheet.detents = [.custom(resolver: { context in
@@ -71,7 +72,7 @@ class ModalTagsViewController: UIViewController {
     }
     @objc private func openModal(){
         
-        let vc = SheetViewController()
+        let vc = ModalTagsFactory.makeModalTags()
         let navVC = UINavigationController(rootViewController: vc)
         
         

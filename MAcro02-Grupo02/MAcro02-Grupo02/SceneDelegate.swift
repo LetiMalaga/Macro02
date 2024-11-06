@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        window.rootViewController = tabBar
       
         let modalTagsVC = ModalTagsViewController()
-        let sheetVC = SheetViewController()
+//        let sheetVC = SheetViewController()
         
         let navControler = UINavigationController(rootViewController: modalTagsVC )
         window.rootViewController = navControler

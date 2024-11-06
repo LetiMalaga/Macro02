@@ -12,7 +12,7 @@ import UIKit
 protocol SheetViewControllerProtocol: AnyObject {
     var tags: [String] { get set }
     
-    func reloadData()
+    func removeData(index: Int)
     func showAlert(with title: String, message: String)
 }
 
@@ -26,7 +26,9 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     private let tagNewTagButton = UIButton(type: .system)
     private var isEditingMode: Bool = false
     private var isAddingNewTag: Bool = false
-    var interactor:ModalTagsInteractorProtocol?
+    
+    
+    public var interactor:ModalTagsInteractorProtocol?
 //    var tags: [String] = []
     var arraybuttons: [UIButton] = []
     
@@ -58,7 +60,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        
+        interactor?.fetchTags()
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: isEditingMode ? "ellipsis.circle.fill" : "ellipsis.circle"), style: .plain, target: self, action: #selector(toggleState))
         navigationItem.rightBarButtonItem?.tintColor = .black
         
@@ -166,7 +168,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         guard let unwrappedTextFieldText = textFieldTag.text else{ return }
         if !unwrappedTextFieldText.isEmpty{
             interactor?.addTag(unwrappedTextFieldText)
-            
+            textFieldTag.text = ""
             // Voltando ao estado original onde o textField está escondido
             isAddingNewTag.toggle()
             changeToAddingNewTagMode()
@@ -179,6 +181,11 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     
     func changeToAddingNewTagMode(){
         textFieldTag.isHidden = !isAddingNewTag
+        if isAddingNewTag{
+            tagNewTagButton.setTitle("Save", for: .normal)
+        }else{
+            tagNewTagButton.setTitle("New Tag", for: .normal)
+        }
     }
     
     // Faz o botão de ... mudar de estado e chama a função changeToEditingMode
@@ -194,8 +201,9 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         }
     }
     
-    func reloadData() {
-        collectionView.reloadData()
+    func removeData(index: Int) {
+//        collectionView.deleteItems(at: [IndexPath(item: index, section: 1)])
+        
     }
     
     func showAlert(with title: String, message: String) {
@@ -216,9 +224,7 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
     // Remove a tag do Array ao clicar no botão de -
     @objc private func removeButtonTapped(_ sender: UIButton){
         let index = sender.tag
-        tags.remove(at: index)
-        collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
-        collectionView.reloadData()
+        interactor?.deleteTag(tags[index])
     }
     
     // Ação para o botão dentro da collectionView
@@ -236,11 +242,8 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
             fatalError("Failed to dequeue cell")
         }
         
-        //        // Pega o número de itens no array de etiquetas e chama a célula x vezes com os nomes das tags
-        
         cell.contentView.subviews.forEach { $0.removeFromSuperview() }
         
-        // Configuração do botão principal
         let myTagsView = UIButton(type: .system)
         myTagsView.setTitle(tags[indexPath.item], for: .normal)
         myTagsView.layer.borderWidth = 3
@@ -248,17 +251,6 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         myTagsView.setTitleColor(.black, for: .normal)
         myTagsView.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         myTagsView.layer.cornerRadius = .tagCornerRadius
-        myTagsView.layer.maskedCorners = [
-            .layerMinXMaxYCorner,
-            .layerMaxXMinYCorner,
-            .layerMaxXMaxYCorner
-        ]
-        
-        // Adjusting title label size to fit button width with padding
-        myTagsView.titleLabel?.adjustsFontSizeToFitWidth = true
-        myTagsView.titleLabel?.minimumScaleFactor = 0.3
-        myTagsView.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        
         myTagsView.translatesAutoresizingMaskIntoConstraints = false
         myTagsView.tag = indexPath.item
         myTagsView.addTarget(self, action: #selector(didTapButtonCV), for: .touchUpInside)
@@ -272,17 +264,19 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
             myTagsView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
         ])
         
-        // Botão de remoção (X)
         let removeButton = UIButton(type: .system)
         removeButton.setBackgroundImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
         removeButton.tintColor = .systemGray
         removeButton.translatesAutoresizingMaskIntoConstraints = false
         removeButton.tag = indexPath.item
         removeButton.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
-        removeButton.isHidden = !isEditing
+        removeButton.isHidden = !isEditingMode
+        
+        if !arraybuttons.contains(removeButton) {
+            arraybuttons.append(removeButton)
+        }
         
         cell.contentView.addSubview(removeButton)
-        arraybuttons.append(removeButton)
         
         NSLayoutConstraint.activate([
             removeButton.topAnchor.constraint(equalTo: cell.contentView.topAnchor),

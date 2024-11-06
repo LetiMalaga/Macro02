@@ -9,7 +9,7 @@ import Foundation
 
 protocol ModalTagsPresenterProtocol: AnyObject {
     func presentTags(_ tags: [String])
-    func updateTags(_ tags: [String])
+    func removeTag(_ index: Int, _ tags: [String])
     func ShowAlert(_ title: String, _ message: String)
 }
 class ModalTagsPresenter: ModalTagsPresenterProtocol {
@@ -17,12 +17,11 @@ class ModalTagsPresenter: ModalTagsPresenterProtocol {
     
     func presentTags(_ tags: [String]) {
         view?.tags = tags
-        view?.reloadData()
     }
     
-    func updateTags(_ tags: [String]) {
+    func removeTag(_ index: Int, _ tags: [String]) {
         view?.tags = tags
-        view?.reloadData()
+        view?.removeData(index: index)
     }
     
     func ShowAlert(_ title: String, _ message: String) {

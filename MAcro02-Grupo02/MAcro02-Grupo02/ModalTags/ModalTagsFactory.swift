@@ -10,9 +10,9 @@ import UIKit
 
 class ModalTagsFactory {
     static func makeModalTags() -> UIViewController{
-        var vc = SheetViewController()
-        var interactor = ModalTagsInteractor()
-        var presenter = ModalTagsPresenter()
+        let vc = SheetViewController()
+        let interactor = ModalTagsInteractor()
+        let presenter = ModalTagsPresenter()
         let data = ModalTagsData()
         
         presenter.view = vc
