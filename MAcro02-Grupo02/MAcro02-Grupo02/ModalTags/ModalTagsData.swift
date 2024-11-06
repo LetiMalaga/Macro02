@@ -29,6 +29,7 @@ class ModalTagsData: ModalTagsDataProtocol {
             var tagsWithNewTag = tags
             tagsWithNewTag.append(tag)
             UserDefaults.standard.set(tagsWithNewTag, forKey: self.userDefaultsKey)
+            print(tag)
         }
     }
     
