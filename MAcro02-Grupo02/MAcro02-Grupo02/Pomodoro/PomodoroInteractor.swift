@@ -38,7 +38,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     private var breathPhase: Int = 0 // Tracks current breath phase (0 for inhale, 1 for exhale)
     private var pendingPhaseSwitch: Bool = false // Track if the phase switch is pending
     private var appDidEnterBackgroundDate: Date?
-    
+
     func toggleBreathing() {
         wantsBreathing.toggle()
     }

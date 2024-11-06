@@ -72,16 +72,16 @@ class ModalTagsViewController: UIViewController {
     }
     @objc private func openModal(){
         
-        let vc = ModalTagsFactory.makeModalTags()
-        let navVC = UINavigationController(rootViewController: vc)
-        
-        
-        if let sheet = navVC.sheetPresentationController {
-            sheet.detents = [.custom(resolver: { context in
-                context.maximumDetentValue * .modalViewHeightCtt
-            }), .medium(), .large()]
-        }
-        navigationController?.present(navVC, animated: true)
+//        let vc = ModalTagsFactory.makeModalTags()
+//        let navVC = UINavigationController(rootViewController: vc)
+//        
+//        
+//        if let sheet = navVC.sheetPresentationController {
+//            sheet.detents = [.custom(resolver: { context in
+//                context.maximumDetentValue * .modalViewHeightCtt
+//            }), .medium(), .large()]
+//        }
+//        navigationController?.present(navVC, animated: true)
     }
         
     

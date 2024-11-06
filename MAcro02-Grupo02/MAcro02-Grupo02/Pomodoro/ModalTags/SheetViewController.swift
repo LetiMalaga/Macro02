@@ -9,6 +9,10 @@
 
 import UIKit
 
+
+protocol PassingTag{
+    func passing(_ tag:String)
+}
 protocol SheetViewControllerProtocol: AnyObject {
     var tags: [String] { get set }
     
@@ -19,13 +23,14 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     var tags: [String] = [] {
         didSet {collectionView.reloadData()}
     }
+    private var selectedTag:String?
     // MARK: Variables
     private let modalIdentifierLine = UIView()
     private let modalTagLabel = UILabel()
     private let tagNewTagButton = UIButton(type: .system)
     private var isEditingMode: Bool = false
     private var isAddingNewTag: Bool = false
-    
+    var delegate: PassingTag?
     
     public var interactor:ModalTagsInteractorProtocol?
 //    var tags: [String] = []
@@ -66,7 +71,9 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
     }
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        delegate?.passing(selectedTag ?? "erro")
+    }
     private func setupView(){
         view.backgroundColor = .systemBackground
         configureSheet()
@@ -223,6 +230,7 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     // Ação para o botão dentro da collectionView
     @objc private func didTapButtonCV(_ sender: UIButton){
+        selectedTag = tags[sender.tag]
         print("\(tags[sender.tag]) tapped!")
     }
     

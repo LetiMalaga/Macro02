@@ -8,12 +8,15 @@
 import Foundation
 import UIKit
 
+
 protocol ModalTagsInteractorProtocol: AnyObject {
+    
     var dataManager: ModalTagsDataProtocol? { get }
     
     func fetchTags()
     func deleteTag(_ tag: String)
     func addTag(_ tag: String)
+    func selectedTag(_ tag:String)
     
     func validateTag(_ tag: String) -> Bool
 }
@@ -23,6 +26,8 @@ class ModalTagsInteractor: ModalTagsInteractorProtocol {
     var presenter: ModalTagsPresenterProtocol?
     var tags : [String] = []
     
+    
+
     func fetchTags() {
         dataManager?.fetchTags(completion: { tags in
             self.tags = tags
@@ -33,10 +38,8 @@ class ModalTagsInteractor: ModalTagsInteractorProtocol {
     
     func deleteTag(_ tag: String) {
         dataManager?.deleteTag(at: tag){ tags in
-            if let index = self.tags.firstIndex(where: { $0 == tag }){
                 self.tags = tags
                 self.presenter?.presentTags(tags)
-            }
         }
     }
     
@@ -49,6 +52,9 @@ class ModalTagsInteractor: ModalTagsInteractorProtocol {
         }else {
             presenter?.ShowAlert("Error", "Tag already exists or is empty")
         }
+    }
+    func selectedTag(_ tag:String){
+        UserDefaults.standard.set(tag, forKey: "tagButton")
     }
     
     func validateTag(_ tag: String) -> Bool {
