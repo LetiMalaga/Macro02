@@ -22,12 +22,12 @@ class SettingsPresenter: SettingsPresenterProtocol {
     var view : SettingsViewProtocol?
     
     func uploadActivitys(_ activity: [ActivitiesModel]) {
-        view?.activitys = activity
+        view?.activities = activity
         view?.reloadData()
     }
     
     func addActivity(_ activity: ActivitiesModel) {
-        view?.activitys.append(activity)
+        view?.activities.append(activity)
         view?.reloadData()
     }
     
@@ -36,7 +36,7 @@ class SettingsPresenter: SettingsPresenterProtocol {
     }
     
     func deleteActivity(at index: Int) {
-        view?.activitys.remove(at: index)
+        view?.activities.remove(at: index)
         view?.reloadData()
     }
     
@@ -63,7 +63,7 @@ protocol SettingsViewProtocol: AnyObject {
     var vibrationButton: Bool { get set }
     var breathingButton: Bool { get set }
     var recommendationButton: Bool { get set }
-    var activitys: [ActivitiesModel] { get set }
+    var activities: [ActivitiesModel] { get set }
     
     func reloadData()
 }

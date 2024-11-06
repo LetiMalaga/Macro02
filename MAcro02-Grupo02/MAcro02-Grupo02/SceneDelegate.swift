@@ -12,32 +12,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-    
+
 // POMODORO
 
         let window = UIWindow(windowScene: windowScene)
-      
+
         let pomodoroVC = PomodoroRouter().build()
         let insightVC = InsightsFactory.makeInsights()
         let tabBar =  MainTabBarController()
-        window.rootViewController = tabBar
-      
+//        window.rootViewController = tabBar
+
         let modalTagsVC = ModalTagsViewController()
         let sheetVC = SheetViewController()
-        
+        let ajustesVC = SettingsViewController()
         let navControler = UINavigationController(rootViewController: modalTagsVC )
+        window.rootViewController = navControler
 
 
-          window.makeKeyAndVisible()
+        window.makeKeyAndVisible()
 
-//        let window = UIWindow(windowScene: windowScene)
-//        
-//        let vc = ActivitiesViewController()
-//        
-//        window.rootViewController = vc
-//        window.makeKeyAndVisible()
-        
+
         self.window = window
     }
 }
-
