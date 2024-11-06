@@ -12,7 +12,6 @@ import UIKit
 protocol SheetViewControllerProtocol: AnyObject {
     var tags: [String] { get set }
     
-    func removeData(index: Int)
     func showAlert(with title: String, message: String)
 }
 
@@ -199,11 +198,6 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         for i in arraybuttons{
             i.isHidden = !isEditingMode
         }
-    }
-    
-    func removeData(index: Int) {
-//        collectionView.deleteItems(at: [IndexPath(item: index, section: 1)])
-        
     }
     
     func showAlert(with title: String, message: String) {

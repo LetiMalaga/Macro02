@@ -35,7 +35,7 @@ class ModalTagsInteractor: ModalTagsInteractorProtocol {
         dataManager?.deleteTag(at: tag){ tags in
             if let index = self.tags.firstIndex(where: { $0 == tag }){
                 self.tags = tags
-                self.presenter?.removeTag(index, self.tags)
+                self.presenter?.presentTags(tags)
             }
         }
     }
