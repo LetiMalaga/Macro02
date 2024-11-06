@@ -11,6 +11,8 @@ import CloudKit
 
 class PomodoroData {
     let privateDatabase = CKContainer.default().privateCloudDatabase
+    let userDefaultsStd = UserDefaults.standard
+    let udNewTagDataKey = "NewTagData"
     
     func savePomodoro(focusTime: Int, breakTime: Int, date: Date, tag: String, completion: @escaping (Result<CKRecord, Error>) -> Void)async throws -> CKRecord {
         
@@ -55,8 +57,16 @@ class PomodoroData {
                 }
             }
         }
-        
     }
+    
+//    // MARK: User Defaults New Tag CRUD
+//    func readTagsArray() {
+//        guard userDefaultsStd.object(forKey: udNewTagDataKey) != nil else { return }
+//    }
+//    
+//    func updateTagsArray(array: [String]) {
+//        userDefaultsStd.set(array, forKey: udNewTagDataKey)
+//    }
 }
 
 struct TimerRecord {

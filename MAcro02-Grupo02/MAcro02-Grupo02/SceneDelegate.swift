@@ -22,7 +22,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBar =  MainTabBarController()
         window.rootViewController = tabBar
       
-        let insightVC = InsightsSwiftUIViewController()
         let modalTagsVC = ModalTagsViewController()
         let sheetVC = SheetViewController()
         
