@@ -166,7 +166,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             
         case 2:
             let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
-            cell.textLabel?.text = tableView.isEditing ? "Concluir" : "Editar"
+            cell.textLabel?.text = "Editar"
             cell.textLabel?.textColor = .systemBlue
             cell.textLabel?.textAlignment = .center
             return cell
@@ -201,7 +201,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "App"
+            return "Notificações"
         case 1:
             return "Sugestões"
         case 2:

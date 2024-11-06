@@ -24,7 +24,7 @@ class NewActivityViewController: UIViewController {
     
     private let descriptionTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Descrição da Atividade"
+        textField.placeholder = "Descreva a Atividade"
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 16)
         return textField
