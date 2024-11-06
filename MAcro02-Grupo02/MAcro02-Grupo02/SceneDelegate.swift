@@ -25,8 +25,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let insightVC = InsightsSwiftUIViewController()
         let modalTagsVC = ModalTagsViewController()
         let sheetVC = SheetViewController()
+        let ajustesVC = SettingsViewController()
         
-        let navControler = UINavigationController(rootViewController: modalTagsVC )
+        let navControler = UINavigationController(rootViewController: ajustesVC )
 
 
           window.makeKeyAndVisible()

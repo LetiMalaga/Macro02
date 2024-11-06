@@ -34,7 +34,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         didSet { tableView.reloadData() }
     }
     
-    var activitys: [ActivitiesModel] = [] {
+    var activities: [ActivitiesModel] = [] {
         didSet { tableView.reloadData() }
     }
     
@@ -59,8 +59,8 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     func reloadData() {
         interactor?.fetchActivities()
         
-        longBreakActivities = activitys.filter { $0.type == .long }
-        shortBreakActivities = activitys.filter { $0.type == .short }
+        longBreakActivities = activities.filter { $0.type == .long }
+        shortBreakActivities = activities.filter { $0.type == .short }
         tableView.reloadData()
     }
     
