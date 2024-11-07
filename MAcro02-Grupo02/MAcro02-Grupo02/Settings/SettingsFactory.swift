@@ -15,10 +15,10 @@ class SettingsFactory {
         let presenter = SettingsPresenter()
         let data = SettingsData()
         
-        presenter.view = vc
+//        presenter.view = vc
         interactor.presenter = presenter
         interactor.dataModel = data
-        vc.interactor = interactor
+//        vc.interactor = interactor
         
         return vc
         
