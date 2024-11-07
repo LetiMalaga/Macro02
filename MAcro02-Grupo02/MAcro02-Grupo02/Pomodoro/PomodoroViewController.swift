@@ -12,6 +12,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     var interactor: PomodoroInteractorProtocol?
     let pomoConfig = PomoDefaults()
     
+
     public var isRuning = false
     
     // UI Elements
@@ -234,11 +235,11 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         timeLabel.isHidden = false // Show main timer once breathing is done
         
         if isLongBreak {
-            intervaloLabel.text = "Long Break"
+            intervaloLabel.text = "Pausa Longa"
         } else if isWorkPhase {
-            intervaloLabel.text = "Work Time"
+            intervaloLabel.text = "Trabalho"
         } else {
-            intervaloLabel.text = "Break Time"
+            intervaloLabel.text = "Pausa"
         }
     }
     
@@ -247,16 +248,17 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     @objc func tags() {
-        let vc = TagModalsViewController()
-        vc.modalPresentationStyle = .custom
-        vc.transitioningDelegate = self
         
-        if let popoverController = vc.popoverPresentationController {
-            popoverController.delegate = self
-            popoverController.permittedArrowDirections = .up
+        let vc = ModalTagsFactory.makeModalTags(delegate: self)
+        let navVC = UINavigationController(rootViewController: vc)
+        
+        if let sheet = navVC.sheetPresentationController {
+            sheet.detents = [.custom(resolver: { context in
+                context.maximumDetentValue * .modalViewHeightCtt
+            }), .medium(), .large()]
         }
         
-        present(vc, animated: true, completion: nil)
+        navigationController?.present(navVC, animated: true)
     }
     
     @objc func configTime() {
@@ -269,9 +271,14 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
 }
 
-extension PomodoroViewController: UIViewControllerTransitioningDelegate {
+extension PomodoroViewController: UIViewControllerTransitioningDelegate, PassingTag {
+    func passing(_ tag: String) {
+        tagframe.tagline.text = tag
+    }
+    
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return CustomPresentationController(presentedViewController: presented, presenting: presenting)
     }
+    
 }
 

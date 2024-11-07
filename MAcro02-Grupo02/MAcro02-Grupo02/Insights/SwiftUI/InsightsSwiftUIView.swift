@@ -73,7 +73,7 @@ struct InsightsSwiftUIView: View {
                     } label: {
                         Text("Refresh")
                     }
-
+                    
                 }
                 Spacer()
                 
@@ -104,10 +104,16 @@ struct InsightsSwiftUIView: View {
                     Spacer()
                     
                     HStack(alignment: .bottom){
+                        
                         Text(data.foco)
                             .font(.system(size: 64, weight: .bold))
                             .minimumScaleFactor(0.5)
                         Text("horas")
+                        
+                        Text(String(Date().formatted(date: .omitted, time: .shortened)))
+                            .font(.system(size: 64, weight: .bold))
+                            .minimumScaleFactor(0.5)
+                        Text("Horas")
                             .minimumScaleFactor(0.5)
                         Spacer()
                     }
@@ -127,7 +133,11 @@ struct InsightsSwiftUIView: View {
                                 .bold()
                                 .minimumScaleFactor(0.5)
                             Spacer()
+                            
                             Text("\(data.session)")
+                            
+                            Text("3")
+                            
                                 .font(.system(size: 64, weight: .bold))
                                 .minimumScaleFactor(0.5)
                             Spacer()
@@ -155,7 +165,11 @@ struct InsightsSwiftUIView: View {
                                 Spacer()
                             }
                             HStack{
+                                
                                 Text(data.pause)
+                                
+                                Text("10m")
+                                
                                     .font(.title)
                                     .bold()
                                     .minimumScaleFactor(0.5)
@@ -186,7 +200,11 @@ struct InsightsSwiftUIView: View {
                                 Spacer()
                             }
                             HStack{
+                                
                                 Text("\(data.total )")
+                                
+                                Text("2:30h")
+                                
                                     .font(.title)
                                     .bold()
                                     .minimumScaleFactor(0.5)
@@ -202,6 +220,7 @@ struct InsightsSwiftUIView: View {
                     .scaledToFill()
                 }
                 .frame(width: (UIScreen.main.bounds.width * .bgPauseAndTotalRectanglesWidthCtt - .bgPauseAndTotalRectanglesWidthSubtractionCtt), height: UIScreen.main.bounds.height * .bgPauseAndTotalRectanglesHeightCtt)
+                
             }
             
             ZStack{
@@ -209,12 +228,12 @@ struct InsightsSwiftUIView: View {
                 //                .frame(width: CGFloat(UIScreen.main.bounds.width-40), height: CGFloat(UIScreen.main.bounds.height/3))
                 
                 if data.session == 0 {
-                        RoundedRectangle(cornerRadius: 15)
-//                            .frame(width: x, height: y)
-                            .foregroundStyle(.black)
-                            .opacity(0.25)
-                            
-                    }
+                    RoundedRectangle(cornerRadius: 15)
+                    //                            .frame(width: x, height: y)
+                        .foregroundStyle(.black)
+                        .opacity(0.25)
+                    
+                }
             }
             Spacer()
         }
@@ -222,7 +241,9 @@ struct InsightsSwiftUIView: View {
         .navigationTitle("Resultados")
         .onAppear {
             interactor?.insightsPerDay()
+            
         }
+        
     }
 }
 
