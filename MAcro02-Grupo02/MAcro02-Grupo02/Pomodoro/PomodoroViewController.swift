@@ -18,8 +18,8 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let pauseLabel: UILabel = {
         let label = UILabel()
         label.text = "Mantenha pressionado para pausar"
-        label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.textColor = .black
+        label.font = AppFonts.regular.bold()
+        label.textColor = AppColors.textPrimary
         label.textAlignment = .center
         label.isHidden = true
         return label
@@ -27,8 +27,8 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
-        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 74, weight: .bold)
+        label.textColor = AppColors.textPrimary
         label.textAlignment = .center
         label.isUserInteractionEnabled = true
         
@@ -37,9 +37,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     private let intervaloLabel: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 22)
         label.layer.opacity = 0.3
-        label.textColor = .black
+        
+        label.font = AppFonts.title2.bold()
+        label.textColor = AppColors.textPrimary
         
         return label
     }()
