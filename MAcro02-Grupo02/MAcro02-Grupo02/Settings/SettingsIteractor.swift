@@ -18,6 +18,7 @@ protocol SettingsIteractorProtocol: AnyObject {
     func changeRecomendations()
     
     func fetchActivities()
+    func fetchTags(completion: @escaping (Bool) -> Void)
     func addActivity(_ activity: ActivitiesModel)
     func deleteActivity(at index: Int)
     func getActivity(at index: Int)
@@ -65,6 +66,18 @@ class SettingsIteractor: SettingsIteractorProtocol {
                 self?.presenter?.uploadActivitys(activities)
             }
         }
+    }
+    
+    func fetchTags(completion: @escaping (Bool) -> Void){
+        dataModel?.fetchTags(completion: { [weak self] tags in
+            if tags.isEmpty{
+                print("no tags in memory")
+                completion(false)
+            }else{
+                self?.presenter?.uploadTags(tags)
+                completion(true)
+            }
+        })
     }
     
     func addActivity(_ activity: ActivitiesModel) {

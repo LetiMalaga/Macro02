@@ -13,16 +13,19 @@ struct ActivitiesModel: Codable {
     var id = UUID()
     var type: ActivitiesType
     var description: String
+    var tag:String
     
 }
 protocol SettingsDataProtocol {
     func fetchActivities(completion: @escaping ([ActivitiesModel]) -> Void)
+    func fetchTags(completion: @escaping ([String]) -> Void) 
     func addActivity(_ activity: ActivitiesModel, completion: @escaping (Bool) -> Void)
     func deleteActivity(at id: UUID, completion: @escaping (Bool) -> Void)
 }
 
 class SettingsData: SettingsDataProtocol{
     private let userDefaultsKey = "activitiesData"
+    private let userDefaultsKeyTags = "tagsData"
     
     func fetchActivities(completion: @escaping ([ActivitiesModel]) -> Void) {
         if let savedData = UserDefaults.standard.data(forKey: userDefaultsKey),
@@ -32,6 +35,10 @@ class SettingsData: SettingsDataProtocol{
         } else {
             completion([])
         }
+    }
+    func fetchTags(completion: @escaping ([String]) -> Void) {
+        guard let savedData = UserDefaults.standard.stringArray(forKey: userDefaultsKeyTags) else {return}
+        completion(savedData)
     }
     
     func addActivity(_ activity: ActivitiesModel, completion: @escaping (Bool) -> Void) {

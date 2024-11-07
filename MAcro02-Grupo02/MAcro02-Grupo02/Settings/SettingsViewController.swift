@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController, SettingsViewProtocol {
+    
     var soundButton: Bool = false {
         didSet { soundSwitch.isOn = soundButton }
     }
@@ -42,6 +43,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     private let vibrationSwitch = UISwitch()
     private let breathingSwitch = UISwitch()
     private let recommendationSwitch = UISwitch()
+    var tags:[String] = []
     
     var interactor: SettingsIteractorProtocol?
     
@@ -239,6 +241,11 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func presentNewActivity(type: ActivitiesType) {
         let newActivityVC = NewActivityViewController()
         newActivityVC.activityType = type
+        newActivityVC.interactor = self.interactor
+        interactor?.fetchTags(){ _ in
+            newActivityVC.tags = self.tags
+        }
+        print(self.tags)
         newActivityVC.modalPresentationStyle = .fullScreen
         present(newActivityVC, animated: true, completion: nil)
     }

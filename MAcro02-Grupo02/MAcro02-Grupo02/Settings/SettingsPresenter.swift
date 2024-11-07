@@ -9,6 +9,7 @@ import Foundation
 
 protocol SettingsPresenterProtocol: AnyObject {
     func uploadActivitys(_ activity: [ActivitiesModel])
+    func uploadTags(_ tags:[String])
     func addActivity(_ activity: ActivitiesModel)
     func returnActivity(activity: ActivitiesModel)
     func deleteActivity(at index: Int)
@@ -25,7 +26,9 @@ class SettingsPresenter: SettingsPresenterProtocol {
         view?.activities = activity
         view?.reloadData()
     }
-    
+    func uploadTags(_ tags:[String]){
+        view?.tags = tags
+    }
     func addActivity(_ activity: ActivitiesModel) {
         view?.activities.append(activity)
         view?.reloadData()
@@ -64,6 +67,8 @@ protocol SettingsViewProtocol: AnyObject {
     var breathingButton: Bool { get set }
     var recommendationButton: Bool { get set }
     var activities: [ActivitiesModel] { get set }
+    var tags:[String] { get set }
+
     
     func reloadData()
 }
