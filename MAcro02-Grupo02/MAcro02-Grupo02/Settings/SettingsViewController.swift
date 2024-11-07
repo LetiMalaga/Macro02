@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController, SettingsViewProtocol {
+    var editButton: String = "Editar"
+    private var isEditingBreakActivities: Bool = false
+    
     var soundButton: Bool = false {
         didSet { soundSwitch.isOn = soundButton }
     }
@@ -87,6 +90,13 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     }
     
     @objc func toggleEditMode() {
+        if isEditingBreakActivities {
+            editButton = "Salvar"
+            isEditingBreakActivities.toggle()
+        } else {
+            editButton = "Editar"
+            isEditingBreakActivities.toggle()
+        }
         tableView.setEditing(!tableView.isEditing, animated: true)
         tableView.reloadSections(IndexSet(integer: 4), with: .automatic)
     }
@@ -166,7 +176,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             
         case 2:
             let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
-            cell.textLabel?.text = "Editar"
+            cell.textLabel?.text = "\(editButton)"
             cell.textLabel?.textColor = .systemBlue
             cell.textLabel?.textAlignment = .center
             return cell
