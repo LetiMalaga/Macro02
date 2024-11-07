@@ -234,11 +234,11 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         timeLabel.isHidden = false // Show main timer once breathing is done
         
         if isLongBreak {
-            intervaloLabel.text = "Long Break"
+            intervaloLabel.text = "Pausa Longa"
         } else if isWorkPhase {
-            intervaloLabel.text = "Work Time"
+            intervaloLabel.text = "Trabalho"
         } else {
-            intervaloLabel.text = "Break Time"
+            intervaloLabel.text = "Pausa"
         }
     }
     
