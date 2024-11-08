@@ -156,7 +156,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         
         // Set constraints for button within container
         NSLayoutConstraint.activate([
-            backButton.topAnchor.constraint(equalTo: container.topAnchor, constant: -10),
+            backButton.topAnchor.constraint(equalTo: container.topAnchor, constant: 0),
             backButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             backButton.trailingAnchor.constraint(equalTo: container.trailingAnchor),
             backButton.bottomAnchor.constraint(equalTo: container.bottomAnchor)
