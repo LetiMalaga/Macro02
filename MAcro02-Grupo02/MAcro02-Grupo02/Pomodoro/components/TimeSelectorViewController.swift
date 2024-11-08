@@ -101,7 +101,7 @@ class TimeSelectorViewController: UIViewController {
         case .foco:
             explanationLabel.text = "Hora de focar! Escolha o tempo ideal para mergulhar na sua tarefa e bloquear distrações."
             
-            predefinitions = [15, 30, 45, 60]
+            predefinitions = [15, 25, 45, 60]
             
         case .intervaloCurto:
             
