@@ -148,7 +148,7 @@ class TimeSelectorViewController: UIViewController {
 
         view.backgroundColor = .white
         
-        navigationItem.hidesBackButton = true
+            
         
         setupLayout()
         

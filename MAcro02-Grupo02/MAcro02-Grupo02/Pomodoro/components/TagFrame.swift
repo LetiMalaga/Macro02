@@ -50,7 +50,7 @@ class TagFrame: UIView {
         
         NSLayoutConstraint.activate([   
             tagline.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            tagline.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 1),
+            tagline.topAnchor.constraint(equalTo: self.topAnchor, constant: 1),
             local.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             local.topAnchor.constraint(equalTo: tagline.bottomAnchor, constant: -5),
             

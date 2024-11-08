@@ -15,9 +15,11 @@ class BreathingViewController: UIViewController {
     var cycleCount = 0
     private var progressTimer: Timer?
     
+    weak var delegate: BreathingCompletionDelegate?
+    
     private var progressView: ProgressUiView = {
         let progress = ProgressUiView()
-        progress.function = { _ in print("toroca") }
+        
         progress.translatesAutoresizingMaskIntoConstraints = false
         return progress
     }()
@@ -55,6 +57,8 @@ class BreathingViewController: UIViewController {
     
     func setup() {
         view.backgroundColor = AppColors.backgroundPrimary
+        
+        progressView.function = { _ in self.endBreathingCycle() }
         
         let startTap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(startTap)
@@ -111,30 +115,40 @@ class BreathingViewController: UIViewController {
     }
     
     private func startBreathingCycle() {
-        if cycleCount < 1 {  // Verifica se o número de ciclos é menor que 3
-            updateStateLabel()
-            animateInnerCircleExpansion()
-        } else {
-            stateLabel.text = "Fim da respiração"
+            if cycleCount < 1 {  // Verifica se o número de ciclos é menor que 3
+                updateStateLabel()
+                animateInnerCircleExpansion()
+            } else {
+                endBreathingCycle()
+            }
         }
-    }
     
     private func updateStateLabel() {
         stateLabel.text = estados[estadoAtual]
+    }
+    
+    private func endBreathingCycle() {
+        
+        // Notifica o delegate de que a respiração terminou
+        delegate?.didFinishBreathingExercise()
+        
+        // Fecha a tela de respiração
+        dismiss(animated: true, completion: nil)
+        
     }
     
     private func animateInnerCircleExpansion() {
         let expandAnimation = CABasicAnimation(keyPath: "transform.scale")
         expandAnimation.fromValue = 1.0
         expandAnimation.toValue = 2.0
-        expandAnimation.duration = 1.0
+        expandAnimation.duration = 4.0
         expandAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         expandAnimation.fillMode = .forwards
         expandAnimation.isRemovedOnCompletion = false
         
         innerCircle.add(expandAnimation, forKey: "expand")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.5) {
             self.estadoAtual = 1
             self.updateStateLabel()
             self.animateInnerCircleHold()
@@ -145,14 +159,14 @@ class BreathingViewController: UIViewController {
         let holdAnimation = CABasicAnimation(keyPath: "transform.scale")
         holdAnimation.fromValue = 2.0
         holdAnimation.toValue = 2.0
-        holdAnimation.duration = 5.0
+        holdAnimation.duration = 7.0
         holdAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
         holdAnimation.fillMode = .forwards
         holdAnimation.isRemovedOnCompletion = false
         
         innerCircle.add(holdAnimation, forKey: "hold")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 7.5) {
             self.estadoAtual = 2
             self.updateStateLabel()
             self.animateInnerCircleContraction()
@@ -163,14 +177,14 @@ class BreathingViewController: UIViewController {
         let contractAnimation = CABasicAnimation(keyPath: "transform.scale")
         contractAnimation.fromValue = 2.0
         contractAnimation.toValue = 1.0
-        contractAnimation.duration = 1.0
+        contractAnimation.duration = 8.0
         contractAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         contractAnimation.fillMode = .forwards
         contractAnimation.isRemovedOnCompletion = false
         
         innerCircle.add(contractAnimation, forKey: "contract")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 8.5) {
             if self.breathing {
                 self.cycleCount += 1  // Incrementa o contador de ciclos
                 self.estadoAtual = 0

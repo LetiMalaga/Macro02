@@ -12,16 +12,16 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     var pomoDefaults = PomoDefaults()
     var collectionView: UICollectionView!
     
-    let titleLabel: UILabel = {
-        
-        let titleLabel = UILabel()
-        titleLabel.text = "Personalização"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 34)
-        titleLabel.textColor = .black
-        
-        return titleLabel
-        
-    }()
+//    let titleLabel: UILabel = {
+//        
+//        let titleLabel = UILabel()
+//        titleLabel.text = "Personalização"
+//        titleLabel.font = UIFont.boldSystemFont(ofSize: 34)
+//        titleLabel.textColor = .black
+//        
+//        return titleLabel
+//        
+//    }()
     
     let saveButton: PomoButton = {
         
@@ -59,33 +59,32 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         configs[2].seconds = longBreakDuration
         configs[3].seconds = loops
         
-        navigationItem.hidesBackButton = true
-        
         setupCollectionView()
         setupView()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.title = "Personalização"
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
     }
     
     func setupView() {
         
-        view.addSubview(titleLabel)
+
         view.addSubview(collectionView)
         view.addSubview(saveButton)
         
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -10),
-            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 35),
             
-            collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -35),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             collectionView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -10),
             
@@ -186,7 +185,7 @@ class ConfigCell: UICollectionViewCell {
         // Adicionando constraints
         NSLayoutConstraint.activate([
             // Título na parte superior
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             
             // Minutos label (à esquerda)
