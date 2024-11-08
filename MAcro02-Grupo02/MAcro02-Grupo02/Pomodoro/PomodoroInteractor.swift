@@ -178,12 +178,12 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             if isBreathingPhase {
                 // Change between breathe in and breathe out
                 if breathPhase == 0 {
-                    presenter?.displayBreathingExercise("Breathe In...") // Display inhale
+                    presenter?.displayBreathingExercise("Inspire...") // Display inhale
                     if remainingTime % 5 == 0 && remainingTime % 10 != 0 {
                         breathPhase = 1 // Switch to exhale
                     }
                 } else {
-                    presenter?.displayBreathingExercise("Breathe Out...") // Display exhale
+                    presenter?.displayBreathingExercise("Expire...") // Display exhale
                     if remainingTime % 10 == 0 {
                         breathPhase = 0 // Switch to inhale again
                     }
