@@ -8,11 +8,18 @@
 import Foundation
 import UIKit
 
-class NewActivityViewController: UIViewController {
+
+class NewActivityViewController: UIViewController{
+    
+    
     
     // MARK: - Properties
     var activityType: ActivitiesType?
     var interactor: SettingsIteractorProtocol?
+    var tags: [String] = []{
+        didSet {tagPickerView.dataSource = self}
+    }
+    private var selectedTag: String?
     
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
@@ -30,6 +37,8 @@ class NewActivityViewController: UIViewController {
         return textField
     }()
     
+    private let tagPickerView = UIPickerView()
+    
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Voltar", for: .normal)
@@ -44,23 +53,49 @@ class NewActivityViewController: UIViewController {
         return button
     }()
     
+    private let tagContainerStackView: UIStackView = {
+        let label = UILabel()
+        label.text = "Selecione uma Tag"
+        label.font = .boldSystemFont(ofSize: 16)
+        label.textColor = .darkGray
+        
+        let separatorView = UIView()
+        separatorView.backgroundColor = .lightGray
+        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        let stackView = UIStackView(arrangedSubviews: [label, separatorView])
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        return stackView
+    }()
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupUI()
         configureTitle()
+        
+        tagPickerView.dataSource = self
+        tagPickerView.delegate = self
     }
     
     // MARK: - UI Setup
     private func setupUI() {
         view.addSubview(titleLabel)
         view.addSubview(descriptionTextField)
+        view.addSubview(tagContainerStackView)
+        view.addSubview(tagPickerView)
         view.addSubview(backButton)
         view.addSubview(saveButton)
         
+        // Configuração de Constraints
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionTextField.translatesAutoresizingMaskIntoConstraints = false
+        tagContainerStackView.translatesAutoresizingMaskIntoConstraints = false
+        tagPickerView.translatesAutoresizingMaskIntoConstraints = false
         backButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -77,7 +112,16 @@ class NewActivityViewController: UIViewController {
             descriptionTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32),
             descriptionTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            descriptionTextField.heightAnchor.constraint(equalToConstant: 40)
+            descriptionTextField.heightAnchor.constraint(equalToConstant: 40),
+            
+            tagContainerStackView.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor, constant: 20),
+            tagContainerStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tagContainerStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            tagPickerView.topAnchor.constraint(equalTo: tagContainerStackView.bottomAnchor, constant: 8),
+            tagPickerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tagPickerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tagPickerView.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
     
@@ -100,9 +144,30 @@ class NewActivityViewController: UIViewController {
     @objc private func saveButtonTapped() {
         let activityDescription = descriptionTextField.text ?? ""
         guard let activityType else { return }
-        interactor?.addActivity(ActivitiesModel(type: activityType, description: activityDescription))
+        let tag = selectedTag ?? "Sem Tag"
+        
+        interactor?.addActivity(ActivitiesModel(type: activityType, description: activityDescription, tag: tag))
         
         dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - UIPickerView DataSource & Delegate
+extension NewActivityViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return tags.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return tags[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedTag = tags[row]
     }
 }
 #Preview {

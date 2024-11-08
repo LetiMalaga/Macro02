@@ -7,6 +7,7 @@
 
 
 import UIKit
+import CoreHaptics
 
 class GearBarView: UIView {
     
@@ -99,26 +100,42 @@ class GearBarView: UIView {
     
     // Método para manipular o gesto de arraste
     @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        
+        var vibrate: Bool = false
+        
         let translation = gesture.translation(in: self)
         var increment = Int(translation.x / 4)
+        
+        if gesture.state == .began {
+            vibrate = false
+        }
         
         if gesture.state == .changed || gesture.state == .ended {
             // Incremento baseado no gesto de arraste
             
             if cicle {
-                increment = Int(translation.x / 7)
+                increment = Int(translation.x / 10)
             } else {
-                increment = Int(translation.x / 7) * 5
+                increment = Int(translation.x / 10) * 5
             }
             
             // Ajuste o divisor para ajustar a sensibilidade do arraste
             let newTime = timeInMinutes + increment
             
+            if !vibrate {
+                let generator = UIImpactFeedbackGenerator(style: .light)
+                generator.impactOccurred()
+                vibrate = true
+            }
+            
             // Atualiza o valor de time no GearBarView
             updateTime(time: newTime)
+            
         }
         
         // Resetar a tradução para zero
         gesture.setTranslation(.zero, in: self)
+        
+
     }
 }
