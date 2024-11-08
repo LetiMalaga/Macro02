@@ -26,7 +26,7 @@ class TimeSelectorViewController: UIViewController {
         
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 32)
-        label.textColor = .black
+        label.textColor = .label
         
         return label
         
@@ -37,7 +37,7 @@ class TimeSelectorViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
         label.numberOfLines = 4
-        label.textColor = .black
+        label.textColor = .label
         
         return label
         
@@ -48,7 +48,7 @@ class TimeSelectorViewController: UIViewController {
         let label = UILabel()
         label.text = "Tempos pré definidos"
         label.font = .boldSystemFont(ofSize: 13)
-        label.textColor = .black
+        label.textColor = .label
         
         return label
         
@@ -69,7 +69,7 @@ class TimeSelectorViewController: UIViewController {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 13)
         label.text = "Com este modo ativado, o pomodoro é contado a partir do 0 e assim prossegue até que você o pare."
-        label.textColor = .black.withAlphaComponent(0.6)
+        label.textColor = .label.withAlphaComponent(0.6)
 
         
         return label
@@ -146,7 +146,7 @@ class TimeSelectorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
             
         

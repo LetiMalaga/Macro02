@@ -28,7 +28,7 @@ class GearBarView: UIView {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 96, weight: .bold)
-        label.textColor = .black
+        label.textColor = .label
         label.textAlignment = .center
         return label
     }()
