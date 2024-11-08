@@ -29,9 +29,9 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         
         return button
-
+        
     }()
-
+    
     var configs: [(type: ConfigType, title: String, seconds: Int)] = [
         (.foco, "Foco", 0),
         (.intervaloCurto, "Intervalo Curto", 0),
@@ -64,9 +64,11 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         setupCollectionView()
         setupView()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupBackButton()
     }
     
     func setupView() {
@@ -101,7 +103,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: view.frame.width - 40, height: 150) // Aumentando a altura para o título
         layout.minimumLineSpacing = -10 // Espaçamento entre as células
-
+        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -119,20 +121,55 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return configs.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ConfigCell", for: indexPath) as! ConfigCell
         let config = configs[indexPath.item]
         cell.configure(title: config.title, seconds: config.seconds)
         return cell
     }
-
+    
     // Ação ao selecionar uma célula
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let config = configs[indexPath.item]
         
         let vc = TimeSelectorViewController(title: config.title, type: config.type, atualTime: config.seconds)
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func setupBackButton() {
+        // Create button and configure it
+        let backButton = UIButton(type: .system)
+        backButton.setTitle("Voltar", for: .normal)
+        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        backButton.tintColor = .label
+        
+        backButton.sizeToFit()
+        
+        // Adjust title position to look like a default back button
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        
+        // Create a container for the button to add constraints
+        let container = UIView()
+        container.addSubview(backButton)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set constraints for button within container
+        NSLayoutConstraint.activate([
+            backButton.topAnchor.constraint(equalTo: container.topAnchor, constant: -10),
+            backButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            backButton.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            backButton.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+        
+        // Set the container as the custom view for leftBarButtonItem
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: container)
+    }
+    
+    @objc func backButtonTapped() {
+        // Navigate back to the previous view
+        print("working")
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -149,11 +186,11 @@ class ConfigCell: UICollectionViewCell {
         super.init(frame: frame)
         setupUI()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     func setupUI() {
         // Título
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -182,7 +219,7 @@ class ConfigCell: UICollectionViewCell {
         // Adicionando os labels à célula
         contentView.addSubview(minutesLabel)
         contentView.addSubview(secondsLabel)
-
+        
         // Adicionando constraints
         NSLayoutConstraint.activate([
             // Título na parte superior
@@ -205,7 +242,7 @@ class ConfigCell: UICollectionViewCell {
             secondsLabel.leadingAnchor.constraint(equalTo: colonLabel.trailingAnchor, constant: 10),
             secondsLabel.widthAnchor.constraint(equalToConstant: 104),
             secondsLabel.heightAnchor.constraint(equalToConstant: 80),
-
+            
             // Seta à direita da célula
             arrowImageView.centerYAnchor.constraint(equalTo: minutesLabel.centerYAnchor),
             arrowImageView.widthAnchor.constraint(equalToConstant: 20),
@@ -228,7 +265,7 @@ class ConfigCell: UICollectionViewCell {
         label.layer.cornerRadius = 10
         label.layer.masksToBounds = true
     }
-
+    
     // Função para configurar os valores (minutos e segundos)
     func configure(title: String, seconds: Int) {
         titleLabel.text = title

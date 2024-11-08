@@ -152,6 +152,43 @@ class TimeSelectorViewController: UIViewController {
         
         setupLayout()
         
+        setupBackButton()
+        
+    }
+    
+    func setupBackButton() {
+        // Create button and configure it
+        let backButton = UIButton(type: .system)
+        backButton.setTitle("Voltar", for: .normal)
+        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        backButton.tintColor = .label
+        
+        backButton.sizeToFit()
+        
+        // Adjust title position to look like a default back button
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        
+        // Create a container for the button to add constraints
+        let container = UIView()
+        container.addSubview(backButton)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set constraints for button within container
+        NSLayoutConstraint.activate([
+            backButton.topAnchor.constraint(equalTo: container.topAnchor, constant: -10),
+            backButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            backButton.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            backButton.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+        
+        // Set the container as the custom view for leftBarButtonItem
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: container)
+    }
+    
+    @objc func backButtonTapped() {
+        // Navigate back to the previous view
+        print("working")
+        navigationController?.popViewController(animated: true)
     }
     
     func setupLayout() {
