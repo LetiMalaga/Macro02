@@ -41,11 +41,13 @@ class DentsView: UIView {
     private func setupChevronImages() {
         // Configura a imagem do chevron esquerdo
         leftChevronImageView.image = UIImage(systemName: "chevron.left")
+        leftChevronImageView.tintColor = .black
         leftChevronImageView.contentMode = .scaleAspectFit
         addSubview(leftChevronImageView)
 
         // Configura a imagem do chevron direito
         rightChevronImageView.image = UIImage(systemName: "chevron.right")
+        rightChevronImageView.tintColor = .black
         rightChevronImageView.contentMode = .scaleAspectFit
         addSubview(rightChevronImageView)
     }
