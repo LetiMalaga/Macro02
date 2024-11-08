@@ -20,7 +20,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         let label = UILabel()
         label.text = "Mantenha pressionado para pausar"
         label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.textColor = .black
+        label.textColor = .label
         label.textAlignment = .center
         label.isHidden = true
         return label
@@ -29,7 +29,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
-        label.textColor = .black
+        label.textColor = .label
         label.textAlignment = .center
         label.isUserInteractionEnabled = true
         
@@ -40,7 +40,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 22)
         label.layer.opacity = 0.3
-        label.textColor = .black
+        label.textColor = .label
         
         return label
     }()
@@ -70,10 +70,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let resetButton: PomoButton = {
         let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: "Resetar")
         
-        pomo.layer.borderColor = UIColor.black.cgColor
+        pomo.layer.borderColor = UIColor.label.cgColor
         pomo.layer.borderWidth = 2
         pomo.backgroundColor = .clear
-        pomo.setTitleColor(.black, for: .normal)
+        pomo.setTitleColor(.label, for: .normal)
         
         pomo.addTarget(self, action: #selector(reset), for: .touchUpInside)
         pomo.isHidden = true // Inicialmente oculto
@@ -103,7 +103,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         // Gestures
         
