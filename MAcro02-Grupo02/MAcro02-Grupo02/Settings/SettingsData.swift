@@ -28,10 +28,12 @@ class SettingsData: SettingsDataProtocol{
     private let userDefaultsKeyTags = "tagsData"
     
     func fetchActivities(completion: @escaping ([ActivitiesModel]) -> Void) {
-        if let savedData = UserDefaults.standard.data(forKey: userDefaultsKey),
-           var decodedActivities = try? JSONDecoder().decode([ActivitiesModel].self, from: savedData) {
-            decodedActivities.removeLast()
+        if let savedData = UserDefaults.standard.object(forKey: userDefaultsKey),
+           var decodedActivities = try? JSONDecoder().decode([ActivitiesModel].self, from: savedData as! Data) {
+//            decodedActivities.removeLast()
+            print(decodedActivities)
             completion(decodedActivities)
+            
         } else {
             completion([])
         }

@@ -50,7 +50,7 @@ class ModalTagsInteractor: ModalTagsInteractorProtocol {
                 self.presenter?.presentTags(tags)
             }
         }else {
-            presenter?.ShowAlert("Error", "Tag already exists or is empty")
+            presenter?.showAlert("Error", "Tag already exists or is empty")
         }
     }
     func selectedTag(_ tag:String){

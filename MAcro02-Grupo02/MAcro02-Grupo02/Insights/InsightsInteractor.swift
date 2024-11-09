@@ -28,6 +28,9 @@ class InsightsInteractor : InsightsInteractorProtocol {
     var presenter: InsightsPresenterProtocol?
     var insights: InsightsDataModel?
 
+    
+    
+    
     func fetchInsightsData(predicate: NSPredicate, completion: @escaping ([FocusDataModel]) -> Void) async{
         let dataManager = InsightsData()
         var focusData: [FocusDataModel] = []

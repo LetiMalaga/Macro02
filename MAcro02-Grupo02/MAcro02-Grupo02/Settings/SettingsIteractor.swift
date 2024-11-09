@@ -85,6 +85,8 @@ class SettingsIteractor: SettingsIteractorProtocol {
             dataModel?.addActivity(activity) { success in
                 self.presenter?.addActivity(activity)
             }
+        }else{
+            print("Invalid activity name")
         }
     }
     

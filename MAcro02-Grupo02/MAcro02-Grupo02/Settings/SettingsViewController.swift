@@ -26,16 +26,12 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         didSet { recommendationSwitch.isOn = recommendationButton }
     }
     
-    var shortBreakActivities: [ActivitiesModel] = [] {
-        didSet { tableView.reloadData() }
-    }
+    var shortBreakActivities: [ActivitiesModel] = []
     
-    var longBreakActivities: [ActivitiesModel] = [] {
-        didSet { tableView.reloadData() }
-    }
+    var longBreakActivities: [ActivitiesModel] = []
     
     var activities: [ActivitiesModel] = [] {
-        didSet { tableView.reloadData() }
+        didSet { reloadData() }
     }
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
@@ -44,6 +40,8 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     private let breathingSwitch = UISwitch()
     private let recommendationSwitch = UISwitch()
     var tags:[String] = []
+    var editableSections: Set<Int> = []
+    
     
     var interactor: SettingsIteractorProtocol?
     
@@ -88,7 +86,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "CustomHeader")
     }
     
-    @objc func toggleEditMode() {
+    func toggleEditMode() {
         tableView.setEditing(!tableView.isEditing, animated: true)
         tableView.reloadSections(IndexSet(integer: 4), with: .automatic)
     }
@@ -110,6 +108,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     }
 }
 
+
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -121,9 +120,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 2 // Sons e Vibrações
         case 1:
-            return 2 // Respiração ao iniciar e Recomendação de atividades
+            return 0 // Respiração ao iniciar e Recomendação de atividades
         case 2:
-            return 1 // Botão "Editar"
+            return 2 // Botão "Editar"
         case 3:
             return shortBreakActivities.count + 1 // Atividades de intervalo curto + opção para adicionar
         case 4:
@@ -138,6 +137,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.section {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath)
+            cell.selectionStyle = .none
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Sons"
                 soundSwitch.isOn = soundButton
@@ -152,6 +152,15 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
             
         case 1:
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
+            cell.textLabel?.text = tableView.isEditing ? "Concluir" : "Editar"
+            cell.textLabel?.textColor = .systemBlue
+            cell.textLabel?.textAlignment = .right
+            return cell
+            
+            
+            
+        case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath)
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Respiração ao iniciar pomodoro"
@@ -166,29 +175,34 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
             return cell
             
-        case 2:
-            let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
-            cell.textLabel?.text = tableView.isEditing ? "Concluir" : "Editar"
-            cell.textLabel?.textColor = .systemBlue
-            cell.textLabel?.textAlignment = .center
-            return cell
+            //            let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
+            //            cell.textLabel?.text = tableView.isEditing ? "Concluir" : "Editar"
+            //            cell.textLabel?.textColor = .systemBlue
+            //            cell.textLabel?.textAlignment = .center
+            //            return cell
             
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
+            cell.selectionStyle = .none
             if indexPath.row == shortBreakActivities.count {
                 cell.textLabel?.text = "+ Adicione uma atividade de descanso curto"
                 cell.textLabel?.textColor = .systemBlue
             } else {
                 cell.textLabel?.text = shortBreakActivities[indexPath.row].description
+                cell.detailTextLabel?.text = shortBreakActivities[indexPath.row].tag
                 cell.textLabel?.textColor = .black
+                cell.detailTextLabel?.textColor = .black
             }
             return cell
             
         case 4:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
+            cell.selectionStyle = .none
             if indexPath.row < longBreakActivities.count {
                 cell.textLabel?.text = longBreakActivities[indexPath.row].description
+                cell.detailTextLabel?.text = longBreakActivities[indexPath.row].tag
                 cell.textLabel?.textColor = .black
+                cell.detailTextLabel?.textColor = .black
             } else {
                 cell.textLabel?.text = "+ Adicione uma atividade de descanso longo"
                 cell.textLabel?.textColor = .systemBlue
@@ -200,37 +214,99 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = .systemGroupedBackground
+        let titleLabel = UILabel()
+        titleLabel.font = .preferredFont(forTextStyle: .subheadline)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         switch section {
         case 0:
-            return "App"
+            titleLabel.text = "App"
+            titleLabel.textColor = .gray
         case 1:
-            return "Sugestões"
+            
+            titleLabel.text = "Atividades personalizadas"
+            titleLabel.font = .preferredFont(forTextStyle: .headline)
+            
+            
         case 2:
-            return "Atividades personalizadas"
+            titleLabel.text = "Sugestões"
+            titleLabel.textColor = .gray
         case 3:
-            return "Intervalo Curto"
+            titleLabel.text = "Intervalo Curto"
+            titleLabel.font = .preferredFont(forTextStyle: .headline)
+            
+            makeButton()
         case 4:
-            return "Intervalo Longo"
+            titleLabel.text = "Intervalo Longo"
+            titleLabel.font = .preferredFont(forTextStyle: .headline)
+            
+            makeButton()
         default:
-            return nil
+            titleLabel.text = ""
         }
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 2 {
+        func font(_ title:String) -> UITableViewHeaderFooterView?{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomHeader")
-            header?.textLabel?.text = "Atividades personalizadas"
-            header?.detailTextLabel?.text = "Aqui você pode adicionar suas próprias atividades personalizadas e desativar nossas recomendações"
+            header?.textLabel?.textColor = .black
+            header?.textLabel?.text = title
+            header?.textLabel?.font = .preferredFont(forTextStyle: .title3)
+            
             return header
         }
-        return nil
+        func makeButton(){
+            let button = UIButton(type: .system)
+            button.setTitle(tableView.isEditing ? "Concluir" : "Editar", for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.tag = section // Tag para identificar a seção
+            button.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
+            
+            headerView.addSubview(titleLabel)
+            headerView.addSubview(button)
+            NSLayoutConstraint.activate([
+                // Constraints para o título
+                
+                // Constraints para o botão
+                button.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+                button.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
+            ])
+        }
+        
+        headerView.addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            // Constraints para o título
+            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        
+        return headerView
     }
     
+    // Função chamada ao pressionar o botão de editar
+    @objc private func editButtonTapped(_ sender: UIButton) {
+        let section = sender.tag
+        toggleEditMode()
+        if editableSections.contains(section) {
+            // Remove a seção do modo de edição
+            editableSections.remove(section)
+        } else {
+            // Adiciona a seção ao modo de edição
+            editableSections.insert(section)
+            
+        }
+        
+        // Atualiza apenas as células na seção para mostrar o modo de edição
+        let indexPaths = (0..<tableView.numberOfRows(inSection: section)).map { IndexPath(row: $0, section: section) }
+        tableView.reloadRows(at: indexPaths, with: .automatic)
+    }
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 2 {
-            toggleEditMode()
-        } else if indexPath.section == 3 && indexPath.row == shortBreakActivities.count {
+        if indexPath.section == 3 && indexPath.row == shortBreakActivities.count {
             presentNewActivity(type: .short)
         } else if indexPath.section == 4 && indexPath.row == longBreakActivities.count {
             presentNewActivity(type: .long)
@@ -245,21 +321,24 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         interactor?.fetchTags(){ _ in
             newActivityVC.tags = self.tags
         }
-        print(self.tags)
         newActivityVC.modalPresentationStyle = .fullScreen
         present(newActivityVC, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 3 || indexPath.section == 4
+        if editableSections.contains(indexPath.section) {
+            let numberOfRows = tableView.numberOfRows(inSection: indexPath.section)
+            return indexPath.row < numberOfRows - 1 // Permite edição apenas se não for a última célula
+        }
+        return false
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if indexPath.section == 3 {
-//                interactor?.removeActivity(at: indexPath.row, type: .short)
+                //                interactor?.removeActivity(at: indexPath.row, type: .short)
             } else if indexPath.section == 4 {
-//                interactor?.removeActivity(at: indexPath.row, type: .long)
+                //                interactor?.removeActivity(at: indexPath.row, type: .long)
             }
         }
     }
