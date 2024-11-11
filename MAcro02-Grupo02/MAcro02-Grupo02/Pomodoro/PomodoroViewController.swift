@@ -262,7 +262,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         if let sheet = navVC.sheetPresentationController {
             sheet.detents = [.custom(resolver: { context in
                 context.maximumDetentValue * .modalViewHeightCtt
-            }), .medium(), .large()]
+            }), .medium()/*, .large()*/]
         }
         
         navigationController?.present(navVC, animated: true)

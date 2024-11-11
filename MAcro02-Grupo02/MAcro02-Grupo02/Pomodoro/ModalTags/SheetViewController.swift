@@ -99,7 +99,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         tagNewTagButton.layer.borderWidth = 3
         tagNewTagButton.layer.borderColor = UIColor.black.cgColor
         tagNewTagButton.setTitleColor(.black, for: .normal)
-        tagNewTagButton.setTitle("New Tag", for: .normal)
+        tagNewTagButton.setTitle("Nova Tag", for: .normal)
         tagNewTagButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         tagNewTagButton.layer.cornerRadius = .tagCornerRadius
         
