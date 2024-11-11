@@ -12,14 +12,14 @@ enum ActivitiesType: String, Codable {
 //    @nonobjc public class func fetchRequest() -> NSFetchRequest<Activity> {
 //        return NSFetchRequest<Activity>(entityName: "Activity")
 //    }
-//    
+//
 //    @NSManaged public var id: UUID
 //    @NSManaged public var type: String
 //    @NSManaged public var descriptionText: String
 //    @NSManaged public var tag: String
 //}
 //extension Activity: Identifiable {
-//    
+//
 //}
 
 struct ActivitiesModel {
@@ -39,19 +39,28 @@ protocol SettingsDataProtocol {
 class SettingsData: SettingsDataProtocol {
     private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     private let userDefaultsKeyTags = "tagsData"
-
+    
     func fetchActivities(completion: @escaping ([ActivitiesModel]) -> Void) {
-//        let request: NSFetchRequest<Activity> = Activity.fetchRequest() as! NSFetchRequest<Activity>
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        
+        let contexts = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Activity")
+        
+        //        let request: NSFetchRequest<Activity> = Activity.fetchRequest() as! NSFetchRequest<Activity>
         
         do {
-            let activities = try context.fetch(Activity.fetchRequest())
-
-//            let activities = try context.fetch(request)
-            let activitiesModel = activities.map { activity in
-                ActivitiesModel(id: activity.id,
-                                type: ActivitiesType(rawValue: activity.type) ?? .short,
-                                description: activity.descriptionText,
-                                tag: activity.tag)
+            //            let activities = try context.fetch(Activity.fetchRequest())
+            
+            let activities = try contexts.fetch(request)
+            var activitiesModel : [ActivitiesModel] = []
+            
+            
+            for activity in activities as! [NSManagedObject]{
+                activitiesModel.append(ActivitiesModel(id: activity.value(forKey: "id") as! UUID,
+                                                       type: ActivitiesType(rawValue: activity.value(forKey: "type") as! String) ?? .short,
+                                                       description: activity.value(forKey: "descriptionText") as! String,
+                                                       tag: activity.value(forKey: "tag") as! String))
+                
             }
             completion(activitiesModel)
         } catch {
@@ -59,12 +68,12 @@ class SettingsData: SettingsDataProtocol {
             completion([])
         }
     }
-
+    
     func fetchTags(completion: @escaping ([String]) -> Void) {
         guard let savedData = UserDefaults.standard.stringArray(forKey: userDefaultsKeyTags) else {return}
         completion(savedData)
     }
-
+    
     func addActivity(_ activityModel: ActivitiesModel, completion: @escaping (Bool) -> Void) {
         let activity = Activity(context: context)
         activity.id = activityModel.id
@@ -80,7 +89,7 @@ class SettingsData: SettingsDataProtocol {
             completion(false)
         }
     }
-
+    
     func deleteActivity(at id: UUID, completion: @escaping (Bool) -> Void) {
         let request: NSFetchRequest<Activity> = Activity.fetchRequest() as! NSFetchRequest<Activity>
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)

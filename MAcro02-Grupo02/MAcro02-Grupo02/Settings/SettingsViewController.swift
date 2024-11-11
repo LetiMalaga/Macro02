@@ -322,10 +322,10 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         newActivityVC.interactor = self.interactor
         newActivityVC.tags = self.tags
         
-        if !tags.isEmpty{
+//        if !tags.isEmpty{
             newActivityVC.modalPresentationStyle = .fullScreen
             present(newActivityVC, animated: true, completion: nil)
-        }
+//        }
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
