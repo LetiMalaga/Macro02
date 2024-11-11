@@ -232,6 +232,7 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
     // Ação para o botão dentro da collectionView
     @objc private func didTapButtonCV(_ sender: UIButton){
         selectedTag = tags[sender.tag]
+        delegate?.passing(selectedTag)
         print("\(tags[sender.tag]) tapped!")
     }
     
