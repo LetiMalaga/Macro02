@@ -61,6 +61,11 @@ class TimeSelectorViewController: UIViewController {
         
     }()
     
+    let dentsView: DentsView = {
+        let view = DentsView()
+        return view
+    }()
+    
     private let timeSlider: GearBarView
 
     
@@ -162,6 +167,7 @@ class TimeSelectorViewController: UIViewController {
         view.addSubview(saveButton)
         view.addSubview(timeSlider)
         view.addSubview(selectorView)
+        view.addSubview(dentsView)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         explanationLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -169,6 +175,11 @@ class TimeSelectorViewController: UIViewController {
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         timeSlider.translatesAutoresizingMaskIntoConstraints = false
         selectorView.translatesAutoresizingMaskIntoConstraints = false
+        dentsView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let dragGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        
+        dentsView.addGestureRecognizer(dragGesture)
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -190,9 +201,14 @@ class TimeSelectorViewController: UIViewController {
             saveButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             
             timeSlider.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            timeSlider.topAnchor.constraint(equalTo: selectorView.bottomAnchor, constant: 150),
+            timeSlider.topAnchor.constraint(equalTo: selectorView.bottomAnchor, constant: 200),
             timeSlider.widthAnchor.constraint(equalToConstant: 358),
             timeSlider.heightAnchor.constraint(equalToConstant: 32),
+            
+            dentsView.topAnchor.constraint(equalTo: timeSlider.bottomAnchor, constant: -50),
+            dentsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            dentsView.widthAnchor.constraint(equalToConstant: 300),
+            dentsView.heightAnchor.constraint(equalToConstant: 32)
             
         ])
         
@@ -213,5 +229,19 @@ class TimeSelectorViewController: UIViewController {
         
         navigationController?.popViewController(animated: true)
     }
+    
+    @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        
+            let translation = gesture.translation(in: dentsView)
+           
+           // Ajuste no incremento: mais sensível para refletir a mudança
+           let increment = Int(translation.x / 20) * 5 // Alterando o divisor para aumentar a sensibilidade
+           
+           // Chamando o callback com o incremento
+           if increment != 0 {
+               timeSlider.updateTime(time: timeSlider.timeInMinutes + increment)
+               gesture.setTranslation(.zero, in: dentsView)
+           }
+       }
 
 }

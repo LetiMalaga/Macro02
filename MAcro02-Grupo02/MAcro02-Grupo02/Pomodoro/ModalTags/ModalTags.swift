@@ -44,7 +44,7 @@ class ModalTagsViewController: UIViewController {
     
     func setupButton(){
         modalActivationButton.setTitle("Open Modal", for: .normal)
-        modalActivationButton.setTitleColor(.white, for: .normal)
+        modalActivationButton.setTitleColor(.label, for: .normal)
         modalActivationButton.titleLabel?.font = .systemFont(ofSize: 64)
         modalActivationButton.backgroundColor = .blue
         modalActivationButton.center = view.center
