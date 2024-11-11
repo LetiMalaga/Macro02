@@ -14,7 +14,7 @@ class TagFrame: UIView {
         let label = UILabel()
         label.text = "Trabalho"
         label.font = .systemFont(ofSize: 26)
-        label.textColor = .black
+        label.textColor = AppColors.textPrimary
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -26,7 +26,7 @@ class TagFrame: UIView {
         let label = UILabel()
         label.text = "Em casa"
         label.font = .systemFont(ofSize: 13)
-        label.textColor = .black
+        label.textColor = AppColors.textPrimary
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -46,11 +46,11 @@ class TagFrame: UIView {
         addSubview(tagline)
         addSubview(local)
         
-        layer.borderColor = UIColor.black.cgColor
+        layer.borderColor = AppColors.textPrimary.cgColor
         
         NSLayoutConstraint.activate([   
             tagline.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            tagline.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 1),
+            tagline.topAnchor.constraint(equalTo: self.topAnchor, constant: 1),
             local.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             local.topAnchor.constraint(equalTo: tagline.bottomAnchor, constant: -5),
             

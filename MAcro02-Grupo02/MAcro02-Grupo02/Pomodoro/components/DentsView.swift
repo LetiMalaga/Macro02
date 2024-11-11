@@ -33,7 +33,7 @@ class DentsView: UIView {
     }
 
     private func setupShadowView() {
-        shadowView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        shadowView.backgroundColor = UIColor.label.withAlphaComponent(0.2)
         shadowView.layer.cornerRadius = 5
         addSubview(shadowView)
     }
@@ -41,11 +41,13 @@ class DentsView: UIView {
     private func setupChevronImages() {
         // Configura a imagem do chevron esquerdo
         leftChevronImageView.image = UIImage(systemName: "chevron.left")
+        leftChevronImageView.tintColor = .label
         leftChevronImageView.contentMode = .scaleAspectFit
         addSubview(leftChevronImageView)
 
         // Configura a imagem do chevron direito
         rightChevronImageView.image = UIImage(systemName: "chevron.right")
+        rightChevronImageView.tintColor = .label
         rightChevronImageView.contentMode = .scaleAspectFit
         addSubview(rightChevronImageView)
     }
