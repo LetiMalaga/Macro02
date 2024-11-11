@@ -32,6 +32,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     private var isEditingMode: Bool = false
     private var isAddingNewTag: Bool = false
     var delegate: PassingTag?
+    private var selectedIndex: Int?
     
     public var interactor:ModalTagsInteractorProtocol?
 //    var tags: [String] = []
@@ -231,9 +232,15 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     // Ação para o botão dentro da collectionView
     @objc private func didTapButtonCV(_ sender: UIButton){
+        selectedIndex = sender.tag == selectedIndex ? nil : sender.tag
         selectedTag = tags[sender.tag]
+        collectionView.reloadData()
         delegate?.passing(selectedTag!)
         print("\(tags[sender.tag]) tapped!")
+        
+//        selectedTag = tags[sender.tag]
+//        delegate?.passing(selectedTag!)
+//        print("\(tags[sender.tag]) tapped!")
     }
     
     
@@ -252,12 +259,20 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         myTagsView.setTitle(tags[indexPath.item], for: .normal)
         myTagsView.layer.borderWidth = 3
         myTagsView.layer.borderColor = UIColor.label.cgColor
-        myTagsView.setTitleColor(.label, for: .normal)
         myTagsView.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         myTagsView.layer.cornerRadius = .tagCornerRadius
         myTagsView.translatesAutoresizingMaskIntoConstraints = false
         myTagsView.tag = indexPath.item
         myTagsView.addTarget(self, action: #selector(didTapButtonCV), for: .touchUpInside)
+        
+        // Verifique se o índice do botão é igual ao índice selecionado para alternar a cor
+        if indexPath.item == selectedIndex {
+            myTagsView.backgroundColor = .systemGray
+            myTagsView.setTitleColor(.white, for: .normal)
+        } else {
+            myTagsView.backgroundColor = .clear
+            myTagsView.setTitleColor(.label, for: .normal)
+        }
         
         cell.contentView.addSubview(myTagsView)
         
@@ -268,6 +283,7 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
             myTagsView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
         ])
         
+        // Código para adicionar o botão de remoção (mantendo como está)
         let removeButton = UIButton(type: .system)
         removeButton.setBackgroundImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
         removeButton.tintColor = .systemGray
