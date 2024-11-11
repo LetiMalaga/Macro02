@@ -19,7 +19,6 @@ class ModalTagsData: ModalTagsDataProtocol {
     func fetchTags(completion: @escaping ([String]) -> Void) {
         if let savedData = UserDefaults.standard.stringArray(forKey: userDefaultsKey){
             completion(savedData)
-            
         }else{
             let tags = ["Trabalho", "Estudo", "Foco", "Treino", "Meditação"]
             UserDefaults.standard.set(tags, forKey: self.userDefaultsKey)

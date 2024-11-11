@@ -57,6 +57,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     
     func reloadData() {
         interactor?.fetchActivities()
+        interactor?.fetchTags()
         
         longBreakActivities = activities.filter { $0.type == .long }
         shortBreakActivities = activities.filter { $0.type == .short }
@@ -86,9 +87,10 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "CustomHeader")
     }
     
-    func toggleEditMode() {
+    func toggleEditMode(index:Int) {
         tableView.setEditing(!tableView.isEditing, animated: true)
-        tableView.reloadSections(IndexSet(integer: 4), with: .automatic)
+        
+        tableView.reloadSections(IndexSet(integer: index), with: .automatic)
     }
     
     @objc func soundSwitchChanged(_ sender: UISwitch) {
@@ -289,7 +291,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     // Função chamada ao pressionar o botão de editar
     @objc private func editButtonTapped(_ sender: UIButton) {
         let section = sender.tag
-        toggleEditMode()
+        toggleEditMode(index: section)
         if editableSections.contains(section) {
             // Remove a seção do modo de edição
             editableSections.remove(section)
@@ -318,11 +320,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         let newActivityVC = NewActivityViewController()
         newActivityVC.activityType = type
         newActivityVC.interactor = self.interactor
-        interactor?.fetchTags(){ _ in
-            newActivityVC.tags = self.tags
+        newActivityVC.tags = self.tags
+        
+        if !tags.isEmpty{
+            newActivityVC.modalPresentationStyle = .fullScreen
+            present(newActivityVC, animated: true, completion: nil)
         }
-        newActivityVC.modalPresentationStyle = .fullScreen
-        present(newActivityVC, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

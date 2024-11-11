@@ -85,12 +85,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7050B4172CE251D8007B516A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		707B8AF22C9A0EE000503819 = {
 			isa = PBXGroup;
 			children = (
 				707B8AFD2C9A0EE000503819 /* MAcro02-Grupo02 */,
 				707B8B142C9A0EE100503819 /* MAcro02-Grupo02Tests */,
 				707B8B1E2C9A0EE100503819 /* MAcro02-Grupo02UITests */,
+				7050B4172CE251D8007B516A /* Frameworks */,
 				707B8AFC2C9A0EE000503819 /* Products */,
 			);
 			sourceTree = "<group>";

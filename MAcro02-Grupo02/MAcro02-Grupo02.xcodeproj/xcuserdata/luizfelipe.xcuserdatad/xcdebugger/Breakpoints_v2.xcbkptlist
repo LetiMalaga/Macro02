@@ -452,51 +452,5 @@
             landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4B9FCE34-59D0-4F9C-A1E9-267414C2C4F0"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MAcro02-Grupo02/Pomodoro/ModalTags/ModalTagsData.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "fetchTags(completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "4B9FCE34-59D0-4F9C-A1E9-267414C2C4F0 - 13ad2ab0702fdd08"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MAcro02_Grupo02.ModalTagsData.fetchTags(completion: (Swift.Array&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Pomodoro/ModalTags/ModalTagsData.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "20"
-                  endingLineNumber = "20">
-               </Location>
-               <Location
-                  uuid = "4B9FCE34-59D0-4F9C-A1E9-267414C2C4F0 - 13ad2ab0702fdd08"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MAcro02_Grupo02.ModalTagsData.fetchTags(completion: (Swift.Array&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Pomodoro/ModalTags/ModalTagsData.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "20"
-                  endingLineNumber = "20">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

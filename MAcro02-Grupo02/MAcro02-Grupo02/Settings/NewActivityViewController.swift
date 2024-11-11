@@ -150,7 +150,7 @@ class NewActivityViewController: UIViewController{
             let activityDescription else { return }
             let tag = selectedTag ?? "Sem Tag"
             
-            interactor?.addActivity(ActivitiesModel(type: activityType, description: activityDescription, tag: tag))
+            interactor?.addActivity(ActivitiesModel(id: UUID(), type: activityType, description: activityDescription, tag: tag))
         }
         
         dismiss(animated: true, completion: nil)

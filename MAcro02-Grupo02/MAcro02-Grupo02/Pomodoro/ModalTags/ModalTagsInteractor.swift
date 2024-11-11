@@ -26,7 +26,9 @@ class ModalTagsInteractor: ModalTagsInteractorProtocol {
     var presenter: ModalTagsPresenterProtocol?
     var tags : [String] = []
     
-    
+    init(){
+        fetchTags()
+    }
 
     func fetchTags() {
         dataManager?.fetchTags(completion: { tags in
