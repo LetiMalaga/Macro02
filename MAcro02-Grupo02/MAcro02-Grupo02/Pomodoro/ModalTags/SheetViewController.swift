@@ -73,7 +73,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         self.collectionView.delegate = self
     }
     override func viewDidDisappear(_ animated: Bool) {
-        delegate?.passing(selectedTag ?? "erro")
+        delegate?.passing(selectedTag ?? tags.first!)
     }
     private func setupView(){
         view.backgroundColor = .systemBackground
