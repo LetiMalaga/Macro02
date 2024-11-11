@@ -18,8 +18,8 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let pauseLabel: UILabel = {
         let label = UILabel()
         label.text = "Mantenha pressionado para pausar"
-        label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.textColor = .black
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        label.textColor = .systemOpposingColor
         label.textAlignment = .center
         label.isHidden = true
         return label
@@ -28,7 +28,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
-        label.textColor = .black
+        label.textColor = .systemOpposingColor
         label.textAlignment = .center
         label.isUserInteractionEnabled = true
         
@@ -39,7 +39,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 22)
         label.layer.opacity = 0.3
-        label.textColor = .black
+        label.textColor = .systemOpposingColor
         
         return label
     }()
@@ -47,14 +47,14 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let progressCircleView: TimerCircle = TimerCircle()
     
     private let playButton: PomoButton = {
-        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: "Iniciar")
+        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 200, height: 200), titulo: "Iniciar")
         pomo.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
         return pomo
     }()
     
     // Novo botão para retomar o Pomodoro
     private let resumeButton: PomoButton = {
-        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: "Continuar")
+        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 200, height: 200), titulo: "Continuar")
         pomo.addTarget(self, action: #selector(resume), for: .touchUpInside)
         pomo.isHidden = true // Inicialmente oculto
         return pomo
@@ -67,12 +67,12 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     // Novo botão para resetar o Pomodoro
     private let resetButton: PomoButton = {
-        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: "Resetar")
+        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 200, height: 200), titulo: "Resetar")
         
         pomo.layer.borderColor = UIColor.black.cgColor
         pomo.layer.borderWidth = 2
         pomo.backgroundColor = .clear
-        pomo.setTitleColor(.black, for: .normal)
+        pomo.setTitleColor(.systemOpposingColor, for: .normal)
         
         pomo.addTarget(self, action: #selector(reset), for: .touchUpInside)
         pomo.isHidden = true // Inicialmente oculto
@@ -102,7 +102,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         // Gestures
         
@@ -123,25 +123,23 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     // MARK: - Layout
     
     private func setupLayout() {
-        // Add subviews
-        view.addSubview(pauseLabel)
-        view.addSubview(timeLabel)
-        view.addSubview(progressCircleView)
-        view.addSubview(playButton)
-        view.addSubview(resumeButton)
-        view.addSubview(resetButton)
-        view.addSubview(intervaloLabel)
-        view.addSubview(tagframe)
+        let subviews = [
+            pauseLabel,
+            timeLabel,
+            progressCircleView,
+            playButton,
+            resumeButton,
+            resetButton,
+            intervaloLabel,
+            tagframe
+        ]
         
-        // Disable autoresizing mask translation
-        pauseLabel.translatesAutoresizingMaskIntoConstraints = false
-        timeLabel.translatesAutoresizingMaskIntoConstraints = false
-        progressCircleView.translatesAutoresizingMaskIntoConstraints = false
-        playButton.translatesAutoresizingMaskIntoConstraints = false
-        resumeButton.translatesAutoresizingMaskIntoConstraints = false
-        resetButton.translatesAutoresizingMaskIntoConstraints = false
-        intervaloLabel.translatesAutoresizingMaskIntoConstraints = false
-        tagframe.translatesAutoresizingMaskIntoConstraints = false
+        subviews.forEach {
+            // Adds subviews to parent
+            view.addSubview($0)
+            // Disable autoresizing mask translation
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         
         // Set constraints
         NSLayoutConstraint.activate([
@@ -166,15 +164,21 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             
             // Play/Pause Button
             playButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            playButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .pomodoroBotaoContinuarHeightCtt),
             playButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            playButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .pomodoroBotaoContinuarWidthCtt),
             
             // Resume Button
             resumeButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            resumeButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .pomodoroBotaoContinuarHeightCtt),
             resumeButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
+            resumeButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .pomodoroBotaoContinuarWidthCtt),
             
             // Reset Button
             resetButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            resetButton.heightAnchor.constraint(equalToConstant: view.bounds.height * .pomodoroBotaoContinuarHeightCtt),
             resetButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+            resetButton.widthAnchor.constraint(equalToConstant: view.bounds.width * .pomodoroBotaoContinuarWidthCtt),
         ])
     }
     
@@ -266,6 +270,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         }
     }
     
+}
+
+#Preview {
+    PomodoroViewController()
 }
 
 extension PomodoroViewController: UIViewControllerTransitioningDelegate {

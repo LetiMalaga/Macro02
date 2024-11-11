@@ -17,6 +17,21 @@ extension Double {
     
     public static let removeButtonWidthCtt = 0.06
     public static let removeButtonHeightCtt = 0.03
+    
+    public static let pomodoroBotaoContinuarWidthCtt = 0.39
+    public static let pomodoroBotaoContinuarHeightCtt = 0.07
+    
+    public static let pomodoroProgressCircleWidthCtt = 0.85
+    public static let pomodoroProgressCircleHeightCtt = 0.39
+    
+    public static let minutesLabelWidthCtt = 0.27
+    public static let minutesLabelHeightCtt = 0.09
+    
+    public static let secondsLabelWidthCtt = 0.27
+    public static let secondsLabelHeightCtt = 0.09
+    
+    public static let chevronLabelPomoWidthCtt = 0.04
+    public static let chevronLabelPomoHeightCtt = 0.03
 }
 
 extension CGFloat {

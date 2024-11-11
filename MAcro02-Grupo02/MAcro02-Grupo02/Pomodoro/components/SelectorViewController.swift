@@ -17,7 +17,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         let titleLabel = UILabel()
         titleLabel.text = "Personalização"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 34)
-        titleLabel.textColor = .black
+        titleLabel.textColor = .systemOpposingColor
         
         return titleLabel
         
@@ -41,7 +41,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewWillAppear(_ animated: Bool) {
         // Definindo cor de fundo da view principal
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         print(pomoDefaults.workDuration)
         print(pomoDefaults.breakDuration)
@@ -105,7 +105,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .white // Definindo a cor de fundo para a UICollectionView
+        collectionView.backgroundColor = .systemBackground // Definindo a cor de fundo para a UICollectionView
         collectionView.register(ConfigCell.self, forCellWithReuseIdentifier: "ConfigCell")
     }
     
@@ -168,7 +168,7 @@ class ConfigCell: UICollectionViewCell {
         // Dois pontos ":"
         colonLabel.translatesAutoresizingMaskIntoConstraints = false
         colonLabel.text = ":"
-        colonLabel.textColor = .black
+        colonLabel.textColor = .systemOpposingColor
         colonLabel.font = UIFont.boldSystemFont(ofSize: 64)
         colonLabel.textAlignment = .center
         contentView.addSubview(colonLabel)
@@ -192,8 +192,8 @@ class ConfigCell: UICollectionViewCell {
             // Minutos label (à esquerda)
             minutesLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             minutesLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            minutesLabel.widthAnchor.constraint(equalToConstant: 104),
-            minutesLabel.heightAnchor.constraint(equalToConstant: 80),
+            minutesLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * .minutesLabelWidthCtt),
+            minutesLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * .minutesLabelHeightCtt),
             
             // Dois pontos ":" no meio
             colonLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
@@ -203,13 +203,13 @@ class ConfigCell: UICollectionViewCell {
             // Segundos label (à direita dos dois pontos)
             secondsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             secondsLabel.leadingAnchor.constraint(equalTo: colonLabel.trailingAnchor, constant: 10),
-            secondsLabel.widthAnchor.constraint(equalToConstant: 104),
-            secondsLabel.heightAnchor.constraint(equalToConstant: 80),
+            secondsLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * .secondsLabelWidthCtt),
+            secondsLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * .secondsLabelHeightCtt),
 
             // Seta à direita da célula
             arrowImageView.centerYAnchor.constraint(equalTo: minutesLabel.centerYAnchor),
-            arrowImageView.widthAnchor.constraint(equalToConstant: 20),
-            arrowImageView.heightAnchor.constraint(equalToConstant: 20)
+            arrowImageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * .chevronLabelPomoWidthCtt),
+            arrowImageView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * .chevronLabelPomoHeightCtt),
         ])
         
         // Inicialmente escondendo o campo de segundos
@@ -222,7 +222,7 @@ class ConfigCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 64)
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .systemOpposingColor
         label.layer.borderColor = UIColor.black.cgColor
         label.layer.borderWidth = 2
         label.layer.cornerRadius = 10

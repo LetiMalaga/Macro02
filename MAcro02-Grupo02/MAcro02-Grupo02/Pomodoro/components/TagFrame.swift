@@ -14,7 +14,7 @@ class TagFrame: UIView {
         let label = UILabel()
         label.text = "Trabalho"
         label.font = .systemFont(ofSize: 26)
-        label.textColor = .black
+        label.textColor = .systemOpposingColor
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -26,7 +26,7 @@ class TagFrame: UIView {
         let label = UILabel()
         label.text = "Em casa"
         label.font = .systemFont(ofSize: 13)
-        label.textColor = .black
+        label.textColor = .systemOpposingColor
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

@@ -24,7 +24,8 @@ class ActivitiesScreen: UIView{
         let label = UILabel()
         label.text = "Intervalos"
         label.font = UIFont.boldSystemFont(ofSize: 32)
-        label.textColor = traitCollection.userInterfaceStyle == .dark ? .white : .black
+//        label.textColor = traitCollection.userInterfaceStyle == .dark ? .white : .black
+        label.textColor = .systemOpposingColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -50,7 +51,8 @@ class ActivitiesScreen: UIView{
     override init(frame: CGRect) {
         
         super.init(frame: frame)
-        backgroundColor = traitCollection.userInterfaceStyle == .dark ? .black : .white
+//        backgroundColor = traitCollection.userInterfaceStyle == .dark ? .black : .white
+        backgroundColor = .systemBackground
         setupView()
         
     }
@@ -85,3 +87,6 @@ class ActivitiesScreen: UIView{
 }
 
 
+#Preview {
+    ActivitiesScreen()
+}

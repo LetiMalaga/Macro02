@@ -22,6 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             print("Permissão concedida: \(granted)")
         }
+        
+        UITabBar.appearance().tintColor = .systemOpposingColor
+//        UITabBar.appearance().unselectedItemTintColor = .systemGray2
+        
         return true
         
     }

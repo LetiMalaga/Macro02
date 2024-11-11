@@ -49,7 +49,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         super.viewDidLoad()
         
         title = "Ajustes"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         setupTableView()
         reloadData()
@@ -178,7 +178,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.textLabel?.textColor = .systemBlue
             } else {
                 cell.textLabel?.text = shortBreakActivities[indexPath.row].description
-                cell.textLabel?.textColor = .black
+                cell.textLabel?.textColor = .systemOpposingColor
             }
             return cell
             
@@ -186,7 +186,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
             if indexPath.row < longBreakActivities.count {
                 cell.textLabel?.text = longBreakActivities[indexPath.row].description
-                cell.textLabel?.textColor = .black
+                cell.textLabel?.textColor = .systemOpposingColor
             } else {
                 cell.textLabel?.text = "+ Adicione uma atividade de descanso longo"
                 cell.textLabel?.textColor = .systemBlue

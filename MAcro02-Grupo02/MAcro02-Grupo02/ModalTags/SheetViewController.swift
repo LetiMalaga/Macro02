@@ -60,7 +60,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         setupView()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: isEditingMode ? "ellipsis.circle.fill" : "ellipsis.circle"), style: .plain, target: self, action: #selector(toggleState))
-        navigationItem.rightBarButtonItem?.tintColor = .black
+        navigationItem.rightBarButtonItem?.tintColor = .systemOpposingColor
         
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
@@ -80,7 +80,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         modalIdentifierLine.layer.cornerRadius = .modalIdentifierLineCornerRadius
         
         // MARK: Label
-        modalTagLabel.textColor = .black
+        modalTagLabel.textColor = .systemOpposingColor
         modalTagLabel.text = "Escolha uma Etiqueta"
         modalTagLabel.font = .preferredFont(for: .title2, weight: .bold)
         
@@ -89,7 +89,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         tagNewTagButton.center = view.center
         tagNewTagButton.layer.borderWidth = 3
         tagNewTagButton.layer.borderColor = UIColor.black.cgColor
-        tagNewTagButton.setTitleColor(.black, for: .normal)
+        tagNewTagButton.setTitleColor(.systemOpposingColor, for: .normal)
         tagNewTagButton.setTitle("New Tag", for: .normal)
         tagNewTagButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         tagNewTagButton.layer.cornerRadius = .tagCornerRadius
@@ -245,7 +245,7 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         myTagsView.setTitle(tags[indexPath.item], for: .normal)
         myTagsView.layer.borderWidth = 3
         myTagsView.layer.borderColor = UIColor.black.cgColor
-        myTagsView.setTitleColor(.black, for: .normal)
+        myTagsView.setTitleColor(.systemOpposingColor, for: .normal)
         myTagsView.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         myTagsView.layer.cornerRadius = .tagCornerRadius
         myTagsView.layer.maskedCorners = [
@@ -296,8 +296,6 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
 }
 
 extension SheetViewController: UICollectionViewDelegateFlowLayout{
-
-    
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = view.bounds.width * .tagWidthCtt
