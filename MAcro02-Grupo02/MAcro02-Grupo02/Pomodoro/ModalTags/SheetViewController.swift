@@ -98,8 +98,8 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         // MARK: Button & TextField
         tagNewTagButton.center = view.center
         tagNewTagButton.layer.borderWidth = 3
-        tagNewTagButton.layer.borderColor = UIColor.black.cgColor
-        tagNewTagButton.setTitleColor(.black, for: .normal)
+        tagNewTagButton.layer.borderColor = UIColor.label.cgColor
+        tagNewTagButton.setTitleColor(.label, for: .normal)
         tagNewTagButton.setTitle("Nova Tag", for: .normal)
         tagNewTagButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         tagNewTagButton.layer.cornerRadius = .tagCornerRadius
