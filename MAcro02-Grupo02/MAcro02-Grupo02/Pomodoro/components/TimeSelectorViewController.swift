@@ -234,8 +234,7 @@ class TimeSelectorViewController: UIViewController {
         
             let translation = gesture.translation(in: dentsView)
            
-           // Ajuste no incremento: mais sensível para refletir a mudança
-           let increment = Int(translation.x / 20) * 5 // Alterando o divisor para aumentar a sensibilidade
+           let increment = Int(translation.x / 20) * 5
            
            // Chamando o callback com o incremento
            if increment != 0 {

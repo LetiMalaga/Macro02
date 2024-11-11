@@ -118,8 +118,6 @@ class BreathingViewController: UIViewController {
             if cycleCount < 1 {  // Verifica se o número de ciclos é menor que 3
                 updateStateLabel()
                 animateInnerCircleExpansion()
-            } else {
-                endBreathingCycle()
             }
         }
     
@@ -189,7 +187,10 @@ class BreathingViewController: UIViewController {
                 self.cycleCount += 1  // Incrementa o contador de ciclos
                 self.estadoAtual = 0
                 self.startBreathingCycle()
+                self.endBreathingCycle()
             }
         }
+        
+        
     }
 }

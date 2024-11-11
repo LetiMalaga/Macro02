@@ -14,13 +14,17 @@ class GearBarView: UIView {
     let pomoDefaults = PomoDefaults()
     let cicle:Bool
 
-    var timeInMinutes: Int {
+    var timeInMinutes: Int = 0 {
         didSet {
             if cicle {
                 timeLabel.text = String(timeInMinutes)
             } else {
                 timeLabel.text = String(format: "%02d:00", timeInMinutes)
             }
+            
+            // Vibra quando o tempo é setado
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
         }
     }
     
