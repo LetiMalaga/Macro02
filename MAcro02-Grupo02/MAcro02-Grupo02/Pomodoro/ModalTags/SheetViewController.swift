@@ -67,7 +67,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         setupView()
         interactor?.fetchTags()
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: isEditingMode ? "ellipsis.circle.fill" : "ellipsis.circle"), style: .plain, target: self, action: #selector(toggleState))
-        navigationItem.rightBarButtonItem?.tintColor = .black
+        navigationItem.rightBarButtonItem?.tintColor = .label
         
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
@@ -89,7 +89,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         modalIdentifierLine.layer.cornerRadius = .modalIdentifierLineCornerRadius
         
         // MARK: Label
-        modalTagLabel.textColor = .black
+        modalTagLabel.textColor = .label
         modalTagLabel.text = "Escolha uma Etiqueta"
         modalTagLabel.font = .preferredFont(for: .title2, weight: .bold)
         
@@ -97,8 +97,8 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         // MARK: Button & TextField
         tagNewTagButton.center = view.center
         tagNewTagButton.layer.borderWidth = 3
-        tagNewTagButton.layer.borderColor = UIColor.black.cgColor
-        tagNewTagButton.setTitleColor(.black, for: .normal)
+        tagNewTagButton.layer.borderColor = UIColor.label.cgColor
+        tagNewTagButton.setTitleColor(.label, for: .normal)
         tagNewTagButton.setTitle("New Tag", for: .normal)
         tagNewTagButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         tagNewTagButton.layer.cornerRadius = .tagCornerRadius
@@ -250,8 +250,8 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         let myTagsView = UIButton(type: .system)
         myTagsView.setTitle(tags[indexPath.item], for: .normal)
         myTagsView.layer.borderWidth = 3
-        myTagsView.layer.borderColor = UIColor.black.cgColor
-        myTagsView.setTitleColor(.black, for: .normal)
+        myTagsView.layer.borderColor = UIColor.label.cgColor
+        myTagsView.setTitleColor(.label, for: .normal)
         myTagsView.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         myTagsView.layer.cornerRadius = .tagCornerRadius
         myTagsView.translatesAutoresizingMaskIntoConstraints = false
