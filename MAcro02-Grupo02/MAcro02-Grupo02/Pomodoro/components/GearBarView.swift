@@ -32,9 +32,6 @@ class GearBarView: UIView {
         label.textAlignment = .center
         return label
     }()
-    
-    // Barra dentada como um componente separado
-    private let dentsView = DentsView()
 
     init(frame: CGRect, initialTime: Int, cicle: Bool) {
         self.cicle = cicle
@@ -67,25 +64,14 @@ class GearBarView: UIView {
         
         // Adicionar o label de tempo
         addSubview(timeLabel)
-        addSubview(dentsView)
-        
-        // Adicionar gesto de arraste
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-        self.addGestureRecognizer(panGesture)
         
         // Layout
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
-        dentsView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             timeLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -60),
+            timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -100),
             timeLabel.widthAnchor.constraint(equalToConstant: 300),
-            
-            dentsView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            dentsView.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 30),
-            dentsView.widthAnchor.constraint(equalToConstant: 300),
-            dentsView.heightAnchor.constraint(equalToConstant: 32)
         ])
     }
     
