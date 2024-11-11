@@ -211,7 +211,6 @@
 			developmentRegion = "pt-BR";
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
 				"pt-BR",
 			);
