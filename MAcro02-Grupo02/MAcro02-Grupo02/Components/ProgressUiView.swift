@@ -22,7 +22,7 @@ class ProgressUiView: UIView {
         return progressView
     }()
     
-    private var label:UILabel = {
+    var label:UILabel = {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false

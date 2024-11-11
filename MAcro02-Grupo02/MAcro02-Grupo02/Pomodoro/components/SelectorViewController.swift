@@ -12,16 +12,16 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     var pomoDefaults = PomoDefaults()
     var collectionView: UICollectionView!
     
-    let titleLabel: UILabel = {
-        
-        let titleLabel = UILabel()
-        titleLabel.text = "Personalização"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 34)
-        titleLabel.textColor = .black
-        
-        return titleLabel
-        
-    }()
+//    let titleLabel: UILabel = {
+//        
+//        let titleLabel = UILabel()
+//        titleLabel.text = "Personalização"
+//        titleLabel.font = UIFont.boldSystemFont(ofSize: 34)
+//        titleLabel.textColor = .black
+//        
+//        return titleLabel
+//        
+//    }()
     
     let saveButton: PomoButton = {
         
@@ -41,7 +41,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewWillAppear(_ animated: Bool) {
         // Definindo cor de fundo da view principal
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         print(pomoDefaults.workDuration)
         print(pomoDefaults.breakDuration)
@@ -59,33 +59,32 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         configs[2].seconds = longBreakDuration
         configs[3].seconds = loops
         
-        navigationItem.hidesBackButton = true
-        
         setupCollectionView()
         setupView()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.title = "Personalização"
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
     }
     
     func setupView() {
         
-        view.addSubview(titleLabel)
+
         view.addSubview(collectionView)
         view.addSubview(saveButton)
         
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -10),
-            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 35),
             
-            collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -35),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             collectionView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -10),
             
@@ -105,7 +104,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .white // Definindo a cor de fundo para a UICollectionView
+        collectionView.backgroundColor = .systemBackground // Definindo a cor de fundo para a UICollectionView
         collectionView.register(ConfigCell.self, forCellWithReuseIdentifier: "ConfigCell")
     }
     
@@ -168,7 +167,7 @@ class ConfigCell: UICollectionViewCell {
         // Dois pontos ":"
         colonLabel.translatesAutoresizingMaskIntoConstraints = false
         colonLabel.text = ":"
-        colonLabel.textColor = .black
+        colonLabel.textColor = .label
         colonLabel.font = UIFont.boldSystemFont(ofSize: 64)
         colonLabel.textAlignment = .center
         contentView.addSubview(colonLabel)
@@ -186,7 +185,7 @@ class ConfigCell: UICollectionViewCell {
         // Adicionando constraints
         NSLayoutConstraint.activate([
             // Título na parte superior
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             
             // Minutos label (à esquerda)
@@ -222,8 +221,8 @@ class ConfigCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 64)
         label.textAlignment = .center
-        label.textColor = .black
-        label.layer.borderColor = UIColor.black.cgColor
+        label.textColor = .label
+        label.layer.borderColor = UIColor.label.cgColor
         label.layer.borderWidth = 2
         label.layer.cornerRadius = 10
         label.layer.masksToBounds = true
