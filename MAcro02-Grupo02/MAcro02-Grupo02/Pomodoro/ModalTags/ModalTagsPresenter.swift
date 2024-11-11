@@ -9,7 +9,7 @@ import Foundation
 
 protocol ModalTagsPresenterProtocol: AnyObject {
     func presentTags(_ tags: [String])
-    func ShowAlert(_ title: String, _ message: String)
+    func showAlert(_ title: String, _ message: String)
 }
 class ModalTagsPresenter: ModalTagsPresenterProtocol {
     var view: SheetViewControllerProtocol?
@@ -18,7 +18,7 @@ class ModalTagsPresenter: ModalTagsPresenterProtocol {
         view?.tags = tags
     }
     
-    func ShowAlert(_ title: String, _ message: String) {
+    func showAlert(_ title: String, _ message: String) {
         view?.showAlert(with: title, message: message)
     }
     

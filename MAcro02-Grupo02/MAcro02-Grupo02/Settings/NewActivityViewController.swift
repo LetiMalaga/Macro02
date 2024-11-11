@@ -142,13 +142,23 @@ class NewActivityViewController: UIViewController{
     }
     
     @objc private func saveButtonTapped() {
-        let activityDescription = descriptionTextField.text ?? ""
-        guard let activityType else { return }
-        let tag = selectedTag ?? "Sem Tag"
-        
-        interactor?.addActivity(ActivitiesModel(type: activityType, description: activityDescription, tag: tag))
+        let activityDescription = descriptionTextField.text
+        if activityDescription == nil || activityDescription!.isEmpty {
+            showAlert(with: "Error", message: "Activity description already exists or is empty")
+        }else{
+            guard let activityType,
+            let activityDescription else { return }
+            let tag = selectedTag ?? "Sem Tag"
+            
+            interactor?.addActivity(ActivitiesModel(id: UUID(), type: activityType, description: activityDescription, tag: tag))
+        }
         
         dismiss(animated: true, completion: nil)
+    }
+    func showAlert(with title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
 
