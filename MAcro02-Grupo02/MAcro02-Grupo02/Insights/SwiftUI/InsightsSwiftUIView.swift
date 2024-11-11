@@ -136,7 +136,6 @@ struct InsightsSwiftUIView: View {
                             
                             Text("\(data.session)")
                             
-                            Text("3")
                             
                                 .font(.system(size: 64, weight: .bold))
                                 .minimumScaleFactor(0.5)
@@ -167,9 +166,7 @@ struct InsightsSwiftUIView: View {
                             HStack{
                                 
                                 Text(data.pause)
-                                
-                                Text("10m")
-                                
+                                                                
                                     .font(.title)
                                     .bold()
                                     .minimumScaleFactor(0.5)
@@ -203,7 +200,6 @@ struct InsightsSwiftUIView: View {
                                 
                                 Text("\(data.total )")
                                 
-                                Text("2:30h")
                                 
                                     .font(.title)
                                     .bold()

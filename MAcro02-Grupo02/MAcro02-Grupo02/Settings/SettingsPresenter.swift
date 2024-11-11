@@ -68,7 +68,7 @@ protocol SettingsViewProtocol: AnyObject {
     var recommendationButton: Bool { get set }
     var activities: [ActivitiesModel] { get set }
     var tags:[String] { get set }
-
+    
     
     func reloadData()
 }
