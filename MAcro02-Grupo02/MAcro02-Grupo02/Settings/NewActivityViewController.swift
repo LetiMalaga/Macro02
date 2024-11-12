@@ -31,7 +31,7 @@ class NewActivityViewController: UIViewController{
     
     private let descriptionTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Descrição da Atividade"
+        textField.placeholder = NSLocalizedString("Descrição de Atividade", comment: "NewActivityViewController")
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 16)
         return textField
@@ -41,21 +41,21 @@ class NewActivityViewController: UIViewController{
     
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Voltar", for: .normal)
+        button.setTitle(NSLocalizedString("Voltar", comment: "NewActivityViewController"), for: .normal)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private let saveButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Salvar", for: .normal)
+        button.setTitle(NSLocalizedString("Salvar", comment: "NewActivityViewController"), for: .normal)
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private let tagContainerStackView: UIStackView = {
         let label = UILabel()
-        label.text = "Selecione uma Tag"
+        label.text = NSLocalizedString("Selecione uma Etiqueta", comment: "NewActivityViewController")
         label.font = .boldSystemFont(ofSize: 16)
         label.textColor = .darkGray
         
@@ -128,11 +128,11 @@ class NewActivityViewController: UIViewController{
     private func configureTitle() {
         switch activityType {
         case .short:
-            titleLabel.text = "Nova Atividade Curta"
+            titleLabel.text = NSLocalizedString("Nova Atividade Curta", comment: "NewActivityViewController")
         case .long:
-            titleLabel.text = "Nova Atividade Longa"
+            titleLabel.text = NSLocalizedString("Nova Atividade Longa", comment: "NewActivityViewController")
         case .none:
-            titleLabel.text = "Nova Atividade"
+            titleLabel.text = NSLocalizedString("Nova Atividade", comment: "NewActivityViewController")
         }
     }
     
@@ -142,13 +142,15 @@ class NewActivityViewController: UIViewController{
     }
     
     @objc private func saveButtonTapped() {
+        
         let activityDescription = descriptionTextField.text
-        if activityDescription == nil || activityDescription!.isEmpty {
+        guard let activityType,
+        let activityDescription else { return }
+        
+        if !interactor!.validateActivityName(activityDescription) {
             showAlert(with: "Error", message: "Activity description already exists or is empty")
         }else{
-            guard let activityType,
-            let activityDescription else { return }
-            let tag = selectedTag ?? "Sem Tag"
+            let tag = selectedTag ?? tags.first!
             
             interactor?.addActivity(ActivitiesModel(id: UUID(), type: activityType, description: activityDescription, tag: tag))
         }

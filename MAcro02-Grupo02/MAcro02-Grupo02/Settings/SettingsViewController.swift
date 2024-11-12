@@ -31,7 +31,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     var longBreakActivities: [ActivitiesModel] = []
     
     var activities: [ActivitiesModel] = [] {
-        didSet { reloadData() }
+        didSet { reloadData()}
     }
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
@@ -48,16 +48,16 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Ajustes"
+        title = NSLocalizedString("Ajustes", comment: "Settings")
         view.backgroundColor = .white
+        interactor?.fetchActivities()
+        interactor?.fetchTags()
         
         setupTableView()
         reloadData()
     }
     
     func reloadData() {
-        interactor?.fetchActivities()
-        interactor?.fetchTags()
         
         longBreakActivities = activities.filter { $0.type == .long }
         shortBreakActivities = activities.filter { $0.type == .short }
@@ -141,12 +141,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath)
             cell.selectionStyle = .none
             if indexPath.row == 0 {
-                cell.textLabel?.text = "Sons"
+                cell.textLabel?.text = NSLocalizedString("Sons", comment: "Settings")
                 soundSwitch.isOn = soundButton
                 soundSwitch.addTarget(self, action: #selector(soundSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = soundSwitch
             } else {
-                cell.textLabel?.text = "Vibrações"
+                cell.textLabel?.text = NSLocalizedString("Vibrações", comment: "Settings")
                 vibrationSwitch.isOn = vibrationButton
                 vibrationSwitch.addTarget(self, action: #selector(vibrationSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = vibrationSwitch
@@ -155,7 +155,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             
         case 1:
             let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
-            cell.textLabel?.text = tableView.isEditing ? "Concluir" : "Editar"
+            cell.textLabel?.text = tableView.isEditing ? NSLocalizedString("Concluir", comment: "Settings") : NSLocalizedString("Editar", comment: "Settings")
             cell.textLabel?.textColor = .systemBlue
             cell.textLabel?.textAlignment = .right
             return cell
@@ -165,12 +165,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath)
             if indexPath.row == 0 {
-                cell.textLabel?.text = "Respiração ao iniciar pomodoro"
+                cell.textLabel?.text = NSLocalizedString("Respiração ao iniciar Pomodoro", comment: "Settings")
                 breathingSwitch.isOn = breathingButton
                 breathingSwitch.addTarget(self, action: #selector(breathingSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = breathingSwitch
             } else {
-                cell.textLabel?.text = "Recomendação de atividades"
+                cell.textLabel?.text = NSLocalizedString("Recomendação de Atividades", comment: "Settings")
                 recommendationSwitch.isOn = recommendationButton
                 recommendationSwitch.addTarget(self, action: #selector(recommendationSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = recommendationSwitch
@@ -187,7 +187,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
             cell.selectionStyle = .none
             if indexPath.row == shortBreakActivities.count {
-                cell.textLabel?.text = "+ Adicione uma atividade de descanso curto"
+                cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso curto", comment: "Settings")
                 cell.textLabel?.textColor = .systemBlue
             } else {
                 cell.textLabel?.text = shortBreakActivities[indexPath.row].description
@@ -206,7 +206,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.textLabel?.textColor = .black
                 cell.detailTextLabel?.textColor = .black
             } else {
-                cell.textLabel?.text = "+ Adicione uma atividade de descanso longo"
+                cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso longo", comment: "Settings")
                 cell.textLabel?.textColor = .systemBlue
             }
             return cell
@@ -229,20 +229,20 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             titleLabel.textColor = .gray
         case 1:
             
-            titleLabel.text = "Atividades personalizadas"
+            titleLabel.text = NSLocalizedString("Atividades Personalizadas", comment: "Settings")
             titleLabel.font = .preferredFont(forTextStyle: .headline)
             
             
         case 2:
-            titleLabel.text = "Sugestões"
+            titleLabel.text = NSLocalizedString("Sugestões", comment: "Settings")
             titleLabel.textColor = .gray
         case 3:
-            titleLabel.text = "Intervalo Curto"
+            titleLabel.text = NSLocalizedString("Intervalo Curto", comment: "Settings")
             titleLabel.font = .preferredFont(forTextStyle: .headline)
             
             makeButton()
         case 4:
-            titleLabel.text = "Intervalo Longo"
+            titleLabel.text = NSLocalizedString("Intervalo Longo", comment: "Settings")
             titleLabel.font = .preferredFont(forTextStyle: .headline)
             
             makeButton()
@@ -259,7 +259,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         func makeButton(){
             let button = UIButton(type: .system)
-            button.setTitle(tableView.isEditing ? "Concluir" : "Editar", for: .normal)
+            button.setTitle(tableView.isEditing ? NSLocalizedString("Concluir", comment: "Settings") : NSLocalizedString("Editar", comment: "Settings"), for: .normal)
             button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.tag = section // Tag para identificar a seção
@@ -322,10 +322,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         newActivityVC.interactor = self.interactor
         newActivityVC.tags = self.tags
         
-//        if !tags.isEmpty{
-            newActivityVC.modalPresentationStyle = .fullScreen
-            present(newActivityVC, animated: true, completion: nil)
-//        }
+        newActivityVC.modalPresentationStyle = .fullScreen
+        present(newActivityVC, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -338,10 +336,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            
             if indexPath.section == 3 {
-                //                interactor?.removeActivity(at: indexPath.row, type: .short)
+                let id = shortBreakActivities[indexPath.row].id
+                interactor?.deleteActivity(at: id)
             } else if indexPath.section == 4 {
-                //                interactor?.removeActivity(at: indexPath.row, type: .long)
+                let id = longBreakActivities[indexPath.row].id
+                interactor?.deleteActivity(at: id)
             }
         }
     }

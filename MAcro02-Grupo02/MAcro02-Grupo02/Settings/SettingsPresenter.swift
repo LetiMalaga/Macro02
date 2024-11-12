@@ -12,7 +12,7 @@ protocol SettingsPresenterProtocol: AnyObject {
     func uploadTags(_ tags:[String])
     func addActivity(_ activity: ActivitiesModel)
     func returnActivity(activity: ActivitiesModel)
-    func deleteActivity(at index: Int)
+    func deleteActivity(at id: UUID)
     func toggleButtonSound(value: Bool)
     func toggleButtonVibration(value: Bool)
     func toggleButtonBreathing(value: Bool)
@@ -28,19 +28,23 @@ class SettingsPresenter: SettingsPresenterProtocol {
     }
     func uploadTags(_ tags:[String]){
         view?.tags = tags
+        view?.reloadData()
+
     }
     func addActivity(_ activity: ActivitiesModel) {
         view?.activities.append(activity)
         view?.reloadData()
+
     }
     
     func returnActivity(activity: ActivitiesModel) {
         print(activity)
     }
     
-    func deleteActivity(at index: Int) {
-        view?.activities.remove(at: index)
+    func deleteActivity(at id: UUID) {
+        view?.activities.removeAll(where: { $0.id == id })
         view?.reloadData()
+
     }
     
     func toggleButtonSound(value: Bool) {
