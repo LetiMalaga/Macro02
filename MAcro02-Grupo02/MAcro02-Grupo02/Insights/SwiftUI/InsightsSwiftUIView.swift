@@ -109,12 +109,6 @@ struct InsightsSwiftUIView: View {
                             .font(.system(size: 64, weight: .bold))
                             .minimumScaleFactor(0.5)
                         Text("horas")
-                        
-                        Text(String(Date().formatted(date: .omitted, time: .shortened)))
-                            .font(.system(size: 64, weight: .bold))
-                            .minimumScaleFactor(0.5)
-                        Text("Horas")
-                            .minimumScaleFactor(0.5)
                         Spacer()
                     }
                     
