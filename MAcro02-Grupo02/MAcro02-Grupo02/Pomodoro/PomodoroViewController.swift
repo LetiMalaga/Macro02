@@ -100,6 +100,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             intervaloLabel.isHidden = true
             progressView.isHidden = false
             interactor?.startPomodoro()
+            
+            // sumindo com a tag
+            
+            tagframe.isHidden = true
         }
     
     // MARK: - Lifecycle
@@ -201,6 +205,11 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         interactor?.resumePomodoro()
         resumeButton.isHidden = true
         isRuning = true
+        
+        // sumindo com a tag
+        
+        tagframe.isHidden = true
+        
         resetButton.isHidden = true
         progressView.isHidden = false
     }
@@ -215,6 +224,11 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         playButton.isHidden = false
         progressView.isHidden = true
         intervaloLabel.isHidden = false
+        
+        // Voltando a tag
+        
+        tagframe.isHidden = false
+        
         isRuning = false
     }
     
@@ -229,6 +243,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         if isRuning {
 
                 interactor?.pausePomodoro()
+            
+                // Voltando a tag
+                
+                tagframe.isHidden = false
                 
                 resumeButton.isHidden = false
                 resetButton.isHidden = false
