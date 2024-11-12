@@ -40,6 +40,8 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     private var pendingPhaseSwitch: Bool = false // Track if the phase switch is pending
     private var appDidEnterBackgroundDate: Date?
     var tagTime: String?
+    
+    var activitySuggestion: ActivitiesModel?
 
     func toggleBreathing() {
         wantsBreathing.toggle()
@@ -281,5 +283,22 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 print("Error scheduling notification: \(error)")
             }
         }
+    }
+    func fetchActivities(){
+        
+        let activities = dataManager.fetchActivities()
+        
+        var activitiesModel: [ActivitiesModel] = []
+        
+//        guard let activities else { return }
+        
+        for activity in activities {
+            activitiesModel.append(ActivitiesModel(id: activity.id,
+                                                   type: ActivitiesType(rawValue: activity.type) ?? .short,
+                                                   description: activity.descriptionText,
+                                                   tag: activity.tag))
+        }
+//        self.activities = activitiesModel
+//        self.presenter?.uploadActivitys(activitiesModel)
     }
 }

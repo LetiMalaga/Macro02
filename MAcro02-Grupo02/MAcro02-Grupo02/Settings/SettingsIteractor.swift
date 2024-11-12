@@ -21,6 +21,7 @@ protocol SettingsIteractorProtocol: AnyObject {
     func fetchTags()
     func addActivity(_ activity: ActivitiesModel)
     func deleteActivity(at activityID: UUID)
+    func updateActivity(_ activity: ActivitiesModel)
     func validateActivityName(_ name: String) -> Bool
 }
 
@@ -28,9 +29,7 @@ class SettingsIteractor: SettingsIteractorProtocol {
     var activities: [ActivitiesModel] = []
     var presenter: SettingsPresenterProtocol?
     var dataModel: SettingsDataProtocol?
-    //    init(){
-    //        self.fetchActivities()
-    //    }
+
     func changeSound() {
         var sound = UserDefaults.standard.bool(forKey: "sound")
         sound.toggle()
@@ -102,6 +101,16 @@ class SettingsIteractor: SettingsIteractorProtocol {
         presenter?.deleteActivity(at: activityID)
         self.activities.removeAll(where: { $0.id == activityID })
         
+    }
+    func updateActivity(_ activity: ActivitiesModel){
+        dataModel?.editActivity(at: activity.id, with: activity, completion: { success in
+            if success{
+                self.activities[self.activities.firstIndex(where: {$0.id == activity.id})!] = activity
+                self.presenter?.uploadActivitys(self.activities)
+            }else{
+                print("Error updating activity: \(activity)")
+            }
+        })
     }
     
     
