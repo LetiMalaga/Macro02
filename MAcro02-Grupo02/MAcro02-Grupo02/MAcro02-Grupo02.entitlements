@@ -5,6 +5,7 @@
 	<key>aps-environment</key>
 	<string>development</string>
 	<key>com.apple.developer.icloud-container-identifiers</key>
+
 	<array>
 		<string>iCloud.uikittestes.Macro02-Grupo02.leticiamalagutti</string>
 	</array>
