@@ -302,6 +302,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
 extension PomodoroViewController: UIViewControllerTransitioningDelegate, PassingTag {
     func passing(_ tag: String) {
         tagframe.tagline.text = tag
+        self.interactor?.tagTime = tag
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {

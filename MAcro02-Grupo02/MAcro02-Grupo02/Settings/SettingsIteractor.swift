@@ -8,7 +8,7 @@
 import Foundation
 
 protocol SettingsIteractorProtocol: AnyObject {
-    var activities: [ActivitiesModel] {get set}
+    //    var activities: [ActivitiesModel] {get set}
     var presenter: SettingsPresenterProtocol? {get}
     
     
@@ -20,17 +20,17 @@ protocol SettingsIteractorProtocol: AnyObject {
     func fetchActivities()
     func fetchTags()
     func addActivity(_ activity: ActivitiesModel)
-    func deleteActivity(at index: Int)
-    func getActivity(at index: Int)
+    func deleteActivity(at activityID: UUID)
     func validateActivityName(_ name: String) -> Bool
 }
 
 class SettingsIteractor: SettingsIteractorProtocol {
-    
     var activities: [ActivitiesModel] = []
     var presenter: SettingsPresenterProtocol?
     var dataModel: SettingsDataProtocol?
-    
+    //    init(){
+    //        self.fetchActivities()
+    //    }
     func changeSound() {
         var sound = UserDefaults.standard.bool(forKey: "sound")
         sound.toggle()
@@ -59,13 +59,22 @@ class SettingsIteractor: SettingsIteractorProtocol {
         UserDefaults.standard.set(recomendations, forKey: "recomendations")
     }
     
-    func fetchActivities() {
-        dataModel?.fetchActivities { [weak self] activities in
-            if !activities.isEmpty {
-                self?.activities = activities
-                self?.presenter?.uploadActivitys(activities)
-            }
+    func fetchActivities(){
+        
+        let activities = dataModel?.fetchActivities()
+        
+        var activitiesModel: [ActivitiesModel] = []
+        
+        guard let activities else { return }
+        
+        for activity in activities {
+            activitiesModel.append(ActivitiesModel(id: activity.id,
+                                                   type: ActivitiesType(rawValue: activity.type) ?? .short,
+                                                   description: activity.descriptionText,
+                                                   tag: activity.tag))
         }
+        self.activities = activitiesModel
+        self.presenter?.uploadActivitys(activitiesModel)
     }
     
     func fetchTags(){
@@ -79,33 +88,30 @@ class SettingsIteractor: SettingsIteractorProtocol {
     }
     
     func addActivity(_ activity: ActivitiesModel) {
-        if validateActivityName(activity.description) {
-            dataModel?.addActivity(activity) { success in
-                self.presenter?.addActivity(activity)
-            }
-        }else{
-            print("Invalid activity name")
+        dataModel?.addActivity(activity) { success in
+            self.presenter?.addActivity(activity)
+            print("Added activity: \(activity)")
+            self.activities.append(activity)
         }
     }
     
-    func deleteActivity(at index: Int) {
-        if index < activities.count {
-            let activity = activities[index]
-            dataModel?.deleteActivity(at: activity.id) { success in
-                print ("Deleted activity: \(activity)")
-            }
-            presenter?.deleteActivity(at: index)
-        } else {
-            print ("Index out of bounds")
+    func deleteActivity(at activityID: UUID) {
+        dataModel?.deleteActivity(at: activityID) { success in
+            print ("Deleted activity: \(activityID)")
         }
+        presenter?.deleteActivity(at: activityID)
+        self.activities.removeAll(where: { $0.id == activityID })
+        
     }
     
-    func getActivity(at index: Int){
-        presenter?.returnActivity(activity: self.activities[index])
-    }
+    
     
     func validateActivityName(_ name: String) -> Bool {
-        return !name.isEmpty
+        if (!name.isEmpty && !activities.contains(where: { $0.description == name })){
+            return true
+        }else{
+            return false
+        }
     }
     
 }

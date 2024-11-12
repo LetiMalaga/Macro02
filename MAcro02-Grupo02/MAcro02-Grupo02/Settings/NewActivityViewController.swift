@@ -142,13 +142,15 @@ class NewActivityViewController: UIViewController{
     }
     
     @objc private func saveButtonTapped() {
+        
         let activityDescription = descriptionTextField.text
-        if activityDescription == nil || activityDescription!.isEmpty {
+        guard let activityType,
+        let activityDescription else { return }
+        
+        if !interactor!.validateActivityName(activityDescription) {
             showAlert(with: "Error", message: "Activity description already exists or is empty")
         }else{
-            guard let activityType,
-            let activityDescription else { return }
-            let tag = selectedTag ?? "Sem Tag"
+            let tag = selectedTag ?? tags.first!
             
             interactor?.addActivity(ActivitiesModel(id: UUID(), type: activityType, description: activityDescription, tag: tag))
         }

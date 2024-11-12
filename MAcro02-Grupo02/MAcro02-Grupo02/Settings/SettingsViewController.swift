@@ -31,7 +31,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     var longBreakActivities: [ActivitiesModel] = []
     
     var activities: [ActivitiesModel] = [] {
-        didSet { reloadData() }
+        didSet { reloadData()}
     }
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
@@ -50,14 +50,14 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         
         title = "Ajustes"
         view.backgroundColor = .white
+        interactor?.fetchActivities()
+        interactor?.fetchTags()
         
         setupTableView()
         reloadData()
     }
     
     func reloadData() {
-        interactor?.fetchActivities()
-        interactor?.fetchTags()
         
         longBreakActivities = activities.filter { $0.type == .long }
         shortBreakActivities = activities.filter { $0.type == .short }
@@ -322,10 +322,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         newActivityVC.interactor = self.interactor
         newActivityVC.tags = self.tags
         
-//        if !tags.isEmpty{
-            newActivityVC.modalPresentationStyle = .fullScreen
-            present(newActivityVC, animated: true, completion: nil)
-//        }
+        newActivityVC.modalPresentationStyle = .fullScreen
+        present(newActivityVC, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -338,10 +336,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            
             if indexPath.section == 3 {
-                //                interactor?.removeActivity(at: indexPath.row, type: .short)
+                let id = shortBreakActivities[indexPath.row].id
+                interactor?.deleteActivity(at: id)
             } else if indexPath.section == 4 {
-                //                interactor?.removeActivity(at: indexPath.row, type: .long)
+                let id = longBreakActivities[indexPath.row].id
+                interactor?.deleteActivity(at: id)
             }
         }
     }

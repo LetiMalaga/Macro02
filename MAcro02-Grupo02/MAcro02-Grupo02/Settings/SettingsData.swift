@@ -22,7 +22,7 @@ enum ActivitiesType: String, Codable {
 //
 //}
 
-struct ActivitiesModel {
+struct ActivitiesModel: Decodable{
     var id: UUID
     var type: ActivitiesType
     var description: String
@@ -30,7 +30,7 @@ struct ActivitiesModel {
 }
 
 protocol SettingsDataProtocol {
-    func fetchActivities(completion: @escaping ([ActivitiesModel]) -> Void)
+    func fetchActivities() -> [Activity]
     func fetchTags(completion: @escaping ([String]) -> Void)
     func addActivity(_ activity: ActivitiesModel, completion: @escaping (Bool) -> Void)
     func deleteActivity(at id: UUID, completion: @escaping (Bool) -> Void)
@@ -40,32 +40,21 @@ class SettingsData: SettingsDataProtocol {
     private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     private let userDefaultsKeyTags = "tagsData"
     
-    func fetchActivities(completion: @escaping ([ActivitiesModel]) -> Void) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+    func fetchActivities() -> [Activity] {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
         
         let contexts = appDelegate.persistentContainer.viewContext
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Activity")
-        
-        //        let request: NSFetchRequest<Activity> = Activity.fetchRequest() as! NSFetchRequest<Activity>
+
+        let request: NSFetchRequest<Activity> = Activity.fetchRequest() 
         
         do {
-            //            let activities = try context.fetch(Activity.fetchRequest())
-            
             let activities = try contexts.fetch(request)
-            var activitiesModel : [ActivitiesModel] = []
+            return activities
             
-            
-            for activity in activities as! [NSManagedObject]{
-                activitiesModel.append(ActivitiesModel(id: activity.value(forKey: "id") as! UUID,
-                                                       type: ActivitiesType(rawValue: activity.value(forKey: "type") as! String) ?? .short,
-                                                       description: activity.value(forKey: "descriptionText") as! String,
-                                                       tag: activity.value(forKey: "tag") as! String))
-                
-            }
-            completion(activitiesModel)
         } catch {
             print("Failed to fetch activities: \(error)")
-            completion([])
+            return []
+//            completion([])
         }
     }
     
