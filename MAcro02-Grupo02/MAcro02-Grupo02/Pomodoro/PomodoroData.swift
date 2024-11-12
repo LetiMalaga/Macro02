@@ -7,7 +7,8 @@
 
 import Foundation
 import CloudKit
-
+import CoreData
+import UIKit
 
 class PomodoroData {
     let privateDatabase = CKContainer.default().privateCloudDatabase
@@ -56,6 +57,24 @@ class PomodoroData {
                     
                 }
             }
+        }
+    }
+    
+    func fetchActivities() -> [Activity] {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
+        
+        let contexts = appDelegate.persistentContainer.viewContext
+
+        let request: NSFetchRequest<Activity> = Activity.fetchRequest()
+        
+        do {
+            let activities = try contexts.fetch(request)
+            return activities
+            
+        } catch {
+            print("Failed to fetch activities: \(error)")
+            return []
+//            completion([])
         }
     }
     

@@ -114,7 +114,7 @@ struct InsightsSwiftUIView: View {
                         Text(data.foco)
                             .font(.system(size: 64, weight: .bold))
                             .minimumScaleFactor(0.5)
-                        Text("horas")
+//                        Text("horas")
                         Spacer()
                     }
                     

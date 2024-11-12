@@ -1,24 +1,33 @@
 //
+//  ActivityDetailViewController.swift
+//  MAcro02-Grupo02
+//
+//  Created by Luiz Felipe on 12/11/24.
+//
+
+import Foundation
+import UIKit
+//
 //  NewActivityViewController.swift
 //  MAcro02-Grupo02
 //
 //  Created by Luiz Felipe on 01/11/24.
 //
 
-import Foundation
-import UIKit
-
-
-class NewActivityViewController: UIViewController{
+class ActivityDetailViewController: UIViewController{
     
     
     
     // MARK: - Properties
-    var activityType: ActivitiesType?
+    var activity: ActivitiesModel?
+    var onSave: ((ActivitiesModel) -> Void)?
+    
     var interactor: SettingsIteractorProtocol?
+    
     var tags: [String] = []{
         didSet {tagPickerView.dataSource = self}
     }
+    
     private var selectedTag: String?
     
     // MARK: - UI Elements
@@ -74,10 +83,11 @@ class NewActivityViewController: UIViewController{
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        setupUI()
-        configureTitle()
+        view.backgroundColor = AppColors.backgroundPrimary
+        title = "Detalhes da Atividade"
         
+        setupUI()
+        loadActivityData()
         tagPickerView.dataSource = self
         tagPickerView.delegate = self
     }
@@ -125,34 +135,32 @@ class NewActivityViewController: UIViewController{
         ])
     }
     
-    private func configureTitle() {
-        switch activityType {
-        case .short:
-            titleLabel.text = "Nova Atividade Curta"
-        case .long:
-            titleLabel.text = "Nova Atividade Longa"
-        case .none:
-            titleLabel.text = "Nova Atividade"
-        }
-    }
     
     // MARK: - Actions
     @objc private func backButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
     
+    private func loadActivityData() {
+        descriptionTextField.text = activity?.description
+        selectedTag = activity?.tag
+    }
+    
     @objc private func saveButtonTapped() {
         
         let activityDescription = descriptionTextField.text
-        guard let activityType,
-        let activityDescription else { return }
+        guard let activityDescription else { return }
         
         if !interactor!.validateActivityName(activityDescription) {
             showAlert(with: "Error", message: "Activity description already exists or is empty")
         }else{
-            let tag = selectedTag ?? tags.first!
+            guard var activity = activity else { return }
+            activity.description = activityDescription
+            activity.tag = selectedTag!
             
-            interactor?.addActivity(ActivitiesModel(id: UUID(), type: activityType, description: activityDescription, tag: tag))
+            onSave?(activity)
+            navigationController?.popViewController(animated: true)
+            
         }
         
         dismiss(animated: true, completion: nil)
@@ -165,7 +173,7 @@ class NewActivityViewController: UIViewController{
 }
 
 // MARK: - UIPickerView DataSource & Delegate
-extension NewActivityViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+extension ActivityDetailViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -183,5 +191,57 @@ extension NewActivityViewController: UIPickerViewDataSource, UIPickerViewDelegat
     }
 }
 #Preview {
-    NewActivityViewController()
+    ActivityDetailViewController()
 }
+
+//class ActivityDetailViewController: UIViewController {
+//    var activity: ActivitiesModel?
+//    var onSave: ((ActivitiesModel) -> Void)?
+//    
+//    private let descriptionTextField = UITextField()
+//    private let tagTextField = UITextField()
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        view.backgroundColor = .white
+//        title = "Detalhes da Atividade"
+//        
+//        setupViews()
+//        loadActivityData()
+//    }
+//    
+//    private func setupViews() {
+//        descriptionTextField.placeholder = "Descrição"
+//        tagTextField.placeholder = "Tag"
+//        
+//        let stackView = UIStackView(arrangedSubviews: [descriptionTextField, tagTextField])
+//        stackView.axis = .vertical
+//        stackView.spacing = 16
+//        stackView.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        view.addSubview(stackView)
+//        
+//        NSLayoutConstraint.activate([
+//            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            descriptionTextField.widthAnchor.constraint(equalToConstant: 200),
+//            tagTextField.widthAnchor.constraint(equalToConstant: 200)
+//        ])
+//        
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Salvar", style: .done, target: self, action: #selector(saveActivity))
+//    }
+//    
+//    private func loadActivityData() {
+//        descriptionTextField.text = activity?.description
+//        tagTextField.text = activity?.tag
+//    }
+//    
+//    @objc private func saveActivity() {
+//        guard var activity = activity else { return }
+//        activity.description = descriptionTextField.text ?? ""
+//        activity.tag = tagTextField.text ?? ""
+//        
+//        onSave?(activity)
+//        navigationController?.popViewController(animated: true)
+//    }
+//}
