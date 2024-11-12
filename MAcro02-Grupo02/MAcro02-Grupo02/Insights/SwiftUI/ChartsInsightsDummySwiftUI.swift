@@ -19,9 +19,9 @@ struct FocoPorTagChartView: View {
     
     var body: some View {
         Chart (data) { dataPoint in
-            BarMark(x: .value("Population", dataPoint.count),
-                    y: .value("Type", dataPoint.type))
-            .foregroundStyle(by: .value("Tyoe", dataPoint.type))
+            BarMark(x: .value("População", dataPoint.count),
+                    y: .value("Tipo", dataPoint.type))
+            .foregroundStyle(by: .value("Tipo", dataPoint.type))
             .annotation(position: .trailing) {
                 Text(String(dataPoint.count))
                     .foregroundStyle(.gray)

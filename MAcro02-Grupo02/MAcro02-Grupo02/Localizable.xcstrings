@@ -1,0 +1,732 @@
+{
+  "sourceLanguage" : "pt-BR",
+  "strings" : {
+    "%@" : {
+
+    },
+    "%lld" : {
+
+    },
+    "+ Adicione uma atividade de descanso curto" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ Add a short break activity"
+          }
+        }
+      }
+    },
+    "+ Adicione uma atividade de descanso longo" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ Add a long break activity"
+          }
+        }
+      }
+    },
+    "Ajustes" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "Ao completar alguns ciclos de foco, é hora de um intervalo mais longo. Aproveite essa pausa para descansar mais profundamente." : {
+      "comment" : "TimeSelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "After completing some work cycles, it’s time for a longer break. Enjoy this pause to rest a little more."
+          }
+        }
+      }
+    },
+    "Aperte para começar" : {
+      "comment" : "Tela de respiração",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch to start"
+          }
+        }
+      }
+    },
+    "Após um ciclo de foco, o app sugere atividades como alongamentos ou uma respiração profunda para você relaxar e manter o foco renovado." : {
+      "comment" : "TimeSelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "After a work cycle, the app suggests activities such as stretching or deep breathing to get you to relax and renew your focus."
+          }
+        }
+      }
+    },
+    "Atividades Personalizadas" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalized Activities"
+          }
+        }
+      }
+    },
+    "Ciclos de Pomodoro" : {
+      "comment" : "SelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomodoro Cycles"
+          }
+        }
+      }
+    },
+    "Ciclos pre-definidos:" : {
+      "comment" : "TimeSelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predefined Cycles:"
+          }
+        }
+      }
+    },
+    "Com este modo ativado, o pomodoro é contado a partir do 0 e assim prossegue até que você o pare." : {
+      "comment" : "TimeSelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With this mode activated, the Pomodoro starts from 0 and will continue until you stop it."
+          }
+        }
+      }
+    },
+    "Concluir" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm"
+          }
+        }
+      }
+    },
+    "Continuar" : {
+      "comment" : "Botão de continuar pomodoro",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar"
+          }
+        }
+      }
+    },
+    "Defina quantos ciclos de foco e intervalos você deseja realizar. O app automatiza essas sessões, permitindo que você se concentre sem precisar se preocupar com os tempos." : {
+      "comment" : "TimeSelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Define how many focus cycles and intervals you desire. The app automates these sessions, allowing you to focus without needing to worry about time."
+          }
+        }
+      }
+    },
+    "Descrição de Atividade" : {
+      "comment" : "NewActivityViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activity Description"
+          }
+        }
+      }
+    },
+    "Dia" : {
+      "comment" : "Insights",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day"
+          }
+        }
+      }
+    },
+    "Editar" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
+    },
+    "Escolha uma Etiqueta" : {
+      "comment" : "Modal de Tags",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a tag"
+          }
+        }
+      }
+    },
+    "Estudo" : {
+      "comment" : "ModalTagsData",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Study"
+          }
+        }
+      }
+    },
+    "Estudos" : {
+      "comment" : "Insights",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Studies"
+          }
+        }
+      }
+    },
+    "Expire" : {
+      "comment" : "Tela de respiração",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breathe out"
+          }
+        }
+      }
+    },
+    "Foco" : {
+      "comment" : "ModalTagsData\nSelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foco"
+          }
+        }
+      }
+    },
+    "Hoje" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoje"
+          }
+        }
+      }
+    },
+    "Hora de focar! Escolha o tempo ideal para mergulhar na sua tarefa e bloquear distrações." : {
+      "comment" : "TimeSelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time to focus! Pick the ideal time to submerge in your task and block all distractions."
+          }
+        }
+      }
+    },
+    "horas" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hours"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Horas"
+          }
+        }
+      }
+    },
+    "Iniciar" : {
+      "comment" : "Botão de iniciar pomodoro",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar"
+          }
+        }
+      }
+    },
+    "Inspire" : {
+      "comment" : "Tela de respiração",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breathe in"
+          }
+        }
+      }
+    },
+    "Intervalo" : {
+      "comment" : "PomodoroViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Break"
+          }
+        }
+      }
+    },
+    "Intervalo Curto" : {
+      "comment" : "SelectorViewController\nSettings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Short Break"
+          }
+        }
+      }
+    },
+    "Intervalo Longo" : {
+      "comment" : "SelectorViewController\nSettings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Long Break"
+          }
+        }
+      }
+    },
+    "Mantenha pressionado para pausar" : {
+      "comment" : "PomodoroViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold down to pause"
+          }
+        }
+      }
+    },
+    "Mantenha pressionado para pular" : {
+      "comment" : "Tela de respiração",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold down to skip"
+          }
+        }
+      }
+    },
+    "Meditação" : {
+      "comment" : "ModalTagsData",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meditation"
+          }
+        }
+      }
+    },
+    "Mês" : {
+      "comment" : "Insights",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Month"
+          }
+        }
+      }
+    },
+    "Nova Atividade" : {
+      "comment" : "NewActivityViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Activity"
+          }
+        }
+      }
+    },
+    "Nova Atividade Curta" : {
+      "comment" : "NewActivityViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Short Activity"
+          }
+        }
+      }
+    },
+    "Nova Atividade Longa" : {
+      "comment" : "NewActivityViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Long Activity"
+          }
+        }
+      }
+    },
+    "Nova Etiqueta" : {
+      "comment" : "Modal de Tags",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Tag"
+          }
+        }
+      }
+    },
+    "Outros" : {
+      "comment" : "Insights",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Others"
+          }
+        }
+      }
+    },
+    "Pausa" : {
+      "comment" : "PomodoroViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausa"
+          }
+        }
+      }
+    },
+    "Pausa Longa" : {
+      "comment" : "PomodoroViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Long Break"
+          }
+        }
+      }
+    },
+    "Personalização" : {
+      "comment" : "SelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customization"
+          }
+        }
+      }
+    },
+    "População" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Population"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "População"
+          }
+        }
+      }
+    },
+    "Projetos" : {
+      "comment" : "Insights",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Projects"
+          }
+        }
+      }
+    },
+    "Recomendação de Atividades" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activity Recommendation"
+          }
+        }
+      }
+    },
+    "Refrescar" : {
+      "comment" : "Insights",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh"
+          }
+        }
+      }
+    },
+    "Resetar" : {
+      "comment" : "Botão de resetar pomodoro",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
+    },
+    "Respiração ao iniciar Pomodoro" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breathing Exercise"
+          }
+        }
+      }
+    },
+    "Resultados" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Results"
+          }
+        }
+      }
+    },
+    "Salvar" : {
+      "comment" : "NewActivityViewController\nSelectorViewController\nTimeSelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "Segure" : {
+      "comment" : "Tela de respiração",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold"
+          }
+        }
+      }
+    },
+    "Selecione uma Etiqueta" : {
+      "comment" : "NewActivityViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a Tag"
+          }
+        }
+      }
+    },
+    "Semana" : {
+      "comment" : "Insights",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Week"
+          }
+        }
+      }
+    },
+    "Sessões" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessions"
+          }
+        }
+      }
+    },
+    "Sons" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sounds"
+          }
+        }
+      }
+    },
+    "Sugestões" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions"
+          }
+        }
+      }
+    },
+    "Tempos predefinidos" : {
+      "comment" : "TimeSelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predefined Times"
+          }
+        }
+      }
+    },
+    "TimeFrameSegmentControl" : {
+
+    },
+    "Tipo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
+    },
+    "Total" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
+          }
+        }
+      }
+    },
+    "Trabalho" : {
+      "comment" : "Insights\nModal de Tags\nModalTagsData\nPomodoroViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work"
+          }
+        }
+      }
+    },
+    "Treino" : {
+      "comment" : "ModalTagsData",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Training"
+          }
+        }
+      }
+    },
+    "Vibrações" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haptics"
+          }
+        }
+      }
+    },
+    "Voltar" : {
+      "comment" : "NewActivityViewController\nSelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
