@@ -162,6 +162,36 @@
             endingLineNumber = "15"
             landmarkName = "scheduleEndOfDayNotification(insights:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B9F3E89B-EA39-466F-B872-EAAF7E51C1E9 - 96f580e2b573016f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MAcro02_Grupo02.InsightsNotifications.scheduleEndOfDayNotification(insights: MAcro02_Grupo02.InsightsDataModel) -&gt; ()"
+                  moduleName = "MAcro02-Grupo02.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Insights/InsightsNotifications.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15">
+               </Location>
+               <Location
+                  uuid = "B9F3E89B-EA39-466F-B872-EAAF7E51C1E9 - 96f580e2b573016f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MAcro02_Grupo02.InsightsNotifications.scheduleEndOfDayNotification(insights: MAcro02_Grupo02.InsightsDataModel) -&gt; ()"
+                  moduleName = "MAcro02-Grupo02.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Insights/InsightsNotifications.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -318,8 +348,8 @@
             filePath = "MAcro02-Grupo02/Insights/SwiftUI/InsightsSwiftUIView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
@@ -467,6 +497,34 @@
             landmarkName = "deleteActivity(at:)"
             landmarkType = "7">
             <Locations>
+               <Location
+                  uuid = "6CDA3141-BDEA-449F-B7BE-01F69C34249A - cd3ed6a5394f5b4e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MAcro02_Grupo02.SettingsIteractor.deleteActivity(at: Foundation.UUID) -&gt; ()"
+                  moduleName = "MAcro02-Grupo02.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Settings/SettingsIteractor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "103"
+                  endingLineNumber = "103">
+               </Location>
+               <Location
+                  uuid = "6CDA3141-BDEA-449F-B7BE-01F69C34249A - 7e2af2a5b118311c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (MAcro02_Grupo02.ActivitiesModel) -&gt; Swift.Bool in MAcro02_Grupo02.SettingsIteractor.deleteActivity(at: Foundation.UUID) -&gt; ()"
+                  moduleName = "MAcro02-Grupo02.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Settings/SettingsIteractor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "103"
+                  endingLineNumber = "103">
+               </Location>
                <Location
                   uuid = "6CDA3141-BDEA-449F-B7BE-01F69C34249A - cd3ed6a5394f5b4e"
                   shouldBeEnabled = "Yes"

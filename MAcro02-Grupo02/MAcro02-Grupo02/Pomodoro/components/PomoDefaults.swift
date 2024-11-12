@@ -12,7 +12,7 @@ enum locals {
     case outside
 }
 
-class PomoDefaults {
+public class PomoDefaults {
     
     private let defaults = UserDefaults.standard
     
