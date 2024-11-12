@@ -39,54 +39,54 @@ struct InsightsSwiftUIView: View {
                 }
             }
             
-            HStack{
-                Button{
-                    
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.headline)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.black)
-                }
-                
-                Spacer()
-                
-                HStack{
-                    Text("Hoje")
-                        .font(.headline)
-                        .fontWeight(.bold)
-                    
-                    Button {
-                        switch selectedTimeFrame {
-                        case "Dia":
-                            interactor?.insightsPerDay()
-                            print("insightsPerDay")
-                        case "Semana":
-                            interactor?.insightsPerWeek()
-                            print("insightsPerWeek")
-                        case "Mês":
-                            interactor?.insightsPerMonth()
-                            print("insightsPerMonth")
-                        default:
-                            print("erro")
-                        }
-                    } label: {
-                        Text("Refresh")
-                    }
-                    
-                }
-                Spacer()
-                
-                Button{
-                    
-                } label: {
-                    Image(systemName: "chevron.right")
-                        .font(.headline)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.black)
-                }
-                .padding(.vertical)
-            }
+//            HStack{
+//                Button{
+//                    
+//                } label: {
+//                    Image(systemName: "chevron.left")
+//                        .font(.headline)
+//                        .fontWeight(.bold)
+//                        .foregroundStyle(.black)
+//                }
+//                
+//                Spacer()
+//                
+//                HStack{
+//                    Text("Hoje")
+//                        .font(.headline)
+//                        .fontWeight(.bold)
+//                    
+//                    Button {
+//                        switch selectedTimeFrame {
+//                        case "Dia":
+//                            interactor?.insightsPerDay()
+//                            print("insightsPerDay")
+//                        case "Semana":
+//                            interactor?.insightsPerWeek()
+//                            print("insightsPerWeek")
+//                        case "Mês":
+//                            interactor?.insightsPerMonth()
+//                            print("insightsPerMonth")
+//                        default:
+//                            print("erro")
+//                        }
+//                    } label: {
+//                        Text("Refresh")
+//                    }
+//                    
+//                }
+//                Spacer()
+//                
+//                Button{
+//                    
+//                } label: {
+//                    Image(systemName: "chevron.right")
+//                        .font(.headline)
+//                        .fontWeight(.bold)
+//                        .foregroundStyle(.black)
+//                }
+//                .padding(.vertical)
+//            }
             // Retângulo foco
             ZStack{
                 RoundedRectangle(cornerRadius: 15)
@@ -108,7 +108,7 @@ struct InsightsSwiftUIView: View {
                         Text(data.foco)
                             .font(.system(size: 64, weight: .bold))
                             .minimumScaleFactor(0.5)
-                        Text("horas")
+//                        Text("horas")
                         Spacer()
                     }
                     
