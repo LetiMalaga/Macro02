@@ -8,13 +8,14 @@
 import Foundation
 import UIKit
 
-class ActivitiesFactory{
-    static func makeActivitiesModule() -> UIViewController {
-        let viewController = ActivitiesViewController()
-        let data = ActivitiesData()
-        let interactor = ActivitiesInteractor(activitiesData: data)
-        let presenter = ActivitiesPresenter(view: viewController, activitiesInteractor: interactor)
-        viewController.presenter = presenter
-        return viewController
-    }
-}
+//class ActivitiesFactory{
+//    static func makeActivitiesModule() -> UIViewController {
+//        let viewController = ActivitiesViewController()
+//        let data = ActivitiesData()
+//        let presenter = ActivitiesPresenter(view: viewController)
+//        let interactor = ActivitiesInteractor(activitiesData: data, presenter: presenter)
+//
+//        viewController.interactor = interactor
+//        return viewController
+//    }
+//}

@@ -1,5 +1,5 @@
 //
-//  PomodoroView.swift
+//  PomodoroViewController.swift
 //  MAcro02-Grupo02
 //
 //  Created by Luca on 23/09/24.
@@ -7,144 +7,306 @@
 
 import UIKit
 
-class PomodoroViewController: UIViewController {
-    var interactor: PomodoroInteractorProtocol!
+protocol BreathingCompletionDelegate: AnyObject {
+    func didFinishBreathingExercise()
+}
+
+class PomodoroViewController: UIViewController, UIPopoverPresentationControllerDelegate, BreathingCompletionDelegate {
     
-    private let timerLabel = UILabel()
-    private let stateLabel = UILabel()
-    private let controlButton = UIButton(type: .system)
-    private let stopButton = UIButton(type: .system)
+    var interactor: PomodoroInteractorProtocol?
+    let pomoConfig = PomoDefaults()
+    private var progressTimer: Timer?
     
-    private let workDurationField = UITextField()
-    private let breakDurationField = UITextField()
-    private let loopCountField = UITextField()
+
+    public var isRuning = false
+    
+    // UI Elements
+    private var progressView: ProgressUiView = {
+        let progress = ProgressUiView()
+        progress.isHidden = true
+        progress.label.text = "Mantenha pressionado para pausar"
+        
+        progress.translatesAutoresizingMaskIntoConstraints = false
+        return progress
+    }()
+    
+    private let timeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
+        label.textColor = AppColors.textPrimary
+        label.textAlignment = .center
+        label.isUserInteractionEnabled = true
+        
+        return label
+    }()
+    
+    private let intervaloLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 22)
+        label.layer.opacity = 0.3
+        label.textColor = AppColors.textPrimary
+        
+        return label
+    }()
+    
+    private let progressCircleView: TimerCircle = TimerCircle()
+    
+    private let playButton: PomoButton = {
+        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: "Iniciar")
+        pomo.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
+        return pomo
+    }()
+    
+    // Novo botão para retomar o Pomodoro
+    private let resumeButton: PomoButton = {
+        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: "Continuar")
+        pomo.addTarget(self, action: #selector(resume), for: .touchUpInside)
+        pomo.isHidden = true // Inicialmente oculto
+        return pomo
+    }()
+    
+    private let tagframe: TagFrame = {
+        let tagframe = TagFrame()
+        return tagframe
+    }()
+    
+    // Novo botão para resetar o Pomodoro
+    private let resetButton: PomoButton = {
+        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: "Resetar")
+        
+        pomo.layer.borderWidth = 2
+        pomo.backgroundColor = .clear
+        
+        pomo.addTarget(self, action: #selector(reset), for: .touchUpInside)
+        pomo.isHidden = true // Inicialmente oculto
+        return pomo
+    }()
+    
+    @objc private func didTapPlayPause() {
+            // Instancia o BreathingViewController
+            let breathingVC = BreathingViewController()
+            breathingVC.delegate = self // Define a PomodoroViewController como delegate
+            breathingVC.modalPresentationStyle = .fullScreen
+            
+            // Apresenta o BreathingViewController
+            present(breathingVC, animated: true, completion: nil)
+        }
+
+        // Método do protocolo que será chamado quando o exercício de respiração terminar
+        func didFinishBreathingExercise() {
+            // Inicia o cronômetro após o exercício de respiração
+            playButton.isHidden = true
+            isRuning = true
+            intervaloLabel.isHidden = true
+            progressView.isHidden = false
+            interactor?.startPomodoro()
+        }
+    
+    // MARK: - Lifecycle
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        let workDuration = pomoConfig.workDuration
+        let breakDuration = pomoConfig.breakDuration
+        
+        
+        timeLabel.text = PomodoroInteractor().formatTime(workDuration * 60)
+        intervaloLabel.text = "Intervalo: \(PomodoroInteractor().formatTime(breakDuration * 60))"
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
-        controlButton.addTarget(self, action: #selector(controlButtonTapped), for: .touchUpInside)
-        stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        view.backgroundColor = .systemBackground
+        
+        progressView.function = { _ in self.pause() }
+        
+        // Gestures
+        
+        let openConfigsGesture = UITapGestureRecognizer(target: self, action: #selector(configTime))
+        timeLabel.addGestureRecognizer(openConfigsGesture)
+        
+        let pauseHold = UILongPressGestureRecognizer(target: self, action: #selector(handleHold))
+        pauseHold.minimumPressDuration = 1.0
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tags))
+        tagframe.addGestureRecognizer(tapGesture)
+        
+        view.addGestureRecognizer(pauseHold)
+        
+        setupLayout()
     }
     
-    private func setupView() {
-        view.backgroundColor = .white
-        setupLabelsAndFields()
-        setupButtons()
-        setupConstraints()
-    }
+    // MARK: - Layout
     
-    private func setupLabelsAndFields() {
-        timerLabel.font = UIFont.systemFont(ofSize: 48, weight: .bold)
-        timerLabel.textAlignment = .center
-        timerLabel.text = "25:00"
+    private func setupLayout() {
+        // Add subviews
+        view.addSubview(progressView)
+        view.addSubview(timeLabel)
+        view.addSubview(progressCircleView)
+        view.addSubview(playButton)
+        view.addSubview(resumeButton)
+        view.addSubview(resetButton)
+        view.addSubview(intervaloLabel)
+        view.addSubview(tagframe)
         
-        stateLabel.font = UIFont.systemFont(ofSize: 24, weight: .regular)
-        stateLabel.textAlignment = .center
-        stateLabel.text = "Time to Work!"
+        // Disable autoresizing mask translation
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        progressCircleView.translatesAutoresizingMaskIntoConstraints = false
+        playButton.translatesAutoresizingMaskIntoConstraints = false
+        resumeButton.translatesAutoresizingMaskIntoConstraints = false
+        resetButton.translatesAutoresizingMaskIntoConstraints = false
+        intervaloLabel.translatesAutoresizingMaskIntoConstraints = false
+        tagframe.translatesAutoresizingMaskIntoConstraints = false
         
-        workDurationField.placeholder = "Work Duration (min)"
-        breakDurationField.placeholder = "Break Duration (min)"
-        loopCountField.placeholder = "Number of Loops"
-        
-        [workDurationField, breakDurationField, loopCountField].forEach {
-            $0.borderStyle = .roundedRect
-            $0.keyboardType = .numberPad
-            $0.textAlignment = .center
-        }
-    }
-    
-    private func setupButtons() {
-        controlButton.setTitle("Start", for: .normal)
-        controlButton.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        controlButton.backgroundColor = .systemBlue
-        controlButton.setTitleColor(.white, for: .normal)
-        controlButton.layer.cornerRadius = 10
-
-        stopButton.setTitle("Stop", for: .normal)
-        stopButton.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        stopButton.backgroundColor = .systemRed
-        stopButton.setTitleColor(.white, for: .normal)
-        stopButton.layer.cornerRadius = 10
-        stopButton.isHidden = true
-    }
-    
-    private func setupConstraints() {
-        let subviews = [timerLabel, stateLabel, workDurationField, breakDurationField, loopCountField, controlButton, stopButton]
-        subviews.forEach {
-            view.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-        
+        // Set constraints
         NSLayoutConstraint.activate([
-            // Timer and labels
-            timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            timerLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -150),
+            // Title Label
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
+            progressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            stateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stateLabel.bottomAnchor.constraint(equalTo: timerLabel.topAnchor, constant: -20),
+            // Time Label
+            timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50),
             
-            // Text fields
-            workDurationField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            workDurationField.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 20),
-            workDurationField.widthAnchor.constraint(equalToConstant: 200),
+            intervaloLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: -10),
+            intervaloLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            breakDurationField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            breakDurationField.topAnchor.constraint(equalTo: workDurationField.bottomAnchor, constant: 10),
-            breakDurationField.widthAnchor.constraint(equalToConstant: 200),
+            // Progress Circle View
+            progressCircleView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            progressCircleView.centerYAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 40),
+            progressCircleView.heightAnchor.constraint(equalToConstant: 150),
             
-            loopCountField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loopCountField.topAnchor.constraint(equalTo: breakDurationField.bottomAnchor, constant: 10),
-            loopCountField.widthAnchor.constraint(equalToConstant: 200),
+            tagframe.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            tagframe.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
             
-            // Control button
-            controlButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            controlButton.topAnchor.constraint(equalTo: loopCountField.bottomAnchor, constant: 20),
-            controlButton.widthAnchor.constraint(equalToConstant: 150),
-            controlButton.heightAnchor.constraint(equalToConstant: 50),
+            // Play/Pause Button
+            playButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            playButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             
-            // Stop button
-            stopButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stopButton.topAnchor.constraint(equalTo: controlButton.bottomAnchor, constant: 10),
-            stopButton.widthAnchor.constraint(equalToConstant: 150),
-            stopButton.heightAnchor.constraint(equalToConstant: 50)
+            // Resume Button
+            resumeButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            resumeButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
+            
+            // Reset Button
+            resetButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            resetButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
         ])
     }
     
-    @objc private func controlButtonTapped() {
-        if controlButton.titleLabel?.text == "Start" {
-            let workDuration = Int(workDurationField.text ?? "25") ?? 25
-            let breakDuration = Int(breakDurationField.text ?? "5") ?? 5
-            let loopCount = Int(loopCountField.text ?? "4") ?? 4
-            interactor.startPomodoro(workDuration: workDuration, breakDuration: breakDuration, loopCount: loopCount)
-        } else if controlButton.titleLabel?.text == "Pause" {
-            interactor.pausePomodoro()
-        } else if controlButton.titleLabel?.text == "Resume" {
-            interactor.resumePomodoro()
+    // MARK: - Actions
+    
+    @objc func resume() {
+        interactor?.resumePomodoro()
+        resumeButton.isHidden = true
+        isRuning = true
+        resetButton.isHidden = true
+        progressView.isHidden = false
+    }
+    
+    @objc func reset() {
+        
+        updateCircle(percentage: 0)
+        
+        interactor?.stopPomodoro()
+        resumeButton.isHidden = true
+        resetButton.isHidden = true
+        playButton.isHidden = false
+        progressView.isHidden = true
+        intervaloLabel.isHidden = false
+        isRuning = false
+    }
+    
+    func complete() {
+        resumeButton.isHidden = false
+        resetButton.isHidden = false
+        progressView.isHidden = true
+        isRuning = false
+    }
+    
+    @objc func pause() {
+        if isRuning {
+
+                interactor?.pausePomodoro()
+                
+                resumeButton.isHidden = false
+                resetButton.isHidden = false
+                progressView.isHidden = true
+            
         }
     }
     
-    @objc private func stopButtonTapped() {
-        interactor.stopPomodoro()
-    }
-    
-    func displayTime(_ time: String) {
-        timerLabel.text = time
-    }
-    
-    func updateButton(isRunning: Bool, isPaused: Bool) {
-        if isRunning {
-            controlButton.setTitle("Pause", for: .normal)
-            stopButton.isHidden = true
-        } else if isPaused {
-            controlButton.setTitle("Resume", for: .normal)
-            stopButton.isHidden = false
+    func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool = false) {
+        timeLabel.text = time
+        timeLabel.isHidden = false // Show main timer once breathing is done
+        
+        if isLongBreak {
+            intervaloLabel.text = "Pausa Longa"
+        } else if isWorkPhase {
+            intervaloLabel.text = "Trabalho"
         } else {
-            controlButton.setTitle("Start", for: .normal)
-            stopButton.isHidden = true
+            intervaloLabel.text = "Pausa"
         }
     }
     
-    func updateStateLabel(_ text: String) {
-            stateLabel.text = text  // Update the state label's text
+    func updateCircle(percentage: Float) {
+        progressCircleView.progress = percentage
+    }
+    
+    @objc func tags() {
+        
+        let vc = ModalTagsFactory.makeModalTags(delegate: self)
+        let navVC = UINavigationController(rootViewController: vc)
+        
+        if let sheet = navVC.sheetPresentationController {
+            sheet.detents = [.custom(resolver: { context in
+                context.maximumDetentValue * .modalViewHeightCtt
+            }), .medium()/*, .large()*/]
         }
+        
+        navigationController?.present(navVC, animated: true)
+    }
+    
+    @objc func configTime() {
+        if !isRuning {
+            let vc = SelectorViewController()
+            
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    @objc func handleHold(gesture: UILongPressGestureRecognizer) {
+            if gesture.state == .began {
+                startProgress()
+            } else if gesture.state == .ended {
+                stopProgress()
+            }
+        }
+    
+    private func startProgress() {
+           progressTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+       }
+       
+       private func stopProgress() {
+           progressTimer?.invalidate()
+           progressView.resetProgress()
+       }
+       
+       @objc private func updateProgress() {
+           progressView.updateProgress()
+       }
+    
 }
+
+extension PomodoroViewController: UIViewControllerTransitioningDelegate, PassingTag {
+    func passing(_ tag: String) {
+        tagframe.tagline.text = tag
+    }
+    
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return CustomPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+    
+}
+
