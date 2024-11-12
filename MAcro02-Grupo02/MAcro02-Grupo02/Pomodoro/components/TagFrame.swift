@@ -12,7 +12,7 @@ class TagFrame: UIView {
     lazy var tagline:UILabel = {
         
         let label = UILabel()
-        label.text = "Trabalho"
+        label.text = NSLocalizedString("Trabalho", comment: "ModalTagsData")
         label.font = .systemFont(ofSize: 26)
         label.textColor = AppColors.textPrimary
         label.textAlignment = .center

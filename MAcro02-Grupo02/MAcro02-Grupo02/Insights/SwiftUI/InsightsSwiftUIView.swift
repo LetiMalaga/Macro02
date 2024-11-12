@@ -12,8 +12,8 @@ struct InsightsSwiftUIView: View {
     
     var interactor:InsightsInteractorProtocol?
     @ObservedObject var data: InsightsDataView
-    var timeFrame = ["Dia", "Semana", "Mês"]
-    @State private var selectedTimeFrame: String = "Dia"
+    var timeFrame = [NSLocalizedString("Dia", comment: "Insights"), NSLocalizedString("Semana", comment: "Insights"), NSLocalizedString("Mês", comment: "Insights")]
+    @State private var selectedTimeFrame: String = NSLocalizedString("Dia", comment: "Insights")
     
     var body: some View {
         VStack(spacing: 20){
@@ -25,13 +25,13 @@ struct InsightsSwiftUIView: View {
             .pickerStyle(.segmented)
             .onChange(of: selectedTimeFrame){
                 switch selectedTimeFrame {
-                case "Dia":
+                case NSLocalizedString("Dia", comment: "Insights"):
                     interactor?.insightsPerDay()
                     print("insightsPerDay")
-                case "Semana":
+                case NSLocalizedString("Semana", comment: "Insights"):
                     interactor?.insightsPerWeek()
                     print("insightsPerWeek")
-                case "Mês":
+                case NSLocalizedString("Mês", comment: "Insights"):
                     interactor?.insightsPerMonth()
                     print("insightsPerMonth")
                 default:
@@ -58,20 +58,20 @@ struct InsightsSwiftUIView: View {
 //                    
 //                    Button {
 //                        switch selectedTimeFrame {
-//                        case "Dia":
+//                        case NSLocalizedString("Dia", comment: "Insights"):
 //                            interactor?.insightsPerDay()
 //                            print("insightsPerDay")
-//                        case "Semana":
+//                        case NSLocalizedString("Semana", comment: "Insights"):
 //                            interactor?.insightsPerWeek()
 //                            print("insightsPerWeek")
-//                        case "Mês":
+//                        case NSLocalizedString("Mês", comment: "Insights"):
 //                            interactor?.insightsPerMonth()
 //                            print("insightsPerMonth")
 //                        default:
 //                            print("erro")
 //                        }
 //                    } label: {
-//                        Text("Refresh")
+//                        Text(NSLocalizedString("Refrescar", comment: "Insights"))
 //                    }
 //                    
 //                }
@@ -87,6 +87,7 @@ struct InsightsSwiftUIView: View {
 //                }
 //                .padding(.vertical)
 //            }
+
             // Retângulo foco
             ZStack{
                 RoundedRectangle(cornerRadius: 15)
@@ -214,7 +215,7 @@ struct InsightsSwiftUIView: View {
             }
             
             ZStack{
-                FocoPorTagChartView(data: data.tags.isEmpty ? [ChartData(type: "Estudos", count: 2), ChartData(type: "Trabalho", count: 5 ), ChartData(type: "Projetos", count: 10), ChartData(type: "Outros", count: 1)] : data.tags)
+                FocoPorTagChartView(data: data.tags.isEmpty ? [ChartData(type: NSLocalizedString("Estudos", comment: "Insights"), count: 2), ChartData(type: NSLocalizedString("Trabalho", comment: "Insights"), count: 5 ), ChartData(type: NSLocalizedString("Projetos", comment: "Insights"), count: 10), ChartData(type: NSLocalizedString("Outros", comment: "Insights"), count: 1)] : data.tags)
                 //                .frame(width: CGFloat(UIScreen.main.bounds.width-40), height: CGFloat(UIScreen.main.bounds.height/3))
                 
                 if data.session == 0 {

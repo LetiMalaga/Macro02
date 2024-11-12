@@ -20,7 +20,7 @@ class ModalTagsData: ModalTagsDataProtocol {
         if let savedData = UserDefaults.standard.stringArray(forKey: userDefaultsKey){
             completion(savedData)
         }else{
-            let tags = ["Trabalho", "Estudo", "Foco", "Treino", "Meditação"]
+            let tags = [NSLocalizedString("Trabalho", comment: "ModalTagsData"), NSLocalizedString("Estudo", comment: "ModalTagsData"), NSLocalizedString("Foco", comment: "ModalTagsData"), NSLocalizedString("Treino", comment: "ModalTagsData"), NSLocalizedString("Meditação", comment: "ModalTagsData")]
             UserDefaults.standard.set(tags, forKey: self.userDefaultsKey)
             completion(tags)
         }

@@ -91,7 +91,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
 
         // MARK: Label
         modalTagLabel.textColor = .label
-        modalTagLabel.text = "Escolha uma Etiqueta"
+        modalTagLabel.text = NSLocalizedString("Escolha uma Etiqueta", comment: "Modal de Tags")
         modalTagLabel.font = .preferredFont(for: .title2, weight: .bold)
 
 
@@ -100,7 +100,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         tagNewTagButton.layer.borderWidth = 3
         tagNewTagButton.layer.borderColor = UIColor.label.cgColor
         tagNewTagButton.setTitleColor(.label, for: .normal)
-        tagNewTagButton.setTitle("Nova Tag", for: .normal)
+        tagNewTagButton.setTitle(NSLocalizedString("Nova Etiqueta", comment: "Modal de Tags"), for: .normal)
         tagNewTagButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         tagNewTagButton.layer.cornerRadius = .tagCornerRadius
 

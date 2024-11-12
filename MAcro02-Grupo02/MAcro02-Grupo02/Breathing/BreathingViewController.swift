@@ -9,7 +9,7 @@ import UIKit
 
 class BreathingViewController: UIViewController {
     
-    let estados = ["Inspire", "Segure", "Expire"]
+    let estados = [NSLocalizedString("Inspire", comment: "Tela de respiração"), NSLocalizedString("Segure", comment: "Tela de respiração"), NSLocalizedString("Expire", comment: "Tela de respiração")]
     var estadoAtual: Int = 0
     var breathing = false
     var cycleCount = 0
@@ -46,7 +46,7 @@ class BreathingViewController: UIViewController {
         label.textColor = AppColors.textPrimary
         label.font = AppFonts.largeTitle.bold()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "aperte para começar"
+        label.text = NSLocalizedString("Aperte para começar", comment: "Tela de respiração")
         return label
     }()
     

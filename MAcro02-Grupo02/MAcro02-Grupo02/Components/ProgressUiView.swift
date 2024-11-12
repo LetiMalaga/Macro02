@@ -30,7 +30,7 @@ class ProgressUiView: UIView {
         label.font = AppFonts.regular
         label.textColor = AppColors.textPrimary
         
-        label.text = "Mantenha pressionado para pular"
+        label.text = NSLocalizedString("Mantenha pressionado para pular", comment: "Tela de respiração") 
         
         label.layer.opacity = 0.5
         
