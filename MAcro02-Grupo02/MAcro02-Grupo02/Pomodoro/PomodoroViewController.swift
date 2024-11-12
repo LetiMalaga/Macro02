@@ -117,7 +117,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .teste
         
         progressView.function = { _ in self.pause() }
         
@@ -297,6 +297,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
            progressView.updateProgress()
        }
     
+}
+
+#Preview {
+    PomodoroViewController()
 }
 
 extension PomodoroViewController: UIViewControllerTransitioningDelegate, PassingTag {
