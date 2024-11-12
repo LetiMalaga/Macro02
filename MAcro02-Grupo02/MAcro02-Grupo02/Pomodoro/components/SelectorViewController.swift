@@ -25,7 +25,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     
     let saveButton: PomoButton = {
         
-        let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 290, height: 60), titulo: "Salvar")
+        let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 290, height: 60), titulo: NSLocalizedString("Salvar", comment: "SelectorViewController"))
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         
         return button
@@ -33,10 +33,10 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     }()
 
     var configs: [(type: ConfigType, title: String, seconds: Int)] = [
-        (.foco, "Foco", 0),
-        (.intervaloCurto, "Intervalo Curto", 0),
-        (.intervaloLongo, "Intervalo Longo", 0),
-        (.ciclosPomodoro, "Ciclos de Pomodoro", 0)
+        (.foco, NSLocalizedString("Foco", comment: "SelectorViewController"), 0),
+        (.intervaloCurto, NSLocalizedString("Intervalo Curto", comment: "SelectorViewController"), 0),
+        (.intervaloLongo, NSLocalizedString("Intervalo Longo", comment: "SelectorViewController"), 0),
+        (.ciclosPomodoro, NSLocalizedString("Ciclos de Pomodoro", comment: "SelectorViewController"), 0)
     ]
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,8 +66,8 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "Personalização"
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
+        navigationItem.title = NSLocalizedString("Personalização", comment: "SelectorViewController")
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Voltar", comment: "SelectorViewController"), style: .plain, target: nil, action: nil)
     }
     
     func setupView() {
@@ -234,7 +234,7 @@ class ConfigCell: UICollectionViewCell {
         minutesLabel.text = String(seconds) // Converte segundos em minutos
         
         // Se for Ciclos Pomodoro, esconder segundos
-        if title == "Ciclos de Pomodoro" {
+        if title == NSLocalizedString("Ciclos de Pomodoro", comment: "SelectorViewController") {
             secondsLabel.isHidden = true
             colonLabel.isHidden = true
             minutesLabel.text = "\(seconds)"

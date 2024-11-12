@@ -32,7 +32,7 @@ class MainTabBarController: UITabBarController {
         let settingsVC = SettingsFactory.makeSettings()
         
         let settingsNavController = UINavigationController(rootViewController: settingsVC)
-        settingsNavController.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape"), tag: 3)
+        settingsNavController.tabBarItem = UITabBarItem(title: NSLocalizedString("Ajustes", comment: "Settings"), image: UIImage(systemName: "gearshape"), tag: 3)
         
         // Add the view controllers to the tab bar
         viewControllers = [pomodoroNavController, insightsNavController, settingsNavController]

@@ -46,7 +46,7 @@ class TimeSelectorViewController: UIViewController {
     let predefinedLabel: UILabel = {
         
         let label = UILabel()
-        label.text = "Tempos pré definidos"
+        label.text = NSLocalizedString("Tempos predefinidos", comment: "TimeSelectorViewController")
         label.font = .boldSystemFont(ofSize: 13)
         label.textColor = .label
         
@@ -73,7 +73,7 @@ class TimeSelectorViewController: UIViewController {
         
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 13)
-        label.text = "Com este modo ativado, o pomodoro é contado a partir do 0 e assim prossegue até que você o pare."
+        label.text = NSLocalizedString("Com este modo ativado, o pomodoro é contado a partir do 0 e assim prossegue até que você o pare.", comment: "TimeSelectorViewController")
         label.textColor = .label.withAlphaComponent(0.6)
 
         
@@ -82,7 +82,7 @@ class TimeSelectorViewController: UIViewController {
     }()
     
     let saveButton: PomoButton = {
-        let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 292, height: 60), titulo: "Salvar")
+        let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 292, height: 60), titulo: NSLocalizedString("Salvar", comment: "TimeSelectorViewController"))
         button.addTarget(self, action: #selector(save), for: .touchUpInside)
         
         return button
@@ -104,27 +104,27 @@ class TimeSelectorViewController: UIViewController {
         
         switch type {
         case .foco:
-            explanationLabel.text = "Hora de focar! Escolha o tempo ideal para mergulhar na sua tarefa e bloquear distrações."
+            explanationLabel.text = NSLocalizedString("Hora de focar! Escolha o tempo ideal para mergulhar na sua tarefa e bloquear distrações.", comment: "TimeSelectorViewController")
             
             predefinitions = [15, 25, 45, 60]
             
         case .intervaloCurto:
             
-            explanationLabel.text = "Após um ciclo de foco, o app sugere atividades como alongamentos ou uma respiração profunda para você relaxar e manter o foco renovado."
+            explanationLabel.text = NSLocalizedString("Após um ciclo de foco, o app sugere atividades como alongamentos ou uma respiração profunda para você relaxar e manter o foco renovado.", comment: "TimeSelectorViewController")
             
             predefinitions = [5, 10, 15, 20]
             
         case .intervaloLongo:
             
-            explanationLabel.text = "Ao completar alguns ciclos de foco, é hora de um intervalo mais longo. Aproveite essa pausa para descansar mais profundamente."
+            explanationLabel.text = NSLocalizedString("Ao completar alguns ciclos de foco, é hora de um intervalo mais longo. Aproveite essa pausa para descansar mais profundamente.", comment: "TimeSelectorViewController")
             
             predefinitions = [10, 20, 30, 40]
             
         case .ciclosPomodoro:
             
-            explanationLabel.text = "Defina quantos ciclos de foco e intervalos você deseja realizar. O app automatiza essas sessões, permitindo que você se concentre sem precisar se preocupar com os tempos."
+            explanationLabel.text = NSLocalizedString("Defina quantos ciclos de foco e intervalos você deseja realizar. O app automatiza essas sessões, permitindo que você se concentre sem precisar se preocupar com os tempos.", comment: "TimeSelectorViewController")
             
-            predefinedLabel.text = "Ciclos pré definidos"
+            predefinedLabel.text = NSLocalizedString("Ciclos pre-definidos:", comment: "TimeSelectorViewController")
             
             predefinitions = [2, 4, 6, 8]
             

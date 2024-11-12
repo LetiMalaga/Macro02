@@ -24,7 +24,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private var progressView: ProgressUiView = {
         let progress = ProgressUiView()
         progress.isHidden = true
-        progress.label.text = "Mantenha pressionado para pausar"
+        progress.label.text = NSLocalizedString("Mantenha pressionado para pausar", comment: "PomodoroViewController")
         
         progress.translatesAutoresizingMaskIntoConstraints = false
         return progress
@@ -52,14 +52,14 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let progressCircleView: TimerCircle = TimerCircle()
     
     private let playButton: PomoButton = {
-        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: "Iniciar")
+        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Iniciar", comment: "Botão de iniciar pomodoro"))
         pomo.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
         return pomo
     }()
     
     // Novo botão para retomar o Pomodoro
     private let resumeButton: PomoButton = {
-        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: "Continuar")
+        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Continuar", comment: "Botão de continuar pomodoro"))
         pomo.addTarget(self, action: #selector(resume), for: .touchUpInside)
         pomo.isHidden = true // Inicialmente oculto
         return pomo
@@ -72,7 +72,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     // Novo botão para resetar o Pomodoro
     private let resetButton: PomoButton = {
-        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: "Resetar")
+        let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Resetar", comment: "Botão de resetar pomodoro"))
         
         pomo.layer.borderWidth = 2
         pomo.backgroundColor = .clear
@@ -115,7 +115,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         
         
         timeLabel.text = PomodoroInteractor().formatTime(workDuration * 60)
-        intervaloLabel.text = "Intervalo: \(PomodoroInteractor().formatTime(breakDuration * 60))"
+        intervaloLabel.text = "\(NSLocalizedString("Intervalo", comment: "PomodoroViewController")): \(PomodoroInteractor().formatTime(breakDuration * 60))"
     }
     
     
@@ -260,11 +260,11 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         timeLabel.isHidden = false // Show main timer once breathing is done
         
         if isLongBreak {
-            intervaloLabel.text = "Pausa Longa"
+            intervaloLabel.text = NSLocalizedString("Pausa Longa", comment: "PomodoroViewController")
         } else if isWorkPhase {
-            intervaloLabel.text = "Trabalho"
+            intervaloLabel.text = NSLocalizedString("Trabalho", comment: "PomodoroViewController")
         } else {
-            intervaloLabel.text = "Pausa"
+            intervaloLabel.text = NSLocalizedString("Pausa", comment: "PomodoroViewController")
         }
     }
     

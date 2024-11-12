@@ -20,7 +20,7 @@ class TagModalsViewController: UIViewController {
     
     private func setupSubviews() {
         let label = UILabel()
-        label.text = "Trabalho\nEm casa"
+        label.text = NSLocalizedString("Trabalho", comment: "Modal de Tags")
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
