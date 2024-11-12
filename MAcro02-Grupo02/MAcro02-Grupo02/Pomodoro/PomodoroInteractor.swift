@@ -11,6 +11,7 @@ import SwiftUI
 import UIKit
 
 protocol PomodoroInteractorProtocol {
+    var tagTime: String? {get set}
     func startPomodoro()
     func pausePomodoro()
     func resumePomodoro()
@@ -38,6 +39,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     private var breathPhase: Int = 0 // Tracks current breath phase (0 for inhale, 1 for exhale)
     private var pendingPhaseSwitch: Bool = false // Track if the phase switch is pending
     private var appDidEnterBackgroundDate: Date?
+    var tagTime: String?
 
     func toggleBreathing() {
         wantsBreathing.toggle()
@@ -237,6 +239,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 Task {
                     await saveTimeData()
                 }
+                
                 stopPomodoro()
             }
         }
@@ -244,7 +247,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
 
     func saveTimeData() async {
         do{
-            let savedData = try await dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: pomoDefaults.tag?.rawValue ?? "nil"){ result in
+            let savedData = try await dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: self.tagTime ?? "Sem tag"){ result in
                 if case .success(let data) = result {
                     print("Registro salvo com sucesso: \(data)")
                 }else {

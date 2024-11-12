@@ -10,6 +10,7 @@ import UIKit
 
 class SettingsFactory {
     static func makeSettings() -> UIViewController{
+        
         let vc = SettingsViewController()
         let interactor = SettingsIteractor()
         let presenter = SettingsPresenter()
