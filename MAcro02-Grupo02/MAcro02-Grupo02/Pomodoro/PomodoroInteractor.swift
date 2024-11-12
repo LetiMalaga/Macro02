@@ -42,15 +42,15 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     var tagTime: String?
     
     var activitySuggestion: ActivitiesModel?
-
+    
     func toggleBreathing() {
         wantsBreathing.toggle()
     }
     
     func setupObservers() {
-            NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
     
     func startPomodoro() {
         // Initialize durations and loop counts from user defaults
@@ -60,12 +60,12 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         self.remainingLoops = pomoDefaults.loops
         setupObservers()
         
-
-            isWorkPhase = true
-            isBreathingPhase = false
-            remainingTime = workDuration * 60
-            
-            presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
+        
+        isWorkPhase = true
+        isBreathingPhase = false
+        remainingTime = workDuration * 60
+        
+        presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
         
         
         // Start the breathing timer
@@ -79,33 +79,33 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     }
     
     @objc func applicationDidEnterBackground(_ notification: Notification) {
-            appDidEnterBackgroundDate = Date() // Record the current date when entering background
+        appDidEnterBackgroundDate = Date() // Record the current date when entering background
+    }
+    
+    @objc func applicationWillEnterForeground(_ notification: Notification) {
+        guard let previousDate = appDidEnterBackgroundDate else { return }
+        let calendar = Calendar.current
+        let difference = calendar.dateComponents([.second], from: previousDate, to: Date())
+        let seconds = difference.second ?? 0
+        
+        if !isPaused {
+            // Subtract the seconds from remainingTime
+            remainingTime -= seconds
         }
-
-        @objc func applicationWillEnterForeground(_ notification: Notification) {
-            guard let previousDate = appDidEnterBackgroundDate else { return }
-            let calendar = Calendar.current
-            let difference = calendar.dateComponents([.second], from: previousDate, to: Date())
-            let seconds = difference.second ?? 0
-            
-            if !isPaused {
-                // Subtract the seconds from remainingTime
-                remainingTime -= seconds
-            }
-            
-            // Ensure remainingTime does not go negative
-            if remainingTime < 0 {
-                remainingTime = 0
-            }
-            
-            // Update the UI accordingly
-            presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
+        
+        // Ensure remainingTime does not go negative
+        if remainingTime < 0 {
+            remainingTime = 0
         }
+        
+        // Update the UI accordingly
+        presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
+    }
     
     deinit {
-            // Remove observers when the interactor is deallocated
-            NotificationCenter.default.removeObserver(self)
-        }
+        // Remove observers when the interactor is deallocated
+        NotificationCenter.default.removeObserver(self)
+    }
     
     func pausePomodoro() {
         isRunning = false
@@ -157,7 +157,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         else if isWorkPhase { return "Work Session Complete" }
         else { return "Break Over" }
     }
-
+    
     private func phaseEndMessage() -> String {
         // Customize message based on the current phase
         if isBreathingPhase { return "Prepare to start your work session." }
@@ -172,7 +172,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             presenter?.completePomodoro()
         } else {
             
-                presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
+            presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
             
         }
         
@@ -216,7 +216,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             } else {
                 // All loops completed, stop Pomodoro
                 
-
+                
                 // Normal break
                 remainingTime = breakDuration * 60
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: false)
@@ -246,7 +246,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             }
         }
     }
-
+    
     func saveTimeData() async {
         do{
             let savedData = try await dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: self.tagTime ?? "Sem tag"){ result in
@@ -262,7 +262,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             print("Erro ao salvar o registro: \(error)")
         }
     }
-
+    
     func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let seconds = seconds % 60
@@ -284,21 +284,15 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             }
         }
     }
-    func fetchActivities(){
+    func fetchActivities(_ breakTipe:ActivitiesType,_ tag:String, completion: @escaping (ActivitiesModel) -> Void){
         
-        let activities = dataManager.fetchActivities()
-        
-        var activitiesModel: [ActivitiesModel] = []
-        
-//        guard let activities else { return }
-        
-        for activity in activities {
-            activitiesModel.append(ActivitiesModel(id: activity.id,
-                                                   type: ActivitiesType(rawValue: activity.type) ?? .short,
-                                                   description: activity.descriptionText,
-                                                   tag: activity.tag))
-        }
-//        self.activities = activitiesModel
-//        self.presenter?.uploadActivitys(activitiesModel)
+        let activity = dataManager.fetchActivities(breakTipe, tag: tag)
+
+        guard let activity else { return }
+        completion(ActivitiesModel(id: activity.id,
+                                   type: ActivitiesType(rawValue: activity.type) ?? .short,
+                                   description: activity.descriptionText,
+                                   tag: activity.tag))
+
     }
 }
