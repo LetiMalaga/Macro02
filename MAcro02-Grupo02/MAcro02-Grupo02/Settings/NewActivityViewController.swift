@@ -85,9 +85,9 @@ class NewActivityViewController: UIViewController{
     // MARK: - UI Setup
     private func setupUI() {
         view.addSubview(titleLabel)
-        view.addSubview(descriptionTextField)
         view.addSubview(tagContainerStackView)
         view.addSubview(tagPickerView)
+        view.addSubview(descriptionTextField)
         view.addSubview(backButton)
         view.addSubview(saveButton)
         
@@ -109,19 +109,19 @@ class NewActivityViewController: UIViewController{
             saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             saveButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             
-            descriptionTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32),
-            descriptionTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            descriptionTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            descriptionTextField.heightAnchor.constraint(equalToConstant: 40),
-            
-            tagContainerStackView.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor, constant: 20),
+            tagContainerStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32),
             tagContainerStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tagContainerStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             tagPickerView.topAnchor.constraint(equalTo: tagContainerStackView.bottomAnchor, constant: 8),
             tagPickerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tagPickerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tagPickerView.heightAnchor.constraint(equalToConstant: 100)
+            tagPickerView.heightAnchor.constraint(equalToConstant: 100),
+            
+            descriptionTextField.topAnchor.constraint(equalTo: tagPickerView.bottomAnchor, constant: 20),
+            descriptionTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            descriptionTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            descriptionTextField.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     

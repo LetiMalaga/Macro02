@@ -50,6 +50,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         
         title = "Ajustes"
         view.backgroundColor = .white
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomTableViewCell")
         interactor?.fetchActivities()
         interactor?.fetchTags()
         
@@ -184,18 +185,25 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             //            return cell
             
         case 3:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
-            cell.selectionStyle = .none
+            
             if indexPath.row == shortBreakActivities.count {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = "+ Adicione uma atividade de descanso curto"
                 cell.textLabel?.textColor = .systemBlue
+                return cell
             } else {
-                cell.textLabel?.text = shortBreakActivities[indexPath.row].description
-                cell.detailTextLabel?.text = shortBreakActivities[indexPath.row].tag
-                cell.textLabel?.textColor = .black
-                cell.detailTextLabel?.textColor = .black
+                //                cell.textLabel?.text = shortBreakActivities[indexPath.row].description
+                //                cell.detailTextLabel?.text = shortBreakActivities[indexPath.row].tag
+                //                cell.textLabel?.textColor = .black
+                //                cell.detailTextLabel?.textColor = .black
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as? CustomTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.selectionStyle = .none
+                cell.configure(withText: shortBreakActivities[indexPath.row].description, tagText: shortBreakActivities[indexPath.row].tag)
+                return cell
             }
-            return cell
+//            return cell
             
         case 4:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
@@ -345,6 +353,63 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 interactor?.deleteActivity(at: id)
             }
         }
+    }
+}
+
+class CustomTableViewCell: UITableViewCell {
+    
+    let mainLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = AppColors.textPrimary
+        return label
+    }()
+    
+    let tagLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = AppColors.progressPrimary
+        label.backgroundColor = .systemBlue
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
+        label.textAlignment = .center
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupCell()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupCell() {
+        contentView.addSubview(mainLabel)
+        contentView.addSubview(tagLabel)
+        
+        // Constraints para o mainLabel
+        NSLayoutConstraint.activate([
+            mainLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            mainLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            mainLabel.trailingAnchor.constraint(equalTo: tagLabel.leadingAnchor, constant: -8)
+        ])
+        
+        // Constraints para o tagLabel
+        NSLayoutConstraint.activate([
+            tagLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            tagLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            tagLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 20),
+            tagLabel.heightAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+    
+    func configure(withText text: String, tagText: String) {
+        mainLabel.text = text
+        tagLabel.text = tagText
     }
 }
 

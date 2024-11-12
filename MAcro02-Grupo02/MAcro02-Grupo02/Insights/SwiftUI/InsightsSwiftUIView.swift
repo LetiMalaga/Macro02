@@ -14,6 +14,7 @@ struct InsightsSwiftUIView: View {
     @ObservedObject var data: InsightsDataView
     var timeFrame = ["Dia", "Semana", "Mês"]
     @State private var selectedTimeFrame: String = "Dia"
+    let vibration = UserDefaults.standard.bool(forKey: "vibration")
     
     var body: some View {
         VStack(spacing: 20){
@@ -37,56 +38,61 @@ struct InsightsSwiftUIView: View {
                 default:
                     print("erro")
                 }
+                
+                if vibration {
+                    let generator = UIImpactFeedbackGenerator(style: .light)
+                    generator.impactOccurred()
+                }
             }
-            
-            HStack{
-                Button{
-                    
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.headline)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.black)
-                }
-                
-                Spacer()
-                
-                HStack{
-                    Text("Hoje")
-                        .font(.headline)
-                        .fontWeight(.bold)
-                    
-                    Button {
-                        switch selectedTimeFrame {
-                        case "Dia":
-                            interactor?.insightsPerDay()
-                            print("insightsPerDay")
-                        case "Semana":
-                            interactor?.insightsPerWeek()
-                            print("insightsPerWeek")
-                        case "Mês":
-                            interactor?.insightsPerMonth()
-                            print("insightsPerMonth")
-                        default:
-                            print("erro")
-                        }
-                    } label: {
-                        Text("Refresh")
-                    }
-                    
-                }
-                Spacer()
-                
-                Button{
-                    
-                } label: {
-                    Image(systemName: "chevron.right")
-                        .font(.headline)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.black)
-                }
-                .padding(.vertical)
-            }
+//            
+//            HStack{
+//                Button{
+//                    
+//                } label: {
+//                    Image(systemName: "chevron.left")
+//                        .font(.headline)
+//                        .fontWeight(.bold)
+//                        .foregroundStyle(.black)
+//                }
+//                
+//                Spacer()
+//                
+//                HStack{
+//                    Text("Hoje")
+//                        .font(.headline)
+//                        .fontWeight(.bold)
+//                    
+//                    Button {
+//                        switch selectedTimeFrame {
+//                        case "Dia":
+//                            interactor?.insightsPerDay()
+//                            print("insightsPerDay")
+//                        case "Semana":
+//                            interactor?.insightsPerWeek()
+//                            print("insightsPerWeek")
+//                        case "Mês":
+//                            interactor?.insightsPerMonth()
+//                            print("insightsPerMonth")
+//                        default:
+//                            print("erro")
+//                        }
+//                    } label: {
+//                        Text("Refresh")
+//                    }
+//                    
+//                }
+//                Spacer()
+//                
+//                Button{
+//                    
+//                } label: {
+//                    Image(systemName: "chevron.right")
+//                        .font(.headline)
+//                        .fontWeight(.bold)
+//                        .foregroundStyle(.black)
+//                }
+//                .padding(.vertical)
+//            }
             // Retângulo foco
             ZStack{
                 RoundedRectangle(cornerRadius: 15)
