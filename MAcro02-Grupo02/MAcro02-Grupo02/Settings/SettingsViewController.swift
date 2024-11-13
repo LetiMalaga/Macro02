@@ -9,20 +9,19 @@ import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController, SettingsViewProtocol {
-    
-    var soundButton: Bool = false {
+    var soundButton: Bool = UserDefaults.standard.bool(forKey: "sound") {
         didSet { soundSwitch.isOn = soundButton }
     }
     
-    var vibrationButton: Bool = false {
+    var vibrationButton: Bool = UserDefaults.standard.bool(forKey: "vibration") {
         didSet { vibrationSwitch.isOn = vibrationButton }
     }
     
-    var breathingButton: Bool = false {
+    var breathingButton: Bool = UserDefaults.standard.bool(forKey: "breathing") {
         didSet { breathingSwitch.isOn = breathingButton }
     }
     
-    var recommendationButton: Bool = false {
+    var recommendationButton: Bool = UserDefaults.standard.bool(forKey: "recomendations") {
         didSet { recommendationSwitch.isOn = recommendationButton }
     }
     
@@ -50,6 +49,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         
         title = NSLocalizedString("Ajustes", comment: "Settings")
         view.backgroundColor = .white
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomTableViewCell")
         interactor?.fetchActivities()
         interactor?.fetchTags()
         
@@ -184,32 +184,35 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             //            return cell
             
         case 3:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
-            cell.selectionStyle = .none
+            
             if indexPath.row == shortBreakActivities.count {
+
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso curto", comment: "Settings")
                 cell.textLabel?.textColor = .systemBlue
+                return cell
             } else {
-                cell.textLabel?.text = shortBreakActivities[indexPath.row].description
-                cell.detailTextLabel?.text = shortBreakActivities[indexPath.row].tag
-                cell.textLabel?.textColor = .black
-                cell.detailTextLabel?.textColor = .black
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as? CustomTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.configure(withText: shortBreakActivities[indexPath.row].description, tagText: shortBreakActivities[indexPath.row].tag)
+                return cell
             }
-            return cell
             
         case 4:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
-            cell.selectionStyle = .none
             if indexPath.row < longBreakActivities.count {
-                cell.textLabel?.text = longBreakActivities[indexPath.row].description
-                cell.detailTextLabel?.text = longBreakActivities[indexPath.row].tag
-                cell.textLabel?.textColor = .black
-                cell.detailTextLabel?.textColor = .black
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as? CustomTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.configure(withText: longBreakActivities[indexPath.row].description, tagText: longBreakActivities[indexPath.row].tag)
+                return cell
             } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso longo", comment: "Settings")
                 cell.textLabel?.textColor = .systemBlue
+                return cell
             }
-            return cell
+            
             
         default:
             return UITableViewCell()
@@ -312,8 +315,26 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             presentNewActivity(type: .short)
         } else if indexPath.section == 4 && indexPath.row == longBreakActivities.count {
             presentNewActivity(type: .long)
+        } else if indexPath.section == 3 {
+            let selectedActivity = shortBreakActivities[indexPath.row]
+            presentActivityDetail(for: selectedActivity)
+        } else if indexPath.section == 4 {
+            let selectedActivity = longBreakActivities[indexPath.row]
+            presentActivityDetail(for: selectedActivity)
         }
+        
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    private func presentActivityDetail(for activity: ActivitiesModel) {
+        let detailVC = ActivityDetailViewController()
+        detailVC.activity = activity
+        detailVC.interactor = self.interactor
+        detailVC.tags = self.tags
+        
+        detailVC.onSave = { [weak self] updatedActivity in
+            self?.updateActivity(updatedActivity)
+        }
+        navigationController?.pushViewController(detailVC, animated: true)
     }
     
     func presentNewActivity(type: ActivitiesType) {
@@ -324,6 +345,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         
         newActivityVC.modalPresentationStyle = .fullScreen
         present(newActivityVC, animated: true, completion: nil)
+    }
+    
+    private func updateActivity(_ updatedActivity: ActivitiesModel) {
+        if let index = activities.firstIndex(where: { $0.id == updatedActivity.id }) {
+            interactor?.updateActivity(updatedActivity)
+        }
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -345,6 +372,85 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 interactor?.deleteActivity(at: id)
             }
         }
+    }
+}
+
+class CustomTableViewCell: UITableViewCell {
+    
+    let mainLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = AppColors.textPrimary
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let tagLabel: PaddedLabel = {
+        let label = PaddedLabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = AppColors.progressPrimary
+        label.backgroundColor = .systemGray
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
+        label.textAlignment = .center
+        label.padding = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupCell()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupCell() {
+            contentView.addSubview(mainLabel)
+            contentView.addSubview(tagLabel)
+
+            // Definindo prioridades de hugging e resistência à compressão para manter o tamanho de tagLabel
+            tagLabel.setContentHuggingPriority(.required, for: .horizontal)
+            tagLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+            // Constraints para o mainLabel
+            NSLayoutConstraint.activate([
+                mainLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                mainLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+                mainLabel.trailingAnchor.constraint(lessThanOrEqualTo: tagLabel.leadingAnchor, constant: -8),
+                mainLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            ])
+
+            // Constraints para o tagLabel
+            NSLayoutConstraint.activate([
+                tagLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+                tagLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                tagLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 50), // largura mínima
+                tagLabel.heightAnchor.constraint(equalToConstant: 24)
+            ])
+        }
+    
+    func configure(withText text: String, tagText: String) {
+        mainLabel.text = text
+        tagLabel.text = tagText
+    }
+}
+
+class PaddedLabel: UILabel {
+    var padding = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+
+    override func drawText(in rect: CGRect) {
+        let insetRect = rect.inset(by: padding)
+        super.drawText(in: insetRect)
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(width: size.width + padding.left + padding.right,
+                      height: size.height + padding.top + padding.bottom)
     }
 }
 
