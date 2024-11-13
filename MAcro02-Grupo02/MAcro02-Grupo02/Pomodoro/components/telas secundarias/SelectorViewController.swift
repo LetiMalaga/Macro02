@@ -23,6 +23,8 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
 //        
 //    }()
     
+
+    
     let saveButton: PomoButton = {
         
         let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 290, height: 60), titulo: NSLocalizedString("Salvar", comment: "SelectorViewController"))
@@ -139,10 +141,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
 class ConfigCell: UICollectionViewCell {
     
     let titleLabel = UILabel()
-    let minutesLabel = UILabel()
-    let secondsLabel = UILabel()
-    let colonLabel = UILabel()
-    let arrowImageView = UIImageView()
+    let pomoTime: PomoSelectorUIVIew = PomoSelectorUIVIew(NumText: "")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -154,98 +153,30 @@ class ConfigCell: UICollectionViewCell {
     }
 
     func setupUI() {
-        // Título
+        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 22)
-        titleLabel.textAlignment = .center
-        contentView.addSubview(titleLabel)
+        pomoTime.translatesAutoresizingMaskIntoConstraints = false
         
-        // Estilizando os labels para minutos e segundos
-        setupTimeLabel(minutesLabel)
-        setupTimeLabel(secondsLabel)
+        addSubview(titleLabel)
+        addSubview(pomoTime)
         
-        // Dois pontos ":"
-        colonLabel.translatesAutoresizingMaskIntoConstraints = false
-        colonLabel.text = ":"
-        colonLabel.textColor = .label
-        colonLabel.font = UIFont.boldSystemFont(ofSize: 64)
-        colonLabel.textAlignment = .center
-        contentView.addSubview(colonLabel)
-        
-        // Seta para indicar a possibilidade de ajustar (seta à direita)
-        arrowImageView.translatesAutoresizingMaskIntoConstraints = false
-        arrowImageView.image = UIImage(systemName: "chevron.right")
-        arrowImageView.tintColor = .lightGray
-        contentView.addSubview(arrowImageView)
-        
-        // Adicionando os labels à célula
-        contentView.addSubview(minutesLabel)
-        contentView.addSubview(secondsLabel)
-
-        // Adicionando constraints
         NSLayoutConstraint.activate([
-            // Título na parte superior
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             
-            // Minutos label (à esquerda)
-            minutesLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            minutesLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            minutesLabel.widthAnchor.constraint(equalToConstant: 104),
-            minutesLabel.heightAnchor.constraint(equalToConstant: 80),
+            pomoTime.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            pomoTime.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             
-            // Dois pontos ":" no meio
-            colonLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            colonLabel.leadingAnchor.constraint(equalTo: minutesLabel.trailingAnchor, constant: 10),
-            colonLabel.widthAnchor.constraint(equalToConstant: 15),
-            
-            // Segundos label (à direita dos dois pontos)
-            secondsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            secondsLabel.leadingAnchor.constraint(equalTo: colonLabel.trailingAnchor, constant: 10),
-            secondsLabel.widthAnchor.constraint(equalToConstant: 104),
-            secondsLabel.heightAnchor.constraint(equalToConstant: 80),
-
-            // Seta à direita da célula
-            arrowImageView.centerYAnchor.constraint(equalTo: minutesLabel.centerYAnchor),
-            arrowImageView.widthAnchor.constraint(equalToConstant: 20),
-            arrowImageView.heightAnchor.constraint(equalToConstant: 20)
         ])
         
-        // Inicialmente escondendo o campo de segundos
-        secondsLabel.isHidden = false
-        colonLabel.isHidden = false
-    }
-    
-    // Função para estilizar os labels de minutos e segundos
-    func setupTimeLabel(_ label: UILabel) {
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 64)
-        label.textAlignment = .center
-        label.textColor = .label
-        label.layer.borderColor = UIColor.label.cgColor
-        label.layer.borderWidth = 2
-        label.layer.cornerRadius = 10
-        label.layer.masksToBounds = true
+        
     }
 
     // Função para configurar os valores (minutos e segundos)
     func configure(title: String, seconds: Int) {
         titleLabel.text = title
-        minutesLabel.text = String(seconds) // Converte segundos em minutos
+        pomoTime.NumText = String(format: title == "Ciclos de Pomodoro" ? "%02d" : "%02d:00", seconds) // Converte segundos em minutos
         
-        // Se for Ciclos Pomodoro, esconder segundos
-        if title == NSLocalizedString("Ciclos de Pomodoro", comment: "SelectorViewController") {
-            secondsLabel.isHidden = true
-            colonLabel.isHidden = true
-            minutesLabel.text = "\(seconds)"
-            
-            NSLayoutConstraint.activate([arrowImageView.trailingAnchor.constraint(equalTo: minutesLabel.trailingAnchor, constant: 40)])
-        } else {
-            secondsLabel.isHidden = false
-            colonLabel.isHidden = false
-            secondsLabel.text = "00"
-            
-            NSLayoutConstraint.activate([arrowImageView.trailingAnchor.constraint(equalTo: secondsLabel.trailingAnchor, constant: 40)])
-        }
+        pomoTime.widthAnchor.constraint(equalToConstant: title == NSLocalizedString("Ciclos de Pomodoro", comment: "SelectorViewController") ? 155 : 251).isActive = true
     }
 }
