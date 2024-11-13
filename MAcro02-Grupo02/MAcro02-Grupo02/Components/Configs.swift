@@ -18,22 +18,22 @@ struct AppFonts {
 
 // Cores
 
-struct AppColors {
-    
-    static let backgroundPrimary = UIColor { traitCollection in
-        return traitCollection.userInterfaceStyle == .dark ? UIColor.black : UIColor.white
-    }
-
-    static let textPrimary = UIColor { traitCollection in
-        return traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black
-    }
-    
-    static let progressPrimary = UIColor.systemGray6
-    
-    static let progressSecundary = UIColor { traitCollection in
-        return traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black
-    }
-}
+//struct AppColors {
+//    
+//    static let backgroundPrimary = UIColor { traitCollection in
+//        return traitCollection.userInterfaceStyle == .dark ? UIColor.black : UIColor.white
+//    }
+//
+//    static let textPrimary = UIColor { traitCollection in
+//        return traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black
+//    }
+//    
+//    static let progressPrimary = UIColor.systemGray6
+//    
+//    static let progressSecundary = UIColor { traitCollection in
+//        return traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black
+//    }
+//}
 
 extension UIFont {
     func bold() -> UIFont {

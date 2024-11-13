@@ -33,7 +33,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         label.textAlignment = .center
         label.isUserInteractionEnabled = true
         
@@ -44,7 +44,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 22)
         label.layer.opacity = 0.3
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         
         return label
     }()
@@ -121,7 +121,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .teste
+        view.backgroundColor = .customBGColor
         
         progressView.function = { _ in self.pause() }
         
@@ -317,9 +317,9 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
 }
 
-#Preview {
-    PomodoroViewController()
-}
+//#Preview {
+//    PomodoroViewController()
+//}
 
 extension PomodoroViewController: UIViewControllerTransitioningDelegate, PassingTag {
     func passing(_ tag: String) {

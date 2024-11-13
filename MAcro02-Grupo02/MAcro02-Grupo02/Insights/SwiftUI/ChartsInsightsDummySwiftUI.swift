@@ -24,7 +24,7 @@ struct FocoPorTagChartView: View {
             .foregroundStyle(by: .value("Tipo", dataPoint.type))
             .annotation(position: .trailing) {
                 Text(String(dataPoint.count))
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(Color(UIColor.customTextGray))
             }
         }
         .chartLegend(.hidden)
@@ -32,7 +32,7 @@ struct FocoPorTagChartView: View {
         
         .aspectRatio(contentMode: .fit)
         .padding()
-        .background(Color(UIColor.systemGray5))
+        .background(Color(UIColor.customBGColor))
         .clipShape(RoundedRectangle(cornerRadius: 15))
     }
 }

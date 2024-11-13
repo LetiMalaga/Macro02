@@ -221,7 +221,7 @@ struct InsightsSwiftUIView: View {
                 if data.session == 0 {
                     RoundedRectangle(cornerRadius: 15)
                     //                            .frame(width: x, height: y)
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color(UIColor.customBGColor))
                         .opacity(0.25)
                     
                 }

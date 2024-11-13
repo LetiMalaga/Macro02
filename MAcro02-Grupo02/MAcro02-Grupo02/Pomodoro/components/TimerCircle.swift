@@ -24,8 +24,8 @@ class TimerCircle: UIView {
         self.configureProgressViewToBeCircular()
     }
     
-    var ProgressColor: UIColor = AppColors.progressSecundary
-    var TrackColor: UIColor = AppColors.progressPrimary
+    var ProgressColor: UIColor = UIColor.customInnerCircleColor
+    var TrackColor: UIColor = UIColor.customAccentColor
     var progress: Float = 0 {
             didSet {
                 animateProgress(to: progress)

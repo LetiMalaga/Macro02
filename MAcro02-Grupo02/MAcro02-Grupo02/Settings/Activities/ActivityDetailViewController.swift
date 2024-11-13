@@ -83,7 +83,7 @@ class ActivityDetailViewController: UIViewController{
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AppColors.backgroundPrimary
+        view.backgroundColor = UIColor.customBGColor
         title = "Detalhes da Atividade"
         
         setupUI()

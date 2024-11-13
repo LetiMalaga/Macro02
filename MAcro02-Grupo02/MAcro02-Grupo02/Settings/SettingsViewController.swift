@@ -48,7 +48,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         super.viewDidLoad()
         
         title = NSLocalizedString("Ajustes", comment: "Settings")
-        view.backgroundColor = .white
+        view.backgroundColor = .customBGColor
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomTableViewCell")
         interactor?.fetchActivities()
         interactor?.fetchTags()
@@ -254,7 +254,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         func font(_ title:String) -> UITableViewHeaderFooterView?{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomHeader")
-            header?.textLabel?.textColor = .black
+            header?.textLabel?.textColor = .customText
             header?.textLabel?.text = title
             header?.textLabel?.font = .preferredFont(forTextStyle: .title3)
             
@@ -381,7 +381,7 @@ class CustomTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         label.numberOfLines = 0
         return label
     }()
@@ -390,7 +390,7 @@ class CustomTableViewCell: UITableViewCell {
         let label = PaddedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = AppColors.progressPrimary
+        label.textColor = UIColor.customText
         label.backgroundColor = .systemGray
         label.layer.cornerRadius = 5
         label.clipsToBounds = true
