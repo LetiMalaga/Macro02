@@ -30,16 +30,6 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         return progress
     }()
     
-    private let activityLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .gray
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.isHidden = true // Initially hidden until we load an activity
-        return label
-    }()
-    
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
@@ -93,13 +83,14 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }()
     
     @objc private func didTapPlayPause() {
-        
-        // Present the BreathingViewController for the breathing exercise if needed
-        let breathingVC = BreathingViewController()
-        breathingVC.delegate = self
-        breathingVC.modalPresentationStyle = .fullScreen
-        present(breathingVC, animated: true, completion: nil)
-    }
+            // Instancia o BreathingViewController
+            let breathingVC = BreathingViewController()
+            breathingVC.delegate = self // Define a PomodoroViewController como delegate
+            breathingVC.modalPresentationStyle = .fullScreen
+            
+            // Apresenta o BreathingViewController
+            present(breathingVC, animated: true, completion: nil)
+        }
 
         // Método do protocolo que será chamado quando o exercício de respiração terminar
         func didFinishBreathingExercise() {
@@ -162,16 +153,6 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         view.addSubview(resetButton)
         view.addSubview(intervaloLabel)
         view.addSubview(tagframe)
-        view.addSubview(activityLabel)
-        activityLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            // Position it just below the "Iniciar" button
-            activityLabel.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 20),
-            activityLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            activityLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-        ])
         
         // Disable autoresizing mask translation
         progressView.translatesAutoresizingMaskIntoConstraints = false
@@ -237,12 +218,12 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         
         updateCircle(percentage: 0)
         
+        interactor?.stopPomodoro()
         resumeButton.isHidden = true
         resetButton.isHidden = true
         playButton.isHidden = false
         progressView.isHidden = true
         intervaloLabel.isHidden = false
-        interactor?.stopPomodoro()
         
         // Voltando a tag
         
@@ -272,11 +253,6 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
                 progressView.isHidden = true
             
         }
-    }
-    
-    func displayActivity(_ description: String) {
-        activityLabel.text = description
-        activityLabel.isHidden = false // Show the label with the fetched activity
     }
     
     func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool = false) {
