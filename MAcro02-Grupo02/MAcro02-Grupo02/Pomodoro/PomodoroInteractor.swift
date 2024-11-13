@@ -284,6 +284,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             }
         }
     }
+    
     func fetchActivities(_ breakTipe:ActivitiesType,_ tag:String, completion: @escaping (ActivitiesModel) -> Void){
         
         let activity = dataManager.fetchActivities(breakTipe, tag: tag)
