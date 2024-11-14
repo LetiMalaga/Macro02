@@ -142,8 +142,8 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsPresenter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
             landmarkName = "InsightsPresenterProtocol"
             landmarkType = "5">
          </BreakpointContent>
@@ -286,8 +286,8 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsInteractor.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "InsightsInteractor"
             landmarkType = "3">
          </BreakpointContent>
@@ -302,8 +302,8 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsPresenter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
             landmarkName = "presentTagInsights(insights:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -318,8 +318,8 @@
             filePath = "MAcro02-Grupo02/Insights/SwiftUI/InsightsSwiftUIView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
@@ -350,8 +350,8 @@
             filePath = "MAcro02-Grupo02/Insights/SwiftUI/InsightsSwiftUIViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
             landmarkName = "InsightsDataView"
             landmarkType = "3">
          </BreakpointContent>
@@ -414,8 +414,8 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsInteractor.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
             landmarkName = "fetchInsightsData(predicate:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -430,8 +430,8 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsInteractor.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "fetchInsightsData(predicate:completion:)"
             landmarkType = "7">
          </BreakpointContent>

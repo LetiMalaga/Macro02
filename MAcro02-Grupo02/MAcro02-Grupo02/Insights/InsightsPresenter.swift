@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import UIKit
 
 protocol InsightsPresenterProtocol {
@@ -16,6 +17,13 @@ protocol InsightsPresenterProtocol {
     func presenteBreakdownInsights(insights: InsightsDataModel)
     func presentSessionInsights(insights: InsightsDataModel)
     func presenteTotalTimeInsights(insights: InsightsDataModel)
+    
+    func updateDayDescriptionText(_ description: String)
+    func updateWeekDescriptionText(_ description: String)
+    func updateMonthDescriptionText(_ description: String)
+    
+    func updateFaceIcon(_ faceIcon: FaceIcon)
+    func isLoding(_ status: Bool)
 }
 
 class InsightsPresenter: InsightsPresenterProtocol {
@@ -24,10 +32,12 @@ class InsightsPresenter: InsightsPresenterProtocol {
     func presentTagInsights(insights: InsightsDataModel) {
         var formatData:[ChartData] = []
         insights.timeFocusedInMinutes.forEach { key, value in
-            formatData.append(ChartData(type: key.rawValue, count: value))
+            formatData.append(ChartData(type: key, count: value))
         }
         DispatchQueue.main.async {
-            self.view?.data.tags = formatData
+            withAnimation {
+                self.view?.data.tags = formatData
+            }
         }
         
     }
@@ -37,11 +47,15 @@ class InsightsPresenter: InsightsPresenterProtocol {
         if time > 60 {
             let timeInHours = formatMinutesToHours(minutes: time)
             DispatchQueue.main.async {
-                self.view?.data.foco = timeInHours
+                withAnimation {
+                    self.view?.data.foco = timeInHours
+                }
             }
         }else{
             DispatchQueue.main.async {
-                self.view?.data.foco = String(format: "%d min", time)
+                withAnimation {
+                    self.view?.data.foco = String(format: "%d min", time)
+                }
             }
         }
     }
@@ -51,18 +65,24 @@ class InsightsPresenter: InsightsPresenterProtocol {
         if time > 60 {
             let timeInHours = formatMinutesToHours(minutes: time)
             DispatchQueue.main.async {
-                self.view?.data.pause = timeInHours
+                withAnimation {
+                    self.view?.data.pause = timeInHours
+                }
             }
         }else{
             DispatchQueue.main.async {
-                self.view?.data.pause = String(format: "%d min", time)
+                withAnimation {
+                    self.view?.data.pause = String(format: "%d min", time)
+                }
             }
         }
     }
     func presentSessionInsights(insights: InsightsDataModel) {
         let totalSessions = insights.value
         DispatchQueue.main.async {
-            self.view?.data.session = totalSessions ?? 0
+            withAnimation {
+                self.view?.data.session = totalSessions ?? 0
+            }
         }
     }
     
@@ -71,12 +91,22 @@ class InsightsPresenter: InsightsPresenterProtocol {
         if time > 60 {
             let timeInHours = formatMinutesToHours(minutes: time)
             DispatchQueue.main.async {
-                self.view?.data.total = timeInHours
+                withAnimation {
+                    self.view?.data.total = timeInHours
+                }
             }
         }else{
             DispatchQueue.main.async {
-                self.view?.data.total = String(format: "%d min", time)
+                withAnimation {
+                    self.view?.data.total = String(format: "%d min", time)
+                }
             }
+        }
+    }
+    
+    func isLoding(_ status: Bool) {
+        withAnimation {
+            view?.data.isLoading = status
         }
     }
     
@@ -85,4 +115,34 @@ class InsightsPresenter: InsightsPresenterProtocol {
         let remainingMinutes = minutes % 60
         return String(format: "%d:%02d h", hours, remainingMinutes)
     }
+    
+    func updateDayDescriptionText(_ description: String) {
+        withAnimation {
+            view?.data.textDescriptionDate = description
+        }
+    }
+    
+    func updateWeekDescriptionText(_ description: String) {
+        withAnimation {
+            view?.data.textDescriptionDate = description
+        }
+    }
+    
+    func updateMonthDescriptionText(_ description: String) {
+        withAnimation {
+            view?.data.textDescriptionDate = description
+        }
+    }
+    func updateFaceIcon(_ faceIcon: FaceIcon){
+        withAnimation {
+            view?.data.faceIcon = faceIcon.rawValue
+        }
+    }
+}
+
+enum FaceIcon: String, CaseIterable {
+    case RedFaceInsights
+    case OrangeFaceInsights
+    case GreenFaceInsights
+    case BlueFaceInsights
 }

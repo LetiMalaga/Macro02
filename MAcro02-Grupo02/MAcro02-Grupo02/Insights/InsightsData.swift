@@ -17,7 +17,7 @@ class InsightsData:InsightsDataProtocol{
     let privateDatabase = CKContainer.default().privateCloudDatabase
     let zone = CKRecordZone(zoneName: "PomoInsightsZone")
     var records:[CKRecord] = []
-
+    
     func queryTestData(predicate: NSPredicate) async throws -> [CKRecord]{
         
         let query = CKQuery(recordType: TimerRecord.recordType, predicate: predicate)
@@ -41,6 +41,41 @@ class InsightsData:InsightsDataProtocol{
                 }
             }
         }
+    }
+    
+    func fetchEarliestDateWithData(completion: @escaping (Date?) -> Void) {
+        let predicate = NSPredicate(value: true)  // Retorna todos os registros
+        let query = CKQuery(recordType: TimerRecord.recordType, predicate: predicate)
+        
+        // Ordena os resultados pela data em ordem crescente
+        query.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+        
+        // Configura a operação de consulta para obter apenas o primeiro resultado
+        let queryOperation = CKQueryOperation(query: query)
+        queryOperation.resultsLimit = 1
+        
+        var earliestDate: Date?
+        
+        // Define o bloqueio de resultado do registro
+        queryOperation.recordMatchedBlock = { (id, result ) in
+            switch result {
+            case .success(let record):
+                earliestDate = record["date"] as? Date
+            case.failure(let error):
+                print("Erro ao buscar a data mais antiga: \(error.localizedDescription)")
+            }
+            
+        }
+        queryOperation.queryResultBlock = { result in
+            switch result {
+            case .success(let records):
+                completion(earliestDate)
+            case.failure(let error):
+                print("Erro ao buscar a data mais antiga: \(error.localizedDescription)")
+                completion(nil)
+            }
+        }
+        privateDatabase.add(queryOperation)
     }
 }
 

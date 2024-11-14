@@ -11,17 +11,18 @@ import CoreData
 import UIKit
 
 class PomodoroData {
+    
     let privateDatabase = CKContainer.default().privateCloudDatabase
     let userDefaultsStd = UserDefaults.standard
-    let udNewTagDataKey = "NewTagData"
     
-    func savePomodoro(focusTime: Int, breakTime: Int, date: Date, tag: String, completion: @escaping (Result<CKRecord, Error>) -> Void)async throws -> CKRecord {
+    func savePomodoro(focusTime: Int, breakTime: Int, longBreakTime: Int, date: Date, tag: String, completion: @escaping (Result<CKRecord, Error>) -> Void)async throws -> CKRecord {
         
         let zoneID = CKRecordZone.ID(zoneName: "PomoInsightsZone")
         let record = CKRecord(recordType: TimerRecord.recordType, recordID: CKRecord.ID(zoneID: zoneID))
         
         record[TimerRecord.focusTimeKey] = focusTime as CKRecordValue
         record[TimerRecord.breakTimeKey] = breakTime as CKRecordValue
+        record[TimerRecord.longBreakTimeKey] = longBreakTime as CKRecordValue
         record[TimerRecord.dateKey] = date as CKRecordValue
         record[TimerRecord.tagKey] = tag as CKRecordValue
         
@@ -34,7 +35,7 @@ class PomodoroData {
                     completion(.failure(error))
                     continuation.resume(throwing: error)
                 } else if let savedRecord = savedRecord {
-                    print("Record salvo com sucesso.")
+//                    print("Record salvo com sucesso.")
                     completion( .success(savedRecord))
                     continuation.resume(returning: savedRecord)
                 }
@@ -65,10 +66,10 @@ class PomodoroData {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil }
         
         let contexts = appDelegate.persistentContainer.viewContext
-
+        
         let request: NSFetchRequest<Activity> = Activity.fetchRequest()
         request.predicate = NSPredicate(format: "tag == %@ AND type == %@", tag, type.rawValue)
-            
+        
         do {
             let activities = try contexts.fetch(request)
             return activities.randomElement()
@@ -76,24 +77,16 @@ class PomodoroData {
         } catch {
             print("Failed to fetch activities: \(error)")
             return nil
-//            completion([])
         }
     }
     
-//    // MARK: User Defaults New Tag CRUD
-//    func readTagsArray() {
-//        guard userDefaultsStd.object(forKey: udNewTagDataKey) != nil else { return }
-//    }
-//    
-//    func updateTagsArray(array: [String]) {
-//        userDefaultsStd.set(array, forKey: udNewTagDataKey)
-//    }
 }
 
 struct TimerRecord {
     static let recordType = "pomoInsights"
     static let focusTimeKey = "focusotalTime"
     static let breakTimeKey = "breakTime"
+    static let longBreakTimeKey = "longBreakTime"
     static let dateKey = "date"
     static let tagKey = "tag"
 }

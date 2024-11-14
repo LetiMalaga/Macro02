@@ -534,6 +534,7 @@
     },
     "Refrescar" : {
       "comment" : "Insights",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

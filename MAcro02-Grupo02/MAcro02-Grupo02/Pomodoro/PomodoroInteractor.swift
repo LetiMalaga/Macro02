@@ -249,7 +249,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     
     func saveTimeData() async {
         do{
-            let savedData = try await dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: self.tagTime ?? "Sem tag"){ result in
+            let savedData = try await dataManager.savePomodoro(focusTime: workDuration * longBreakInterval, breakTime: breakDuration * longBreakInterval, longBreakTime: longBreakDuration, date: Date(), tag: self.tagTime ?? "Sem tag"){ result in
                 if case .success(let data) = result {
                     print("Registro salvo com sucesso: \(data)")
                 }else {
