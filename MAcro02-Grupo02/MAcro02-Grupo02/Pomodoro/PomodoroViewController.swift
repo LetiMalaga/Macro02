@@ -100,6 +100,23 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         return tagframe
     }()
     
+    private let refreshActivityButton: UIButton = {
+        let button = UIButton(type: .system)
+        let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold)
+        // Define the button's symbol configuration
+
+        // Create the image with the configuration and set it to the button
+        if let image = UIImage(systemName: "arrow.triangle.2.circlepath.circle.fill")?.applyingSymbolConfiguration(symbolConfiguration) {
+            button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+            button.tintColor = .label
+        }
+        button.addTarget(self, action: #selector(showActivity), for: .touchUpInside)
+        button.isHidden = false
+        button.isUserInteractionEnabled = true
+        
+        return button
+    }()
+    
     // Novo botão para resetar o Pomodoro
     private let resetButton: PomoButton = {
         let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Resetar", comment: "Botão de resetar pomodoro"))
@@ -152,9 +169,14 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
+        view.bringSubviewToFront(refreshActivityButton)
+        
         progressView.function = { _ in self.pause() }
         
         // Gestures
+        
+        let refreshActivityGesture = UITapGestureRecognizer(target: self, action: #selector(showActivity))
+        refreshActivityButton.addGestureRecognizer(refreshActivityGesture)
         
         let openConfigsGesture = UITapGestureRecognizer(target: self, action: #selector(configTime))
         timeLabel.addGestureRecognizer(openConfigsGesture)
@@ -183,6 +205,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         view.addSubview(intervaloLabel)
         view.addSubview(tagframe)
         view.addSubview(activityLabel)
+        view.addSubview(refreshActivityButton)
         
         // Disable autoresizing mask translation
         progressView.translatesAutoresizingMaskIntoConstraints = false
@@ -194,6 +217,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         intervaloLabel.translatesAutoresizingMaskIntoConstraints = false
         tagframe.translatesAutoresizingMaskIntoConstraints = false
         activityLabel.translatesAutoresizingMaskIntoConstraints = false
+        refreshActivityButton.translatesAutoresizingMaskIntoConstraints = false
         
         // Set constraints
         NSLayoutConstraint.activate([
@@ -230,7 +254,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             
             activityLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-            activityLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300) // Set maximum width here
+            activityLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
+            
+            refreshActivityButton.centerXAnchor.constraint(equalTo: activityLabel.centerXAnchor),
+            refreshActivityButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10), // Spacing above the label
         ])
     }
     
@@ -359,15 +386,19 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         progressView.updateProgress()
     }
     
-    func showActivity() {
+    @objc func showActivity() {
         if interactor?.returnCurrentState() == "long pause" {
             activityLabel.isHidden = false
+            refreshActivityButton.isHidden = false
             interactor?.fetchAndPresentRandomActivity(tag: "Work", breakType: .long)
         } else if interactor?.returnCurrentState() == "pause" {
             activityLabel.isHidden = false
+            refreshActivityButton.isHidden = false
             interactor?.fetchAndPresentRandomActivity(tag: "Work", breakType: .short)
         } else {
+            print("aiaiaiai")
             activityLabel.isHidden = true
+            refreshActivityButton.isHidden = true
         }
     }
     
