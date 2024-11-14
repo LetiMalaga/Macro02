@@ -20,6 +20,7 @@ class NewActivityViewController: UIViewController{
     var tags: [String] = []{
         didSet {tagPickerView.dataSource = self}
     }
+  
     private var selectedTag: String?
     
     // MARK: - UI Elements

@@ -21,12 +21,14 @@ protocol PomodoroPresenterProtocol {
 }
 
 class PomodoroPresenter: PomodoroPresenterProtocol {
+
     func showAlert(with title: String, message: String) {
         viewController?.showAlert(with: title, message: message)
     }
     
     weak var viewController: PomodoroViewController?
     let pomoDefaults = PomoDefaults()
+    
 
     func presentActivity(_ activity: ActivitiesModel) {
             let description = activity.description // Extract description text
@@ -62,6 +64,7 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
     
     func completePomodoro() {
         viewController?.complete()
+        viewController?.showActivity()
     }
 }
 

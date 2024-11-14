@@ -18,6 +18,7 @@ protocol PomodoroInteractorProtocol {
     func resumePomodoro()
     func stopPomodoro()
     func fetchAndPresentRandomActivity(tag: String, breakType: ActivitiesType)
+    func returnCurrentState() -> String
 }
 
 class PomodoroInteractor: PomodoroInteractorProtocol {
@@ -63,7 +64,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         self.remainingLoops = pomoDefaults.loops
         setupObservers()
         
-        
+        currentState = "work"
         isWorkPhase = true
         isBreathingPhase = false
         remainingTime = workDuration * 60
@@ -116,6 +117,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         timer?.invalidate()
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // Cancel notifications on pause
+        remainingTime += 1
     }
     
     func resumePomodoro() {
@@ -139,6 +141,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         timer?.invalidate()
         presenter?.resetPomodoro()
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
+        currentState = "work"
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // Cancel all pending notifications
     }
     
@@ -197,6 +200,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             isBreathingPhase = false
             isWorkPhase = true
             remainingTime = workDuration * 60
+            currentState = "work"
             presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
             
             // Notify the user and pause before the work phase begins
@@ -205,6 +209,8 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             // Work phase just ended
             timer?.invalidate()
             isWorkPhase = false
+            let breakType: ActivitiesType = (remainingLoops == 0 || remainingLoops % longBreakInterval == 0) ? .long : .short
+                    fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: breakType)
             remainingLoops -= 1
             
             // Check if it's the last loop
@@ -242,6 +248,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                     isBreathingPhase = false
                     isWorkPhase = true
                     remainingTime = workDuration * 60  // Start next work phase
+                    currentState = "work"
                     presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
                 }
             } else {
@@ -249,6 +256,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 Task {
                     await saveTimeData()
                 }
+                currentState = "work"
                 remainingTime = workDuration * 60
                 stopPomodoro()
                 isRunning = false
@@ -313,9 +321,17 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     }
     
     func fetchAndPresentRandomActivity(tag: String, breakType: ActivitiesType) {
-        
+        print("Fetching activity with tag: \(tag) and break type: \(breakType)")
         fetchActivities(breakType, tag) { [weak self] activity in
-            self?.presenter?.presentActivity(activity)
+            guard let self = self else { return }
+            print("Fetched activity: \(activity.description)")
+            self.presenter?.presentActivity(activity)  // Pass activity to presenter
         }
+    }
+    
+    func returnCurrentState() -> String {
+        let currentState = currentState
+        
+        return currentState
     }
 }
