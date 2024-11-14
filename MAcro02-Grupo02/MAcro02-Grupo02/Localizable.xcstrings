@@ -189,6 +189,9 @@
         }
       }
     },
+    "Erro de Conexão" : {
+
+    },
     "Escolha uma Etiqueta" : {
       "comment" : "Modal de Tags",
       "localizations" : {
@@ -534,6 +537,7 @@
     },
     "Refrescar" : {
       "comment" : "Insights",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

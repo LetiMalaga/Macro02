@@ -9,6 +9,7 @@ import Foundation
 import UserNotifications
 import SwiftUI
 import UIKit
+import CloudKit
 
 protocol PomodoroInteractorProtocol {
     var tagTime: String? {get set}
@@ -268,15 +269,17 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     
     func saveTimeData() async {
         do{
-            let savedData = try await dataManager.savePomodoro(focusTime: workDuration, breakTime: breakDuration, date: Date(), tag: self.tagTime ?? "Sem tag"){ result in
-                if case .success(let data) = result {
-                    print("Registro salvo com sucesso: \(data)")
-                }else {
-                    print("Erro ao salvar o registro: \(result)")
+            let data = FocusDataModel(focusTimeInMinutes: workDuration * longBreakInterval, breakTimeinMinutes: breakDuration * longBreakInterval, longBreakTimeInMinutes: longBreakDuration, category: self.tagTime ?? "Sem tag", date: Date())
+            
+            _ = try await dataManager.savePomodoro(data){ result in
+                if case .failure(let error) = result {
+                    if let error = error as? CKError{
+                        if error.code == . quotaExceeded{
+                            self.presenter?.showAlert(with: "Sem espaço para salvar", message: "As informações do seu ciclo de pomodoro não puderam ser salvas devido a falta de espaço em sua conta do iCloud.")
+                        }
+                    }
                 }
-                
             }
-            print("Registro salvo com sucesso: \(savedData)")
         } catch {
             print("Erro ao salvar o registro: \(error)")
         }

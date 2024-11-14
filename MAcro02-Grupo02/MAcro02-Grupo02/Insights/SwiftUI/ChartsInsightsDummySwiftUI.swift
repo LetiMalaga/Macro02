@@ -29,11 +29,12 @@ struct FocoPorTagChartView: View {
         }
         .chartLegend(.hidden)
 //        .chartXAxis(.hidden)
-        
+        .frame(width: UIScreen.main.bounds.width * 0.85, height: UIScreen.main.bounds.height * 0.3)
         .aspectRatio(contentMode: .fit)
         .padding()
         .background(Color(UIColor.systemGray5))
         .clipShape(RoundedRectangle(cornerRadius: 15))
+        
     }
 }
 
@@ -64,5 +65,5 @@ struct FocoPorTagChartView: View {
 //}
 
 #Preview{
-//    FocoPorTagChartView()
+    FocoPorTagChartView(data: [ChartData(type: "teste", count: 2)])
 }

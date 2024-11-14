@@ -13,11 +13,16 @@ protocol InsightsViewProtocol: AnyObject {
 }
 
 class InsightsDataView: ObservableObject{
+    @Published var isLoading: Bool = false
     @Published var foco: String = "0"
     @Published var session: Int = 0
     @Published var pause: String = "0"
     @Published var total: String = "0"
     @Published var tags: [ChartData] = []
+    @Published var textDescriptionDate: String = "Hoje"
+    @Published var faceIcon: String = ""
+    @Published var showConnectionError: Bool = true
+
 }
 
 class InsightsSwiftUIViewController: UIHostingController<InsightsSwiftUIView> , InsightsViewProtocol{
