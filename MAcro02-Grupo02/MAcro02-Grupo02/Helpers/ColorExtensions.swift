@@ -47,7 +47,7 @@ extension UIColor {
     static let customPersonalizationButtonStrokeColor = UIColor(lightHex: 0xC5A494, darkHex: 0xEFB37A)
     
     // Textos
-    static let customText = UIColor(lightHex: 0x000000, darkHex: 0xFFFFFF)
-    static let customTextOpposite = UIColor(lightHex: 0xFFFFFF, darkHex: 0x000000)
-    static let customTextGray = UIColor(lightHex: 0x9BA0AA, darkHex: 0x9BA0AA)
+    static let customText = UIColor(lightHex: 0x333333, darkHex: 0xE4E4E4)
+    static let customTextOpposite = UIColor(lightHex: 0xE4E4E4, darkHex: 0x333333)
+    static let customTextGray = UIColor(lightHex: 0x9BA0AA, darkHex: 0x7E7E7E)
 }

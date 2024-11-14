@@ -58,6 +58,8 @@ class ActivityDetailViewController: UIViewController{
     private let saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Salvar", for: .normal)
+        button.backgroundColor = .customAccentColor
+        button.setTitleColor(.customTextOpposite, for: .normal)
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return button
     }()

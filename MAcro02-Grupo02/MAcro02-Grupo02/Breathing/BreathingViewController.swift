@@ -36,7 +36,7 @@ class BreathingViewController: UIViewController {
         let bezier = UIBezierPath(arcCenter: .zero, radius: 50, startAngle: 0, endAngle: .pi * 2, clockwise: true)
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = bezier.cgPath
-        shapeLayer.fillColor = UIColor.customInnerCircleColor.cgColor
+        shapeLayer.fillColor = UIColor.customAccentColor.cgColor
         shapeLayer.transform = CATransform3DMakeScale(1.0, 1.0, 1.0)
         return shapeLayer
     }()

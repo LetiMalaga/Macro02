@@ -60,8 +60,13 @@ class SettingsData: SettingsDataProtocol {
     }
     
     func fetchTags(completion: @escaping ([String]) -> Void) {
-        guard let savedData = UserDefaults.standard.stringArray(forKey: userDefaultsKeyTags) else {return}
-        completion(savedData)
+        if let savedData = UserDefaults.standard.stringArray(forKey: userDefaultsKeyTags){
+            completion(savedData)
+        }else{
+            let tags = [NSLocalizedString("Trabalho", comment: "ModalTagsData"), NSLocalizedString("Estudo", comment: "ModalTagsData"), NSLocalizedString("Foco", comment: "ModalTagsData"), NSLocalizedString("Treino", comment: "ModalTagsData"), NSLocalizedString("Meditação", comment: "ModalTagsData")]
+            UserDefaults.standard.set(tags, forKey: self.userDefaultsKeyTags)
+            completion(tags)
+        }
     }
     
     func addActivity(_ activityModel: ActivitiesModel, completion: @escaping (Bool) -> Void) {

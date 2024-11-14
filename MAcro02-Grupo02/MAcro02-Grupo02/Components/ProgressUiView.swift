@@ -15,7 +15,7 @@ class ProgressUiView: UIView {
     private var progressBar:UIProgressView = {
         let progressView = UIProgressView()
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.trackTintColor = UIColor.customInnerCircleColor
+        progressView.trackTintColor = UIColor.customCircleColor
         progressView.progressTintColor = UIColor.customAccentColor
         progressView.isHidden = true
                 
