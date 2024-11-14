@@ -17,6 +17,7 @@ protocol PomodoroInteractorProtocol {
     func resumePomodoro()
     func stopPomodoro()
     func fetchAndPresentRandomActivity(tag: String, breakType: ActivitiesType)
+    func returnCurrentState() -> String
 }
 
 class PomodoroInteractor: PomodoroInteractorProtocol {
@@ -65,7 +66,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         
         isWorkPhase = true
         isBreathingPhase = false
-        remainingTime = workDuration * 60
+        remainingTime = 10
         
         presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
         
@@ -195,7 +196,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             pausePomodoro()
             isBreathingPhase = false
             isWorkPhase = true
-            remainingTime = workDuration * 60
+            remainingTime = 10
             presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
             
             // Notify the user and pause before the work phase begins
@@ -204,27 +205,29 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             // Work phase just ended
             timer?.invalidate()
             isWorkPhase = false
+            let breakType: ActivitiesType = (remainingLoops == 0 || remainingLoops % longBreakInterval == 0) ? .long : .short
+                    fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: breakType)
             remainingLoops -= 1
             
             // Check if it's the last loop
             if remainingLoops == 0 {
                 // Final long break after last work session, then conclude Pomodoro
                 fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: .long)
-                remainingTime = longBreakDuration * 60  // Set to the actual long break duration
+                remainingTime = 7  // Set to the actual long break duration
                 currentState = "long pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 pendingPhaseSwitch = true
             } else if remainingLoops % longBreakInterval == 0 && remainingLoops > 0 {
                 // Long break every 4 loops
                 fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: .long)
-                remainingTime = longBreakDuration * 60  // Set to the actual long break duration
+                remainingTime = 7  // Set to the actual long break duration
                 currentState = "long pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 pendingPhaseSwitch = true
             } else {
                 // Normal break
                 fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: .short)
-                remainingTime = breakDuration * 60  // Use actual break duration
+                remainingTime = 5  // Use actual break duration
                 currentState = "pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: false)
                 pendingPhaseSwitch = true
@@ -240,7 +243,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                     pausePomodoro()
                     isBreathingPhase = false
                     isWorkPhase = true
-                    remainingTime = workDuration * 60  // Start next work phase
+                    remainingTime = 10  // Start next work phase
                     presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
                 }
             } else {
@@ -310,9 +313,17 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     }
     
     func fetchAndPresentRandomActivity(tag: String, breakType: ActivitiesType) {
-        
+        print("Fetching activity with tag: \(tag) and break type: \(breakType)")
         fetchActivities(breakType, tag) { [weak self] activity in
-            self?.presenter?.presentActivity(activity)
+            guard let self = self else { return }
+            print("Fetched activity: \(activity.description)")
+            self.presenter?.presentActivity(activity)  // Pass activity to presenter
         }
+    }
+    
+    func returnCurrentState() -> String {
+        let currentState = currentState
+        
+        return currentState
     }
 }

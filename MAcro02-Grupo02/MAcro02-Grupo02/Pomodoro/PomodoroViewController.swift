@@ -221,7 +221,15 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     // MARK: - Actions
     
     @objc func resume() {
+        
         interactor?.resumePomodoro()
+        
+        if interactor?.returnCurrentState() == "long pause" {
+            interactor?.fetchAndPresentRandomActivity(tag: "Sem tag", breakType: .long)
+        } else if interactor?.returnCurrentState() == "pause" {
+            interactor?.fetchAndPresentRandomActivity(tag: "Sem tag", breakType: .long)
+        }
+        
         resumeButton.isHidden = true
         isRuning = true
         

@@ -20,8 +20,11 @@ protocol PomodoroPresenterProtocol {
 }
 
 class PomodoroPresenter: PomodoroPresenterProtocol {
+    
+    weak var interactor: PomodoroInteractor?
     weak var viewController: PomodoroViewController?
     let pomoDefaults = PomoDefaults()
+    
 
     func presentActivity(_ activity: ActivitiesModel) {
             let description = activity.description // Extract description text
