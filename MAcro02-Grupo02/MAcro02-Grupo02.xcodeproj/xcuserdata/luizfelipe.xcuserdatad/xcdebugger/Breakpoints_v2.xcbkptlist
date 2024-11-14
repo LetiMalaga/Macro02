@@ -162,36 +162,6 @@
             endingLineNumber = "15"
             landmarkName = "scheduleEndOfDayNotification(insights:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "B9F3E89B-EA39-466F-B872-EAAF7E51C1E9 - 96f580e2b573016f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MAcro02_Grupo02.InsightsNotifications.scheduleEndOfDayNotification(insights: MAcro02_Grupo02.InsightsDataModel) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Insights/InsightsNotifications.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "15"
-                  endingLineNumber = "15">
-               </Location>
-               <Location
-                  uuid = "B9F3E89B-EA39-466F-B872-EAAF7E51C1E9 - 96f580e2b573016f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MAcro02_Grupo02.InsightsNotifications.scheduleEndOfDayNotification(insights: MAcro02_Grupo02.InsightsDataModel) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Insights/InsightsNotifications.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "15"
-                  endingLineNumber = "15">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -318,8 +288,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
             endingLineNumber = "43"
-            landmarkName = "InsightsInteractor"
-            landmarkType = "3">
+            landmarkName = "fetchInsightsData(predicate:completion:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -332,10 +302,10 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsPresenter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "presentTagInsights(insights:)"
-            landmarkType = "7">
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "InsightsPresenter"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -348,8 +318,8 @@
             filePath = "MAcro02-Grupo02/Insights/SwiftUI/InsightsSwiftUIView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
@@ -446,7 +416,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "65"
             endingLineNumber = "65"
-            landmarkName = "fetchInsightsData(predicate:completion:)"
+            landmarkName = "getInsights(predicate:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -462,7 +432,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "66"
             endingLineNumber = "66"
-            landmarkName = "fetchInsightsData(predicate:completion:)"
+            landmarkName = "getInsights(predicate:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

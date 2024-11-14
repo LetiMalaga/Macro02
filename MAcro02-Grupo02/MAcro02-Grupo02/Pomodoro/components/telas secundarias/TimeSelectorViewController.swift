@@ -234,7 +234,7 @@ class TimeSelectorViewController: UIViewController {
         
             let translation = gesture.translation(in: dentsView)
            
-           let increment = Int(translation.x / 20) * 5
+        let increment = Int(translation.x / 20) * (type == .ciclosPomodoro ? 1 : 5)
            
            // Chamando o callback com o incremento
            if increment != 0 {
