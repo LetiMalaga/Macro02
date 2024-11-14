@@ -66,7 +66,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         currentState = "work"
         isWorkPhase = true
         isBreathingPhase = false
-        remainingTime = 10
+        remainingTime = workDuration * 60
         
         presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
         
@@ -198,7 +198,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             pausePomodoro()
             isBreathingPhase = false
             isWorkPhase = true
-            remainingTime = 10
+            remainingTime = workDuration * 60
             currentState = "work"
             presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
             
@@ -216,21 +216,21 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             if remainingLoops == 0 {
                 // Final long break after last work session, then conclude Pomodoro
                 fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: .long)
-                remainingTime = 7  // Set to the actual long break duration
+                remainingTime = longBreakDuration * 60  // Set to the actual long break duration
                 currentState = "long pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 pendingPhaseSwitch = true
             } else if remainingLoops % longBreakInterval == 0 && remainingLoops > 0 {
                 // Long break every 4 loops
                 fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: .long)
-                remainingTime = 7  // Set to the actual long break duration
+                remainingTime = longBreakDuration * 60  // Set to the actual long break duration
                 currentState = "long pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 pendingPhaseSwitch = true
             } else {
                 // Normal break
                 fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: .short)
-                remainingTime = 5  // Use actual break duration
+                remainingTime = breakDuration * 60  // Use actual break duration
                 currentState = "pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: false)
                 pendingPhaseSwitch = true
@@ -246,7 +246,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                     pausePomodoro()
                     isBreathingPhase = false
                     isWorkPhase = true
-                    remainingTime = 10  // Start next work phase
+                    remainingTime = workDuration * 60  // Start next work phase
                     currentState = "work"
                     presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
                 }

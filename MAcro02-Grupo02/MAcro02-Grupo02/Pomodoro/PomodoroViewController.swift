@@ -111,7 +111,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             button.tintColor = .label
         }
         button.addTarget(self, action: #selector(showActivity), for: .touchUpInside)
-        button.isHidden = false
+        button.isHidden = true
         button.isUserInteractionEnabled = true
         
         return button
@@ -167,6 +167,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.clipsToBounds = false
         view.backgroundColor = .systemBackground
         
         view.bringSubviewToFront(refreshActivityButton)
@@ -222,12 +223,12 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         // Set constraints
         NSLayoutConstraint.activate([
             // Title Label
-            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
             progressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             // Time Label
             timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50),
+            timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0),
             
             intervaloLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: -10),
             intervaloLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -238,26 +239,26 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             progressCircleView.heightAnchor.constraint(equalToConstant: 150),
             
             tagframe.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tagframe.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            tagframe.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
             
             // Play/Pause Button
-            playButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            playButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 70),
             playButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             
             // Resume Button
-            resumeButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            resumeButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 70),
             resumeButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
             
             // Reset Button
-            resetButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            resetButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 70),
             resetButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
             
             activityLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            activityLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
             activityLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
             
             refreshActivityButton.centerXAnchor.constraint(equalTo: activityLabel.centerXAnchor),
-            refreshActivityButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10), // Spacing above the label
+            refreshActivityButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30), // Spacing above the label
         ])
     }
     
