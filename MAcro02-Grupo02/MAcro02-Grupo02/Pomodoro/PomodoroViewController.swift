@@ -225,9 +225,11 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         interactor?.resumePomodoro()
         
         if interactor?.returnCurrentState() == "long pause" {
-            interactor?.fetchAndPresentRandomActivity(tag: "Sem tag", breakType: .long)
+            interactor?.fetchAndPresentRandomActivity(tag: "Work", breakType: .long)
         } else if interactor?.returnCurrentState() == "pause" {
-            interactor?.fetchAndPresentRandomActivity(tag: "Sem tag", breakType: .short)
+            interactor?.fetchAndPresentRandomActivity(tag: "Work", breakType: .short)
+        } else {
+            displayActivity("")
         }
         
         resumeButton.isHidden = true
@@ -253,6 +255,8 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         interactor?.stopPomodoro()
         
         // Voltando a tag
+        
+        displayActivity("")
         
         tagframe.isHidden = false
         

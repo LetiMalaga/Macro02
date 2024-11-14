@@ -17,9 +17,7 @@ class NewActivityViewController: UIViewController{
     var activityType: ActivitiesType?
     var interactor: SettingsIteractorProtocol?
     let characterLimit = 10
-    var tags: [String] = []{
-        didSet {tagPickerView.dataSource = self}
-    }
+    var tags: [String] = ["Work", "Home", "Study", "Exercise", "Empty", "Another one"]
     private var selectedTag: String?
     
     // MARK: - UI Elements

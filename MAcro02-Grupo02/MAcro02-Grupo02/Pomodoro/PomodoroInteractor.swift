@@ -63,7 +63,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         self.remainingLoops = pomoDefaults.loops
         setupObservers()
         
-        
+        currentState = "work"
         isWorkPhase = true
         isBreathingPhase = false
         remainingTime = 10
@@ -116,6 +116,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         timer?.invalidate()
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // Cancel notifications on pause
+        remainingTime += 1
     }
     
     func resumePomodoro() {
@@ -197,6 +198,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             isBreathingPhase = false
             isWorkPhase = true
             remainingTime = 10
+            currentState = "work"
             presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
             
             // Notify the user and pause before the work phase begins
@@ -244,6 +246,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                     isBreathingPhase = false
                     isWorkPhase = true
                     remainingTime = 10  // Start next work phase
+                    currentState = "work"
                     presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
                 }
             } else {
@@ -251,6 +254,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 Task {
                     await saveTimeData()
                 }
+                currentState = "work"
                 remainingTime = workDuration * 60
                 stopPomodoro()
                 isRunning = false
