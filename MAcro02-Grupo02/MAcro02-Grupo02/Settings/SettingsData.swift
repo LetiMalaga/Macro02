@@ -34,6 +34,7 @@ protocol SettingsDataProtocol {
     func fetchTags(completion: @escaping ([String]) -> Void)
     func addActivity(_ activity: ActivitiesModel, completion: @escaping (Bool) -> Void)
     func deleteActivity(at id: UUID, completion: @escaping (Bool) -> Void)
+    func editActivity(at id: UUID, with newValues: ActivitiesModel, completion: @escaping (Bool) -> Void)
 }
 
 class SettingsData: SettingsDataProtocol {
@@ -59,8 +60,13 @@ class SettingsData: SettingsDataProtocol {
     }
     
     func fetchTags(completion: @escaping ([String]) -> Void) {
-        guard let savedData = UserDefaults.standard.stringArray(forKey: userDefaultsKeyTags) else {return}
-        completion(savedData)
+        if let savedData = UserDefaults.standard.stringArray(forKey: userDefaultsKeyTags){
+            completion(savedData)
+        }else{
+            let tags = [NSLocalizedString("Trabalho", comment: "ModalTagsData"), NSLocalizedString("Estudo", comment: "ModalTagsData"), NSLocalizedString("Foco", comment: "ModalTagsData"), NSLocalizedString("Treino", comment: "ModalTagsData"), NSLocalizedString("Meditação", comment: "ModalTagsData")]
+            UserDefaults.standard.set(tags, forKey: self.userDefaultsKeyTags)
+            completion(tags)
+        }
     }
     
     func addActivity(_ activityModel: ActivitiesModel, completion: @escaping (Bool) -> Void) {
@@ -96,4 +102,28 @@ class SettingsData: SettingsDataProtocol {
             completion(false)
         }
     }
+    
+    func editActivity(at id: UUID, with newValues: ActivitiesModel, completion: @escaping (Bool) -> Void) {
+        let request: NSFetchRequest<Activity> = Activity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        
+        do {
+            if let activityToEdit = try context.fetch(request).first {
+                // Atualiza os atributos da atividade com os novos valores
+                activityToEdit.type = newValues.type.rawValue
+                activityToEdit.descriptionText = newValues.description
+                activityToEdit.tag = newValues.tag
+                
+                try context.save()
+                completion(true)
+            } else {
+                // Caso não encontre a atividade com o ID fornecido
+                completion(false)
+            }
+        } catch {
+            print("Failed to edit activity: \(error)")
+            completion(false)
+        }
+    }
+    
 }
