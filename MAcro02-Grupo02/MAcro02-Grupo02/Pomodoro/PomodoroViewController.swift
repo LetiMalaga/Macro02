@@ -89,6 +89,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         
         pomo.addTarget(self, action: #selector(reset), for: .touchUpInside)
         pomo.isHidden = true // Inicialmente oculto
+        
+        pomo.setTitleColor(AppColors.textPrimary, for: .normal)
+        pomo.layer.borderColor = AppColors.textPrimary.cgColor
+        
         return pomo
     }()
     
