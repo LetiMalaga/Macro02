@@ -391,11 +391,11 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         if interactor?.returnCurrentState() == "long pause" {
             activityLabel.isHidden = false
             refreshActivityButton.isHidden = false
-            interactor?.fetchAndPresentRandomActivity(tag: "Work", breakType: .long)
+            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? "Sem tag", breakType: .long)
         } else if interactor?.returnCurrentState() == "pause" {
             activityLabel.isHidden = false
             refreshActivityButton.isHidden = false
-            interactor?.fetchAndPresentRandomActivity(tag: "Work", breakType: .short)
+            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? "Sem tag", breakType: .short)
         } else {
             print("aiaiaiai")
             activityLabel.isHidden = true
@@ -415,6 +415,7 @@ extension PomodoroViewController: UIViewControllerTransitioningDelegate, Passing
     func passing(_ tag: String) {
         tagframe.tagline.text = tag
         self.interactor?.tagTime = tag
+        
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
