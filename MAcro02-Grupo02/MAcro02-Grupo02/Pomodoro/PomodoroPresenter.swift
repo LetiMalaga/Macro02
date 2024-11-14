@@ -60,6 +60,7 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
     
     func completePomodoro() {
         viewController?.complete()
+        viewController?.showActivity()
     }
 }
 

@@ -140,6 +140,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         timer?.invalidate()
         presenter?.resetPomodoro()
         presenter?.updateButton(isRunning: isRunning, isPaused: isPaused)
+        currentState = "work"
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // Cancel all pending notifications
     }
     

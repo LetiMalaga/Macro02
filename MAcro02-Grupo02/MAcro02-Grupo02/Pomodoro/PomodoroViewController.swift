@@ -17,7 +17,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     let pomoConfig = PomoDefaults()
     private var progressTimer: Timer?
     
-
+    
     public var isRuning = false
     
     // UI Elements
@@ -30,15 +30,35 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         return progress
     }()
     
-    private let activityLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .gray
+    private let activityLabel: PaddingLabel = {
+        let label = PaddingLabel()
+        label.font = UIFont.systemFont(ofSize: 22)
+        label.textColor = .label
         label.textAlignment = .center
         label.numberOfLines = 0
         label.isHidden = true // Initially hidden until we load an activity
+        label.layer.cornerRadius = 10
+        label.layer.borderWidth = 2
+        label.layer.borderColor = UIColor.label.cgColor // Add border color for visibility
+        label.textInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) // Customize padding as needed
         return label
     }()
+    
+    class PaddingLabel: UILabel {
+        var textInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        
+        override func drawText(in rect: CGRect) {
+            let insetRect = rect.inset(by: textInsets)
+            super.drawText(in: insetRect)
+        }
+        
+        override var intrinsicContentSize: CGSize {
+            let size = super.intrinsicContentSize
+            let width = size.width + textInsets.left + textInsets.right
+            let height = size.height + textInsets.top + textInsets.bottom
+            return CGSize(width: width, height: height)
+        }
+    }
     
     private let timeLabel: UILabel = {
         let label = UILabel()
@@ -100,20 +120,20 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         breathingVC.modalPresentationStyle = .fullScreen
         present(breathingVC, animated: true, completion: nil)
     }
-
-        // Método do protocolo que será chamado quando o exercício de respiração terminar
-        func didFinishBreathingExercise() {
-            // Inicia o cronômetro após o exercício de respiração
-            playButton.isHidden = true
-            isRuning = true
-            intervaloLabel.isHidden = true
-            progressView.isHidden = false
-            interactor?.startPomodoro()
-            
-            // sumindo com a tag
-            
-            tagframe.isHidden = true
-        }
+    
+    // Método do protocolo que será chamado quando o exercício de respiração terminar
+    func didFinishBreathingExercise() {
+        // Inicia o cronômetro após o exercício de respiração
+        playButton.isHidden = true
+        isRuning = true
+        intervaloLabel.isHidden = true
+        progressView.isHidden = false
+        interactor?.startPomodoro()
+        
+        // sumindo com a tag
+        
+        tagframe.isHidden = true
+    }
     
     // MARK: - Lifecycle
     
@@ -163,15 +183,6 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         view.addSubview(intervaloLabel)
         view.addSubview(tagframe)
         view.addSubview(activityLabel)
-        activityLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            // Position it just below the "Iniciar" button
-            activityLabel.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 20),
-            activityLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            activityLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-        ])
         
         // Disable autoresizing mask translation
         progressView.translatesAutoresizingMaskIntoConstraints = false
@@ -182,6 +193,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         resetButton.translatesAutoresizingMaskIntoConstraints = false
         intervaloLabel.translatesAutoresizingMaskIntoConstraints = false
         tagframe.translatesAutoresizingMaskIntoConstraints = false
+        activityLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // Set constraints
         NSLayoutConstraint.activate([
@@ -215,6 +227,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             // Reset Button
             resetButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
             resetButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+            
+            activityLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            activityLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300) // Set maximum width here
         ])
     }
     
@@ -223,14 +239,6 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     @objc func resume() {
         
         interactor?.resumePomodoro()
-        
-        if interactor?.returnCurrentState() == "long pause" {
-            interactor?.fetchAndPresentRandomActivity(tag: "Work", breakType: .long)
-        } else if interactor?.returnCurrentState() == "pause" {
-            interactor?.fetchAndPresentRandomActivity(tag: "Work", breakType: .short)
-        } else {
-            displayActivity("")
-        }
         
         resumeButton.isHidden = true
         isRuning = true
@@ -256,7 +264,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         
         // Voltando a tag
         
-        displayActivity("")
+        showActivity()
         
         tagframe.isHidden = false
         
@@ -272,16 +280,16 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     @objc func pause() {
         if isRuning {
-
-                interactor?.pausePomodoro()
             
-                // Voltando a tag
-                
-                tagframe.isHidden = false
-                
-                resumeButton.isHidden = false
-                resetButton.isHidden = false
-                progressView.isHidden = true
+            interactor?.pausePomodoro()
+            
+            // Voltando a tag
+            
+            tagframe.isHidden = false
+            
+            resumeButton.isHidden = false
+            resetButton.isHidden = false
+            progressView.isHidden = true
             
         }
     }
@@ -331,25 +339,37 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     @objc func handleHold(gesture: UILongPressGestureRecognizer) {
-            if gesture.state == .began {
-                startProgress()
-            } else if gesture.state == .ended {
-                stopProgress()
-            }
+        if gesture.state == .began {
+            startProgress()
+        } else if gesture.state == .ended {
+            stopProgress()
         }
+    }
     
     private func startProgress() {
-           progressTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
-       }
-       
-       private func stopProgress() {
-           progressTimer?.invalidate()
-           progressView.resetProgress()
-       }
-       
-       @objc private func updateProgress() {
-           progressView.updateProgress()
-       }
+        progressTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+    }
+    
+    private func stopProgress() {
+        progressTimer?.invalidate()
+        progressView.resetProgress()
+    }
+    
+    @objc private func updateProgress() {
+        progressView.updateProgress()
+    }
+    
+    func showActivity() {
+        if interactor?.returnCurrentState() == "long pause" {
+            activityLabel.isHidden = false
+            interactor?.fetchAndPresentRandomActivity(tag: "Work", breakType: .long)
+        } else if interactor?.returnCurrentState() == "pause" {
+            activityLabel.isHidden = false
+            interactor?.fetchAndPresentRandomActivity(tag: "Work", breakType: .short)
+        } else {
+            activityLabel.isHidden = true
+        }
+    }
     
 }
 
