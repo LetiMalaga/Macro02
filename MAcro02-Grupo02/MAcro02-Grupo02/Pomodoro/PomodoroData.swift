@@ -119,7 +119,8 @@ class PomodoroData {
                     if error.code == .networkUnavailable || error.code == .networkFailure {
                         print("Ainda sem conexão, dados permanecem no cache.")
                         self.cacheDataLocally(data)
-                    } else {
+                    }
+                    else {
                         print("Erro ao salvar no CloudKit: \(error.localizedDescription)")
                     }
                     continuation.resume(throwing: error)

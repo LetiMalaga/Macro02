@@ -16,6 +16,21 @@ struct InsightsSwiftUIView: View {
     @State private var selectedTimeFrame: String = NSLocalizedString("Dia", comment: "Insights")
     
     var body: some View {
+        if data.showConnectionError {
+            Text("Erro de Conexão")
+                .font(.title)
+                .bold()
+                .padding()
+                .foregroundColor(.red)
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        interactor?.insightsPerDay()
+                    }
+                }
+            Text("Verifique sua conexão à internet")
+                .font(.headline)
+                .foregroundColor(.gray)
+        } else {
         ScrollView{
             
             VStack(spacing: 20){
@@ -177,8 +192,8 @@ struct InsightsSwiftUIView: View {
                                     if data.isLoading {
                                         ProgressView()
                                             .progressViewStyle(CircularProgressViewStyle())
-//                                            .scaleEffect(1.5) // Tamanho da animação
-//                                            .padding()
+                                        //                                            .scaleEffect(1.5) // Tamanho da animação
+                                        //                                            .padding()
                                     }else{
                                         Text(data.pause)
                                             .font(.title2)
@@ -219,8 +234,8 @@ struct InsightsSwiftUIView: View {
                                     if data.isLoading {
                                         ProgressView()
                                             .progressViewStyle(CircularProgressViewStyle())
-//                                            .scaleEffect(1.5) // Tamanho da animação
-//                                            .padding()
+                                        //                                            .scaleEffect(1.5) // Tamanho da animação
+                                        //                                            .padding()
                                     }else{
                                         Text("\(data.total )")
                                             .font(.title2)
@@ -268,10 +283,11 @@ struct InsightsSwiftUIView: View {
             }
             .padding()
             .navigationTitle("Resultados")
-            .onAppear {
-                interactor?.insightsPerDay()
-                
-            }
+            
+        }.onAppear {
+            interactor?.insightsPerDay()
+            
+        }
         }
     }
 }

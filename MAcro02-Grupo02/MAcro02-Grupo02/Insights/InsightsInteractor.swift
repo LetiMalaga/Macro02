@@ -68,6 +68,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
             do{
                 let focusResult = try await dataManager.queryTestData(predicate: predicate)
                 
+                
                 focusResult.forEach({ result in
                     if let tagString = result[TimerRecord.tagKey] as? String{
                         let focus = FocusDataModel(focusTimeInMinutes: result[TimerRecord.focusTimeKey] as? Int ?? 0, breakTimeinMinutes: result[TimerRecord.breakTimeKey] as? Int ?? 0, longBreakTimeInMinutes: result[TimerRecord.longBreakTimeKey] as? Int ?? 0, category: tagString, date: result[TimerRecord.dateKey] as? Date ?? Date())
@@ -76,12 +77,27 @@ class InsightsInteractor : InsightsInteractorProtocol {
                     }
                 })
                 completion(focusData)
+                DispatchQueue.main.async {
+                    self.presenter?.showConnectionError(true)
+                }
             }
             catch{
-                print("error \(error) in fetching data")
+                if let error = error as? CKError{
+                    switch error.code{
+                    case .networkFailure:
+                        DispatchQueue.main.async {
+                            self.presenter?.showConnectionError(false)
+                        }
+                    case .networkUnavailable:
+                        DispatchQueue.main.async {
+                            self.presenter?.showConnectionError(false)
+                        }
+                    default :
+                        print("error: \(error.localizedDescription)")
+                    }
+                }
             }
         }
-        
     }
     
     func getInsights(predicate: NSPredicate, completion: @escaping (InsightsDataModel) -> Void) {

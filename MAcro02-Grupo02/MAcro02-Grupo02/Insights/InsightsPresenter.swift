@@ -24,6 +24,7 @@ protocol InsightsPresenterProtocol {
     
     func updateFaceIcon(_ faceIcon: FaceIcon)
     func isLoding(_ status: Bool)
+    func showConnectionError(_ hasConnection: Bool)
 }
 
 class InsightsPresenter: InsightsPresenterProtocol {
@@ -137,6 +138,9 @@ class InsightsPresenter: InsightsPresenterProtocol {
         withAnimation {
             view?.data.faceIcon = faceIcon.rawValue
         }
+    }
+    func showConnectionError(_ hasConnection: Bool){
+        view?.data.showConnectionError = !hasConnection
     }
 }
 

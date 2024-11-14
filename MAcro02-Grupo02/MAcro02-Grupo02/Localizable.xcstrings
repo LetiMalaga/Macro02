@@ -189,6 +189,9 @@
         }
       }
     },
+    "Erro de Conexão" : {
+
+    },
     "Escolha uma Etiqueta" : {
       "comment" : "Modal de Tags",
       "localizations" : {

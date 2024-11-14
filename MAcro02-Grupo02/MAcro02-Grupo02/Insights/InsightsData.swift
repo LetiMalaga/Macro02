@@ -37,6 +37,7 @@ class InsightsData:InsightsDataProtocol{
                     continuation.resume(returning: self.records)
                 case .failure(let error):
                     print("error fetching records")
+                    
                     continuation.resume(throwing: error)
                 }
             }

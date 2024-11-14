@@ -16,9 +16,14 @@ protocol PomodoroPresenterProtocol {
     func updateButton(isRunning: Bool, isPaused: Bool)
     func updateTimer(percentage: Float)
     func completePomodoro()
+    func showAlert(with title: String, message: String)
 }
 
 class PomodoroPresenter: PomodoroPresenterProtocol {
+    func showAlert(with title: String, message: String) {
+        viewController?.showAlert(with: title, message: message)
+    }
+    
     weak var viewController: PomodoroViewController?
     let pomoDefaults = PomoDefaults()
 
