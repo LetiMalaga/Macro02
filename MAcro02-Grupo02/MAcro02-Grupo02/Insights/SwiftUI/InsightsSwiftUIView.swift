@@ -170,22 +170,20 @@ struct InsightsSwiftUIView: View {
                                     Text("Pausa")
                                         .font(.title3)
                                         .bold()
-                                        .minimumScaleFactor(0.5)
+                                        .minimumScaleFactor(0.3)
                                     Spacer()
                                 }
                                 HStack{
                                     if data.isLoading {
                                         ProgressView()
                                             .progressViewStyle(CircularProgressViewStyle())
-                                            .scaleEffect(1.5) // Tamanho da animação
-                                            .padding()
+//                                            .scaleEffect(1.5) // Tamanho da animação
+//                                            .padding()
                                     }else{
                                         Text(data.pause)
-                                            .font(.title)
+                                            .font(.title2)
                                             .minimumScaleFactor(0.5)
                                             .bold()
-                                            .minimumScaleFactor(0.5)
-                                            .padding(5)
                                     }
                                     
                                     Spacer()
@@ -195,9 +193,9 @@ struct InsightsSwiftUIView: View {
                             Image(data.faceIcon)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: UIScreen.main.bounds.width * 0.15)
+                                .frame(height: UIScreen.main.bounds.height * .bgPauseAndTotalRectanglesHeightCtt)
                                 .padding(5)
-                                .minimumScaleFactor(0.5)
+                                .minimumScaleFactor(0.3)
                         }
                         .padding(8)
                         .scaledToFill()
@@ -214,21 +212,20 @@ struct InsightsSwiftUIView: View {
                                     Text("Total")
                                         .font(.title3)
                                         .bold()
-                                        .minimumScaleFactor(0.5)
+                                        .minimumScaleFactor(0.3)
                                     Spacer()
                                 }
                                 HStack{
                                     if data.isLoading {
                                         ProgressView()
                                             .progressViewStyle(CircularProgressViewStyle())
-                                            .scaleEffect(1.5) // Tamanho da animação
-                                            .padding()
+//                                            .scaleEffect(1.5) // Tamanho da animação
+//                                            .padding()
                                     }else{
                                         Text("\(data.total )")
-                                            .font(.title)
+                                            .font(.title2)
                                             .minimumScaleFactor(0.5)
                                             .bold()
-                                            .minimumScaleFactor(0.5)
                                             .padding(5)
                                     }
                                     
@@ -239,9 +236,9 @@ struct InsightsSwiftUIView: View {
                             Image(data.faceIcon)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: UIScreen.main.bounds.width * 0.15)
+                                .frame(height: UIScreen.main.bounds.height * .bgPauseAndTotalRectanglesHeightCtt)
                                 .padding(5)
-                                .minimumScaleFactor(0.5)
+                                .minimumScaleFactor(0.3)
                         }
                         .padding(8)
                         .scaledToFill()

@@ -343,7 +343,7 @@ enum PreriodInsights{
     case month
 }
 
-struct FocusDataModel: Identifiable {
+struct FocusDataModel: Identifiable, Encodable, Decodable {
     var id = UUID()
     var focusTimeInMinutes: Int
     var breakTimeinMinutes: Int
