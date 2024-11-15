@@ -84,6 +84,9 @@
         }
       }
     },
+    "Atualizando em %lld segundos..." : {
+
+    },
     "Ciclos de Pomodoro" : {
       "comment" : "SelectorViewController",
       "localizations" : {
@@ -127,6 +130,9 @@
           }
         }
       }
+    },
+    "Conecte-se à internet para voltar a ver os resultados!" : {
+
     },
     "Continuar" : {
       "comment" : "Botão de continuar pomodoro",
@@ -188,9 +194,6 @@
           }
         }
       }
-    },
-    "Erro de Conexão" : {
-
     },
     "Escolha uma Etiqueta" : {
       "comment" : "Modal de Tags",
@@ -446,6 +449,9 @@
           }
         }
       }
+    },
+    "Ops! Cadê o Wi-Fi?!" : {
+
     },
     "Outros" : {
       "comment" : "Insights",

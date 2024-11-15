@@ -16,21 +16,6 @@ struct InsightsSwiftUIView: View {
     @State private var selectedTimeFrame: String = NSLocalizedString("Dia", comment: "Insights")
     
     var body: some View {
-        if data.showConnectionError {
-            Text("Erro de Conexão")
-                .font(.title)
-                .bold()
-                .padding()
-                .foregroundColor(.red)
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        interactor?.insightsPerDay()
-                    }
-                }
-            Text("Verifique sua conexão à internet")
-                .font(.headline)
-                .foregroundColor(.gray)
-        } else {
         ScrollView{
             
             VStack(spacing: 20){
@@ -288,12 +273,67 @@ struct InsightsSwiftUIView: View {
             interactor?.insightsPerDay()
             
         }
+        .overlay {
+            if data.showConnectionError {
+                ZStack{
+                    Rectangle()
+                        .foregroundStyle(.black)
+                        .opacity(0.5)
+                        .ignoresSafeArea()
+                    FailNetworkAlert(interactor: self.interactor)
+                }
+            }
         }
     }
+    
+    
+}
+
+struct FailNetworkAlert: View {
+    @State private var countdown = 5 // Valor inicial do contador
+    @State private var timerActive = true
+    var interactor:InsightsInteractorProtocol?
+    var body: some View {
+        RoundedRectangle(cornerRadius: 15)
+            .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.25)
+            .foregroundStyle(.white)
+            .overlay {
+            VStack{
+                Text("Ops! Cadê o Wi-Fi?!")
+                    .font(.title3)
+                    .bold()
+                    .padding()
+                Text("Conecte-se à internet para voltar a ver os resultados!")
+                    .foregroundStyle(.gray)
+                    .multilineTextAlignment(.center)
+                Spacer()
+                Text("Atualizando em \(self.countdown) segundos...")
+                    .foregroundStyle(.gray)
+                    .padding()
+            }
+            }.onAppear {
+                startCountdown()
+            }
+    }
+    func startCountdown() {
+        countdown = 5
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                if countdown > 0 {
+                    countdown -= 1
+                } else {
+                    timer.invalidate()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(0)) {
+                        interactor?.insightsPerDay()
+                        startCountdown()
+                    }
+                }
+            }
+        }
 }
 
 #Preview {
     InsightsSwiftUIView(interactor: nil, data: InsightsDataView())
+//    FailNetworkAlert()
 }
 
 extension Double {
