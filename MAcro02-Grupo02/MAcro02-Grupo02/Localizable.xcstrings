@@ -206,6 +206,9 @@
         }
       }
     },
+    "Escolha uma etiqueta que faça mais sentido para sua atividade" : {
+      "comment" : "NewActivityViewController"
+    },
     "Estudo" : {
       "comment" : "ModalTagsData",
       "localizations" : {
@@ -609,6 +612,7 @@
     },
     "Selecione uma Etiqueta" : {
       "comment" : "NewActivityViewController",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
