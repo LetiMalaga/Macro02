@@ -84,6 +84,9 @@
         }
       }
     },
+    "Atualizando em %lld segundos..." : {
+
+    },
     "Ciclos de Pomodoro" : {
       "comment" : "SelectorViewController",
       "localizations" : {
@@ -127,6 +130,9 @@
           }
         }
       }
+    },
+    "Conecte-se à internet para voltar a ver os resultados!" : {
+
     },
     "Continuar" : {
       "comment" : "Botão de continuar pomodoro",
@@ -189,9 +195,6 @@
         }
       }
     },
-    "Erro de Conexão" : {
-
-    },
     "Escolha uma Etiqueta" : {
       "comment" : "Modal de Tags",
       "localizations" : {
@@ -202,6 +205,9 @@
           }
         }
       }
+    },
+    "Escolha uma etiqueta que faça mais sentido para sua atividade" : {
+      "comment" : "NewActivityViewController"
     },
     "Estudo" : {
       "comment" : "ModalTagsData",
@@ -447,6 +453,9 @@
         }
       }
     },
+    "Ops! Cadê o Wi-Fi?!" : {
+
+    },
     "Outros" : {
       "comment" : "Insights",
       "localizations" : {
@@ -603,6 +612,7 @@
     },
     "Selecione uma Etiqueta" : {
       "comment" : "NewActivityViewController",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

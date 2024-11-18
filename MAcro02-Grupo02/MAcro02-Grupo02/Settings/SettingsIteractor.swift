@@ -22,8 +22,8 @@ protocol SettingsIteractorProtocol: AnyObject {
     func addActivity(_ activity: ActivitiesModel)
     func deleteActivity(at activityID: UUID)
     func updateActivity(_ activity: ActivitiesModel)
-    func validateActivityName(_ name: String) -> Bool
     func loadActivitiesFromCSV()
+    func validateActivityName(_ activity: ActivitiesModel,_ action: ActionForActivity) -> Bool
 }
 
 class SettingsIteractor: SettingsIteractorProtocol {
@@ -132,12 +132,26 @@ class SettingsIteractor: SettingsIteractorProtocol {
         }
     }
     
-    func validateActivityName(_ name: String) -> Bool {
-        if (!name.isEmpty && !activities.contains(where: { $0.description == name })){
-            return true
-        }else{
-            return false
+    func validateActivityName(_ activity: ActivitiesModel, _ action: ActionForActivity) -> Bool {
+        switch action {
+        case .adding:
+            if (!activity.description.isEmpty && !activities.contains(where: { $0.description == activity.description })){
+                return true
+            }else{
+                return false
+            }
+        case .edit:
+            if (!activity.description.isEmpty && (!activities.contains(where: { $0.description == activity.description && $0.tag == activity.tag} ))){
+                return true
+            }else{
+                return false
+            }
         }
     }
     
+}
+
+enum ActionForActivity{
+    case edit
+    case adding
 }
