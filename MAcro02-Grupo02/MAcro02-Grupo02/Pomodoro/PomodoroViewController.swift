@@ -85,9 +85,13 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Resetar", comment: "Botão de resetar pomodoro"))
         
         pomo.layer.borderWidth = 2
+        pomo.layer.borderColor = AppColors.textPrimary.cgColor
         pomo.backgroundColor = .clear
         
         pomo.addTarget(self, action: #selector(reset), for: .touchUpInside)
+        
+        pomo.setTitleColor(AppColors.textPrimary, for: .normal)
+        
         pomo.isHidden = true // Inicialmente oculto
         
         pomo.setTitleColor(AppColors.textPrimary, for: .normal)
