@@ -15,7 +15,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
         let iv = UIButton(type: .system)
         iv.setTitle("My Title", for: .normal)
         iv.contentMode = .scaleAspectFill
-        iv.tintColor = .white
+        iv.tintColor = AppColors.backgroundPrimary
         iv.clipsToBounds = true
         iv.addTarget(CustomCollectionViewCell.self, action: #selector(didTapButtonCV), for: .touchUpInside)
         return iv
@@ -52,7 +52,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
         
         
         myTagsView.backgroundColor = .systemBlue
-        self.backgroundColor = .white
+        self.backgroundColor = AppColors.backgroundPrimary
         
         // Adjusting title label size to fit button width with padding
         myTagsView.titleLabel?.adjustsFontSizeToFitWidth = true
