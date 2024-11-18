@@ -31,8 +31,33 @@ struct CSVParser {
                 let columns = row.components(separatedBy: ";")
                 if columns.count >= 2 {
                     let description = columns[0].trimmingCharacters(in: .whitespacesAndNewlines)
-                    let tag = columns[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    var tag = columns[1].trimmingCharacters(in: .whitespacesAndNewlines)
                     let type: ActivitiesType
+                    
+    // tagTranslation: Function to translate incoming CSV tags into the language the app is in.
+                    
+                    func tagTranslation (translatedTag: String) {
+                        if let appLanguage = Bundle.main.preferredLocalizations.first {
+                            if appLanguage.lowercased().contains("en") {
+                                if translatedTag == "Trabalho" {
+                                    tag = "Work"
+                                } else if translatedTag == "Estudo" {
+                                    tag = "Study"
+                                }else if translatedTag == "Foco" {
+                                    tag = "Focus"
+                                } else if translatedTag == "Treino" {
+                                    tag = "Training"
+                                } else if translatedTag == "Meditação" {
+                                    tag = "Meditation"
+                                } else if translatedTag == "Sem Tag" {
+                                    tag = "No Tag"
+                                }
+                            }
+                            
+                        }
+                    }
+                    
+                    tagTranslation(translatedTag: tag)
 
                     if fileName.lowercased().contains("short") || fileName.lowercased().contains("curtas") {
                         type = .short
@@ -50,12 +75,14 @@ struct CSVParser {
                         tag: tag
                     )
                     activities.append(activity)
+                    
                 }
+                
             }
+            
         } catch {
             print("❌ Error reading CSV file \(fileName): \(error)")
         }
-        
         return activities
     }
 }

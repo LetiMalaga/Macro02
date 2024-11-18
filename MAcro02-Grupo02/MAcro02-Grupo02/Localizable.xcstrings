@@ -612,6 +612,17 @@
         }
       }
     },
+    "Sem Tag" : {
+      "comment" : "Tag Default",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Tag"
+          }
+        }
+      }
+    },
     "Semana" : {
       "comment" : "Insights",
       "localizations" : {
@@ -712,7 +723,14 @@
       }
     },
     "Verifique sua conexão à internet" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check your Internet connection"
+          }
+        }
+      }
     },
     "Vibrações" : {
       "comment" : "Settings",
