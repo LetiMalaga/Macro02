@@ -60,7 +60,7 @@ class PredefinitionButtonsView: UIView {
             button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
             button.layer.cornerRadius = 13
             button.layer.borderWidth = 3
-            button.layer.borderColor = UIColor.label.cgColor
+            button.layer.borderColor = AppColors.secondaryColor.cgColor
             button.setTitleColor(.label, for: .normal)
             button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
             buttons.append(button)
