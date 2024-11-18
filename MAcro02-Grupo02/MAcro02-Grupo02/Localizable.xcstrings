@@ -733,6 +733,7 @@
       }
     },
     "Verifique sua conexão à internet" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
