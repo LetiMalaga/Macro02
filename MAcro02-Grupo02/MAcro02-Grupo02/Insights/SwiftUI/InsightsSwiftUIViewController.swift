@@ -21,7 +21,7 @@ class InsightsDataView: ObservableObject{
     @Published var tags: [ChartData] = []
     @Published var textDescriptionDate: String = "Hoje"
     @Published var faceIcon: String = ""
-    @Published var showConnectionError: Bool = true
+    @Published var showConnectionError: Bool = false
 
 }
 

@@ -78,7 +78,7 @@ class InsightsInteractor : InsightsInteractorProtocol {
                 })
                 completion(focusData)
                 DispatchQueue.main.async {
-                    self.presenter?.showConnectionError(false)
+                    self.presenter?.showConnectionError(true)
                 }
             }
             catch{
