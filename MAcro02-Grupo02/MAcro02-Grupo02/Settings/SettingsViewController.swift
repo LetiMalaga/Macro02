@@ -48,7 +48,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         super.viewDidLoad()
         
         title = NSLocalizedString("Ajustes", comment: "Settings")
-        view.backgroundColor = .white
+        view.backgroundColor = AppColors.backgroundPrimary
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomTableViewCell")
         interactor?.fetchActivities()
         interactor?.fetchTags()

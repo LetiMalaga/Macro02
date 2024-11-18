@@ -397,10 +397,12 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     @objc func showActivity() {
         if interactor?.returnCurrentState() == "long pause" {
+//            print(tagframe.tagline.text ?? "0")
             activityLabel.isHidden = false
             refreshActivityButton.isHidden = false
             interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? "Sem tag", breakType: .long)
         } else if interactor?.returnCurrentState() == "pause" {
+//            print(tagframe.tagline.text ?? "0")
             activityLabel.isHidden = false
             refreshActivityButton.isHidden = false
             interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? "Sem tag", breakType: .short)

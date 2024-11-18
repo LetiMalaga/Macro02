@@ -268,7 +268,7 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         // Verifique se o índice do botão é igual ao índice selecionado para alternar a cor
         if indexPath.item == selectedIndex {
             myTagsView.backgroundColor = .systemGray
-            myTagsView.setTitleColor(.white, for: .normal)
+            myTagsView.setTitleColor(AppColors.backgroundPrimary, for: .normal)
         } else {
             myTagsView.backgroundColor = .clear
             myTagsView.setTitleColor(.label, for: .normal)
