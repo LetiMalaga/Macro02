@@ -23,13 +23,14 @@ protocol SettingsIteractorProtocol: AnyObject {
     func deleteActivity(at activityID: UUID)
     func updateActivity(_ activity: ActivitiesModel)
     func validateActivityName(_ name: String) -> Bool
+    func loadActivitiesFromCSV()
 }
 
 class SettingsIteractor: SettingsIteractorProtocol {
     var activities: [ActivitiesModel] = []
     var presenter: SettingsPresenterProtocol?
     var dataModel: SettingsDataProtocol?
-
+    
     func changeSound() {
         var sound = UserDefaults.standard.bool(forKey: "sound")
         sound.toggle()
@@ -113,7 +114,23 @@ class SettingsIteractor: SettingsIteractorProtocol {
         })
     }
     
-    
+    func loadActivitiesFromCSV() {
+        print("🔄 Starting to load activities from CSV...")
+        let shortActivities = CSVParser.parseCSV(from: "Atividades_Curtas_Simples")
+        let longActivities = CSVParser.parseCSV(from: "Atividades_Longas_Simples")
+        let allActivities = shortActivities + longActivities
+        
+        print("✅ Found \(allActivities.count) activities in total.")
+        
+        for activity in allActivities {
+            if !activities.contains(where: { $0.description == activity.description }) {
+                print("➕ Adding activity: \(activity.description)")
+                addActivity(activity)
+            } else {
+                print("⏩ Skipping already existing activity: \(activity.description)")
+            }
+        }
+    }
     
     func validateActivityName(_ name: String) -> Bool {
         if (!name.isEmpty && !activities.contains(where: { $0.description == name })){

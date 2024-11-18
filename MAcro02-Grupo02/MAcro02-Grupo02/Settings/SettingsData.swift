@@ -35,6 +35,7 @@ protocol SettingsDataProtocol {
     func addActivity(_ activity: ActivitiesModel, completion: @escaping (Bool) -> Void)
     func deleteActivity(at id: UUID, completion: @escaping (Bool) -> Void)
     func editActivity(at id: UUID, with newValues: ActivitiesModel, completion: @escaping (Bool) -> Void)
+    func parseAndSaveActivities(from fileName: String)
 }
 
 class SettingsData: SettingsDataProtocol {
@@ -42,20 +43,21 @@ class SettingsData: SettingsDataProtocol {
     private let userDefaultsKeyTags = "tagsData"
     
     func fetchActivities() -> [Activity] {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            print("❌ AppDelegate not found")
+            return []
+        }
         
         let contexts = appDelegate.persistentContainer.viewContext
-
-        let request: NSFetchRequest<Activity> = Activity.fetchRequest() 
+        let request: NSFetchRequest<Activity> = Activity.fetchRequest()
         
         do {
             let activities = try contexts.fetch(request)
+            print("📦 Core Data fetched \(activities.count) activities.")
             return activities
-            
         } catch {
-            print("Failed to fetch activities: \(error)")
+            print("❌ Failed to fetch activities: \(error)")
             return []
-//            completion([])
         }
     }
     
@@ -125,5 +127,21 @@ class SettingsData: SettingsDataProtocol {
             completion(false)
         }
     }
+    
+    func parseAndSaveActivities(from fileName: String) {
+            let parsedActivities = CSVParser.parseCSV(from: fileName)
+            
+            print("✅ Found \(parsedActivities.count) activities in \(fileName).")
+            
+            for activity in parsedActivities {
+                addActivity(activity) { success in
+                    if success {
+                        print("➕ Added activity: \(activity.description)")
+                    } else {
+                        print("⚠️ Skipped duplicate activity: \(activity.description)")
+                    }
+                }
+            }
+        }
     
 }

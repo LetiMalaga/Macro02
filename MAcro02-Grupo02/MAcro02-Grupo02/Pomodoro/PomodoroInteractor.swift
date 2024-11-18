@@ -210,27 +210,27 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             timer?.invalidate()
             isWorkPhase = false
             let breakType: ActivitiesType = (remainingLoops == 0 || remainingLoops % longBreakInterval == 0) ? .long : .short
-                    fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: breakType)
+                    fetchAndPresentRandomActivity(tag: tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: breakType)
             remainingLoops -= 1
             
             // Check if it's the last loop
             if remainingLoops == 0 {
                 // Final long break after last work session, then conclude Pomodoro
-                fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: .long)
+                fetchAndPresentRandomActivity(tag: tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
                 remainingTime = longBreakDuration * 60  // Set to the actual long break duration
                 currentState = "long pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 pendingPhaseSwitch = true
             } else if remainingLoops % longBreakInterval == 0 && remainingLoops > 0 {
                 // Long break every 4 loops
-                fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: .long)
+                fetchAndPresentRandomActivity(tag: tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
                 remainingTime = longBreakDuration * 60  // Set to the actual long break duration
                 currentState = "long pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 pendingPhaseSwitch = true
             } else {
                 // Normal break
-                fetchAndPresentRandomActivity(tag: tagTime ?? "Sem tag", breakType: .short)
+                fetchAndPresentRandomActivity(tag: tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .short)
                 remainingTime = breakDuration * 60  // Use actual break duration
                 currentState = "pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: false)
@@ -269,7 +269,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     
     func saveTimeData() async {
         do{
-            let data = FocusDataModel(focusTimeInMinutes: workDuration * longBreakInterval, breakTimeinMinutes: breakDuration * longBreakInterval, longBreakTimeInMinutes: longBreakDuration, category: self.tagTime ?? "Sem tag", date: Date())
+            let data = FocusDataModel(focusTimeInMinutes: workDuration * longBreakInterval, breakTimeinMinutes: breakDuration * longBreakInterval, longBreakTimeInMinutes: longBreakDuration, category: self.tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), date: Date())
             
             _ = try await dataManager.savePomodoro(data){ result in
                 if case .failure(let error) = result {

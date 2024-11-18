@@ -400,12 +400,12 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
 //            print(tagframe.tagline.text ?? "0")
             activityLabel.isHidden = false
             refreshActivityButton.isHidden = false
-            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? "Sem tag", breakType: .long)
+            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
         } else if interactor?.returnCurrentState() == "pause" {
 //            print(tagframe.tagline.text ?? "0")
             activityLabel.isHidden = false
             refreshActivityButton.isHidden = false
-            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? "Sem tag", breakType: .short)
+            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .short)
         } else {
             print("aiaiaiai")
             activityLabel.isHidden = true
