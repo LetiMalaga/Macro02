@@ -156,7 +156,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 1:
             let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
             cell.textLabel?.text = tableView.isEditing ? NSLocalizedString("Concluir", comment: "Settings") : NSLocalizedString("Editar", comment: "Settings")
-            cell.textLabel?.textColor = .systemBlue
+            cell.textLabel?.textColor = .customAccentColor
             cell.textLabel?.textAlignment = .right
             return cell
             
@@ -189,7 +189,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso curto", comment: "Settings")
-                cell.textLabel?.textColor = .systemBlue
+                cell.textLabel?.textColor = .customAccentColor
                 return cell
             } else {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as? CustomTableViewCell else {
@@ -209,7 +209,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso longo", comment: "Settings")
-                cell.textLabel?.textColor = .systemBlue
+                cell.textLabel?.textColor = .customAccentColor
                 return cell
             }
             
@@ -391,7 +391,7 @@ class CustomTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = UIColor.customText
-        label.backgroundColor = .systemGray
+        label.backgroundColor = .customBGColor
         label.layer.cornerRadius = 5
         label.clipsToBounds = true
         label.textAlignment = .center
