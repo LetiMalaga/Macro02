@@ -73,6 +73,9 @@
         }
       }
     },
+    "Aqui você pode adicionar suas próprias atividades personalizadas e desativar nossas recomendações" : {
+      "comment" : "Settings"
+    },
     "Atividades Personalizadas" : {
       "comment" : "Settings",
       "localizations" : {
@@ -185,7 +188,7 @@
       }
     },
     "Editar" : {
-      "comment" : "Settings",
+      "comment" : "NewActivityViewController\nSettings",
       "localizations" : {
         "en" : {
           "stringUnit" : {
