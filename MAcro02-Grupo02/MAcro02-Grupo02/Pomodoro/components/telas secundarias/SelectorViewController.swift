@@ -173,10 +173,10 @@ class ConfigCell: UICollectionViewCell {
         titleLabel.text = title
         pomoTime.NumText = String(format: type == .ciclosPomodoro ? "%02d" : "%02d:00", seconds) // Converte segundos em minuto
         
-        titleLabel.textColor = AppColors.textPrimary
+        titleLabel.textColor = .customText
         titleLabel.font = AppFonts.title2.bold()
         
-        descriptionLabel.textColor = AppColors.textPrimary
+        descriptionLabel.textColor = .customText
         descriptionLabel.font = AppFonts.regular
         
         switch type {

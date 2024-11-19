@@ -258,7 +258,7 @@ struct InsightsSwiftUIView: View {
                     }
                     if data.session == 0 {
                         RoundedRectangle(cornerRadius: 15)
-                            .foregroundStyle(Color(UIColor.customBGColor)
+                            .foregroundStyle(Color(UIColor.customBGColor))
                             .opacity(0.25)
                         
                     }
@@ -269,54 +269,54 @@ struct InsightsSwiftUIView: View {
             .padding()
             .navigationTitle("Resultados")
             
-        .onAppear {
-            interactor?.insightsPerDay()
-            
-        }
-        .overlay {
-            if data.showConnectionError {
-                ZStack{
-                    Rectangle()
-                        .foregroundStyle(.black)
-                        .opacity(0.5)
-                        .ignoresSafeArea()
-                    FailNetworkAlert(interactor: self.interactor)
+            .onAppear {
+                interactor?.insightsPerDay()
+                
+            }
+            .overlay {
+                if data.showConnectionError {
+                    ZStack{
+                        Rectangle()
+                            .foregroundStyle(.black)
+                            .opacity(0.5)
+                            .ignoresSafeArea()
+                        FailNetworkAlert(interactor: self.interactor)
+                    }
                 }
             }
         }
+        
+        
     }
     
-    
-}
-
-struct FailNetworkAlert: View {
-    @State private var countdown = 5 // Valor inicial do contador
-    @State private var timerActive = true
-    var interactor:InsightsInteractorProtocol?
-    var body: some View {
-        RoundedRectangle(cornerRadius: 15)
-            .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.25)
-            .foregroundStyle(.white)
-            .overlay {
-            VStack{
-                Text("Ops! Cadê o Wi-Fi?!")
-                    .font(.title3)
-                    .bold()
-                    .padding()
-                Text("Conecte-se à internet para voltar a ver os resultados!")
-                    .foregroundStyle(.gray)
-                    .multilineTextAlignment(.center)
-                Spacer()
-                Text("Atualizando em \(self.countdown) segundos...")
-                    .foregroundStyle(.gray)
-                    .padding()
-            }
-            }.onAppear {
-                startCountdown()
-            }
-    }
-    func startCountdown() {
-        countdown = 5
+    struct FailNetworkAlert: View {
+        @State private var countdown = 5 // Valor inicial do contador
+        @State private var timerActive = true
+        var interactor:InsightsInteractorProtocol?
+        var body: some View {
+            RoundedRectangle(cornerRadius: 15)
+                .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.25)
+                .foregroundStyle(.white)
+                .overlay {
+                    VStack{
+                        Text("Ops! Cadê o Wi-Fi?!")
+                            .font(.title3)
+                            .bold()
+                            .padding()
+                        Text("Conecte-se à internet para voltar a ver os resultados!")
+                            .foregroundStyle(.gray)
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                        Text("Atualizando em \(self.countdown) segundos...")
+                            .foregroundStyle(.gray)
+                            .padding()
+                    }
+                }.onAppear {
+                    startCountdown()
+                }
+        }
+        func startCountdown() {
+            countdown = 5
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
                 if countdown > 0 {
                     countdown -= 1
@@ -329,11 +329,13 @@ struct FailNetworkAlert: View {
                 }
             }
         }
+    }
 }
+
 
 #Preview {
     InsightsSwiftUIView(interactor: nil, data: InsightsDataView())
-//    FailNetworkAlert()
+    //    FailNetworkAlert()
 }
 
 extension Double {
