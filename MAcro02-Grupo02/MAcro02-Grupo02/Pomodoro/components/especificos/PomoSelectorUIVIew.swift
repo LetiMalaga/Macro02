@@ -19,10 +19,10 @@ class PomoSelectorUIVIew: UIView {
         
         let view = UIView()
         
-        view.layer.borderColor = AppColors.secondaryColor.cgColor
+        view.layer.borderColor = UIColor.customPersonalizationButtonStrokeColor.cgColor
         view.layer.cornerRadius = 20
         view.layer.borderWidth = 3
-        view.backgroundColor = AppColors.fullfilColor
+        view.backgroundColor = UIColor.customPersonalizationButtonColor
 
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -31,7 +31,7 @@ class PomoSelectorUIVIew: UIView {
     
     private let NumLabel: InsetLabel = {
         let label = InsetLabel()
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         label.backgroundColor = .clear
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ class PomoSelectorUIVIew: UIView {
     private let ChevronImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "chevron.right")
-        imageView.tintColor = AppColors.primaryColor
+        imageView.tintColor = UIColor.customAccentColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -50,7 +50,7 @@ class PomoSelectorUIVIew: UIView {
     private let line: UIView = {
         let view = UIView()
         view.widthAnchor.constraint(equalToConstant: 2).isActive = true
-        view.backgroundColor = AppColors.secondaryColor
+        view.backgroundColor = UIColor.customPersonalizationButtonStrokeColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

@@ -63,7 +63,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         label.textAlignment = .center
         label.isUserInteractionEnabled = true
         
@@ -74,7 +74,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 22)
         label.layer.opacity = 0.3
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         
         return label
     }()
@@ -83,6 +83,8 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     private let playButton: PomoButton = {
         let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Iniciar", comment: "Botão de iniciar pomodoro"))
+        pomo.backgroundColor = .customAccentColor
+        pomo.setTitleColor(.customTextOpposite, for: .normal)
         pomo.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
         return pomo
     }()
@@ -90,6 +92,8 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     // Novo botão para retomar o Pomodoro
     private let resumeButton: PomoButton = {
         let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Continuar", comment: "Botão de continuar pomodoro"))
+        pomo.backgroundColor = .customAccentColor
+        pomo.setTitleColor(.customTextOpposite, for: .normal)
         pomo.addTarget(self, action: #selector(resume), for: .touchUpInside)
         pomo.isHidden = true // Inicialmente oculto
         return pomo
@@ -120,6 +124,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     // Novo botão para resetar o Pomodoro
     private let resetButton: PomoButton = {
         let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Resetar", comment: "Botão de resetar pomodoro"))
+        pomo.setTitleColor(.customText, for: .normal)
         
         pomo.layer.borderWidth = 2
         pomo.layer.borderColor = AppColors.textPrimary.cgColor
@@ -176,7 +181,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.clipsToBounds = false
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .customBGColor
         
         view.bringSubviewToFront(refreshActivityButton)
         
@@ -420,6 +425,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
 }
+
+//#Preview {
+//    PomodoroViewController()
+//}
 
 extension PomodoroViewController: UIViewControllerTransitioningDelegate, PassingTag {
     func passing(_ tag: String) {

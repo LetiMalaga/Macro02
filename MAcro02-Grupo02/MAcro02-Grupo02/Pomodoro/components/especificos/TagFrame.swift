@@ -14,7 +14,7 @@ class TagFrame: UIView {
         let label = UILabel()
         label.text = NSLocalizedString("Trabalho", comment: "ModalTagsData")
         label.font = .systemFont(ofSize: 26)
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -33,7 +33,14 @@ class TagFrame: UIView {
     private func setupTag() {
         addSubview(tagline)
         
-        layer.borderColor = AppColors.textPrimary.cgColor
+        layer.borderColor = UIColor.customPersonalizationButtonStrokeColor.cgColor
+        
+        tagline.layer.cornerRadius = .tagCornerRadius
+        tagline.layer.maskedCorners = [
+            .layerMinXMaxYCorner,
+            .layerMaxXMinYCorner,
+            .layerMaxXMaxYCorner
+        ]
         
         NSLayoutConstraint.activate([
             tagline.centerXAnchor.constraint(equalTo: self.centerXAnchor),

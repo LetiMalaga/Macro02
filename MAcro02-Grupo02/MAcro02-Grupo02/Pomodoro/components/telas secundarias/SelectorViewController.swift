@@ -30,7 +30,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewWillAppear(_ animated: Bool) {
         // Definindo cor de fundo da view principal
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .customBGColor
         
         print(pomoDefaults.workDuration)
         print(pomoDefaults.breakDuration)
@@ -93,7 +93,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .systemBackground // Definindo a cor de fundo para a UICollectionView
+        collectionView.backgroundColor = .customBGColor // Definindo a cor de fundo para a UICollectionView
         collectionView.register(ConfigCell.self, forCellWithReuseIdentifier: "ConfigCell")
     }
     

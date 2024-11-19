@@ -66,6 +66,8 @@ class ActivityDetailViewController: UIViewController{
     private let saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(NSLocalizedString("Salvar", comment: "NewActivityViewController"), for: .normal)
+        button.backgroundColor = .customAccentColor
+        button.setTitleColor(.customTextOpposite, for: .normal)
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -103,7 +105,7 @@ class ActivityDetailViewController: UIViewController{
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AppColors.backgroundPrimary
+        view.backgroundColor = UIColor.customBGColor
         title = "Detalhes da Atividade"
         
         setupUI()

@@ -258,7 +258,7 @@ struct InsightsSwiftUIView: View {
                     }
                     if data.session == 0 {
                         RoundedRectangle(cornerRadius: 15)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(Color(UIColor.customBGColor)
                             .opacity(0.25)
                         
                     }
@@ -269,7 +269,7 @@ struct InsightsSwiftUIView: View {
             .padding()
             .navigationTitle("Resultados")
             
-        }.onAppear {
+        .onAppear {
             interactor?.insightsPerDay()
             
         }

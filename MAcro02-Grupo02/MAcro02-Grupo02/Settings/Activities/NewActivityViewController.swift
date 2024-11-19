@@ -92,8 +92,7 @@ class NewActivityViewController: UIViewController {
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AppColors.backgroundPrimary
-
+        view.backgroundColor = .customBGColor
         setupUI()
         configureTitle()
         interactor?.fetchTags()
