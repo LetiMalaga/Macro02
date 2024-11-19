@@ -319,8 +319,8 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         NSLayoutConstraint.activate([
             removeButton.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
             removeButton.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
-            removeButton.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * .tagWidthCtt),
-            removeButton.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * .tagHeightCtt)
+            removeButton.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * .removeButtonWidthCtt),
+            removeButton.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * .removeButtonHeightCtt)
         ])
 
         return cell
