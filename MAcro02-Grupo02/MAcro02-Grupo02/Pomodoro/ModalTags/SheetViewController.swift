@@ -58,6 +58,8 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
 
+        collectionView.backgroundColor = .customBGColor
+        
         return collectionView
     }()
 
