@@ -17,7 +17,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     let pomoConfig = PomoDefaults()
     private var progressTimer: Timer?
     
-
+    
     public var isRuning = false
     
     // UI Elements
@@ -30,15 +30,35 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         return progress
     }()
     
-    private let activityLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .gray
+    private let activityLabel: PaddingLabel = {
+        let label = PaddingLabel()
+        label.font = UIFont.systemFont(ofSize: 22)
+        label.textColor = .label
         label.textAlignment = .center
         label.numberOfLines = 0
         label.isHidden = true // Initially hidden until we load an activity
+        label.layer.cornerRadius = 10
+        label.layer.borderWidth = 2
+        label.layer.borderColor = UIColor.label.cgColor // Add border color for visibility
+        label.textInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) // Customize padding as needed
         return label
     }()
+    
+    class PaddingLabel: UILabel {
+        var textInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        
+        override func drawText(in rect: CGRect) {
+            let insetRect = rect.inset(by: textInsets)
+            super.drawText(in: insetRect)
+        }
+        
+        override var intrinsicContentSize: CGSize {
+            let size = super.intrinsicContentSize
+            let width = size.width + textInsets.left + textInsets.right
+            let height = size.height + textInsets.top + textInsets.bottom
+            return CGSize(width: width, height: height)
+        }
+    }
     
     private let timeLabel: UILabel = {
         let label = UILabel()
@@ -84,16 +104,41 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         return tagframe
     }()
     
+    private let refreshActivityButton: UIButton = {
+        let button = UIButton(type: .system)
+        let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold)
+        // Define the button's symbol configuration
+
+        // Create the image with the configuration and set it to the button
+        if let image = UIImage(systemName: "arrow.triangle.2.circlepath.circle.fill")?.applyingSymbolConfiguration(symbolConfiguration) {
+            button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+            button.tintColor = .label
+        }
+        button.addTarget(self, action: #selector(showActivity), for: .touchUpInside)
+        button.isHidden = true
+        button.isUserInteractionEnabled = true
+        
+        return button
+    }()
+    
     // Novo botão para resetar o Pomodoro
     private let resetButton: PomoButton = {
         let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Resetar", comment: "Botão de resetar pomodoro"))
         pomo.setTitleColor(.customText, for: .normal)
         
         pomo.layer.borderWidth = 2
+        pomo.layer.borderColor = AppColors.textPrimary.cgColor
         pomo.backgroundColor = .clear
         
         pomo.addTarget(self, action: #selector(reset), for: .touchUpInside)
+        
+        pomo.setTitleColor(AppColors.textPrimary, for: .normal)
+        
         pomo.isHidden = true // Inicialmente oculto
+        
+        pomo.setTitleColor(AppColors.textPrimary, for: .normal)
+        pomo.layer.borderColor = AppColors.textPrimary.cgColor
+        
         return pomo
     }()
     
@@ -105,20 +150,20 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         breathingVC.modalPresentationStyle = .fullScreen
         present(breathingVC, animated: true, completion: nil)
     }
-
-        // Método do protocolo que será chamado quando o exercício de respiração terminar
-        func didFinishBreathingExercise() {
-            // Inicia o cronômetro após o exercício de respiração
-            playButton.isHidden = true
-            isRuning = true
-            intervaloLabel.isHidden = true
-            progressView.isHidden = false
-            interactor?.startPomodoro()
-            
-            // sumindo com a tag
-            
-            tagframe.isHidden = true
-        }
+    
+    // Método do protocolo que será chamado quando o exercício de respiração terminar
+    func didFinishBreathingExercise() {
+        // Inicia o cronômetro após o exercício de respiração
+        playButton.isHidden = true
+        isRuning = true
+        intervaloLabel.isHidden = true
+        progressView.isHidden = false
+        interactor?.startPomodoro()
+        
+        // sumindo com a tag
+        
+        tagframe.isHidden = true
+    }
     
     // MARK: - Lifecycle
     
@@ -135,11 +180,17 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.clipsToBounds = false
         view.backgroundColor = .customBGColor
+        
+        view.bringSubviewToFront(refreshActivityButton)
         
         progressView.function = { _ in self.pause() }
         
         // Gestures
+        
+        let refreshActivityGesture = UITapGestureRecognizer(target: self, action: #selector(showActivity))
+        refreshActivityButton.addGestureRecognizer(refreshActivityGesture)
         
         let openConfigsGesture = UITapGestureRecognizer(target: self, action: #selector(configTime))
         timeLabel.addGestureRecognizer(openConfigsGesture)
@@ -168,15 +219,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         view.addSubview(intervaloLabel)
         view.addSubview(tagframe)
         view.addSubview(activityLabel)
-        activityLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            // Position it just below the "Iniciar" button
-            activityLabel.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 20),
-            activityLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            activityLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-        ])
+        view.addSubview(refreshActivityButton)
         
         // Disable autoresizing mask translation
         progressView.translatesAutoresizingMaskIntoConstraints = false
@@ -187,16 +230,18 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         resetButton.translatesAutoresizingMaskIntoConstraints = false
         intervaloLabel.translatesAutoresizingMaskIntoConstraints = false
         tagframe.translatesAutoresizingMaskIntoConstraints = false
+        activityLabel.translatesAutoresizingMaskIntoConstraints = false
+        refreshActivityButton.translatesAutoresizingMaskIntoConstraints = false
         
         // Set constraints
         NSLayoutConstraint.activate([
             // Title Label
-            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
             progressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             // Time Label
             timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50),
+            timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0),
             
             intervaloLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: -10),
             intervaloLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -207,26 +252,35 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             progressCircleView.heightAnchor.constraint(equalToConstant: 150),
             
             tagframe.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tagframe.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            tagframe.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
             
             // Play/Pause Button
-            playButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            playButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 70),
             playButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             
             // Resume Button
-            resumeButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            resumeButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 70),
             resumeButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
             
             // Reset Button
-            resetButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 90),
+            resetButton.topAnchor.constraint(equalTo: progressCircleView.bottomAnchor, constant: 70),
             resetButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+            
+            activityLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            activityLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
+            
+            refreshActivityButton.centerXAnchor.constraint(equalTo: activityLabel.centerXAnchor),
+            refreshActivityButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30), // Spacing above the label
         ])
     }
     
     // MARK: - Actions
     
     @objc func resume() {
+        
         interactor?.resumePomodoro()
+        
         resumeButton.isHidden = true
         isRuning = true
         
@@ -251,6 +305,8 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         
         // Voltando a tag
         
+        showActivity()
+        
         tagframe.isHidden = false
         
         isRuning = false
@@ -265,16 +321,16 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     @objc func pause() {
         if isRuning {
-
-                interactor?.pausePomodoro()
             
-                // Voltando a tag
-                
-                tagframe.isHidden = false
-                
-                resumeButton.isHidden = false
-                resetButton.isHidden = false
-                progressView.isHidden = true
+            interactor?.pausePomodoro()
+            
+            // Voltando a tag
+            
+            tagframe.isHidden = false
+            
+            resumeButton.isHidden = false
+            resetButton.isHidden = false
+            progressView.isHidden = true
             
         }
     }
@@ -324,25 +380,49 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     @objc func handleHold(gesture: UILongPressGestureRecognizer) {
-            if gesture.state == .began {
-                startProgress()
-            } else if gesture.state == .ended {
-                stopProgress()
-            }
+        if gesture.state == .began {
+            startProgress()
+        } else if gesture.state == .ended {
+            stopProgress()
         }
+    }
     
     private func startProgress() {
-           progressTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
-       }
-       
-       private func stopProgress() {
-           progressTimer?.invalidate()
-           progressView.resetProgress()
-       }
-       
-       @objc private func updateProgress() {
-           progressView.updateProgress()
-       }
+        progressTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+    }
+    
+    private func stopProgress() {
+        progressTimer?.invalidate()
+        progressView.resetProgress()
+    }
+    
+    @objc private func updateProgress() {
+        progressView.updateProgress()
+    }
+    
+    @objc func showActivity() {
+        if interactor?.returnCurrentState() == "long pause" {
+//            print(tagframe.tagline.text ?? "0")
+            activityLabel.isHidden = false
+            refreshActivityButton.isHidden = false
+            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
+        } else if interactor?.returnCurrentState() == "pause" {
+//            print(tagframe.tagline.text ?? "0")
+            activityLabel.isHidden = false
+            refreshActivityButton.isHidden = false
+            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .short)
+        } else {
+            print("aiaiaiai")
+            activityLabel.isHidden = true
+            refreshActivityButton.isHidden = true
+        }
+    }
+    
+    func showAlert(with title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
     
 }
 
@@ -354,6 +434,7 @@ extension PomodoroViewController: UIViewControllerTransitioningDelegate, Passing
     func passing(_ tag: String) {
         tagframe.tagline.text = tag
         self.interactor?.tagTime = tag
+        
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
