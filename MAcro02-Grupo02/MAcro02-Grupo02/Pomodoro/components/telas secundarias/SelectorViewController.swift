@@ -12,19 +12,6 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     var pomoDefaults = PomoDefaults()
     var collectionView: UICollectionView!
     
-//    let titleLabel: UILabel = {
-//        
-//        let titleLabel = UILabel()
-//        titleLabel.text = "Personalização"
-//        titleLabel.font = UIFont.boldSystemFont(ofSize: 34)
-//        titleLabel.textColor = .black
-//        
-//        return titleLabel
-//        
-//    }()
-    
-
-    
     let saveButton: PomoButton = {
         
         let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 290, height: 60), titulo: NSLocalizedString("Salvar", comment: "SelectorViewController"))
@@ -43,7 +30,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewWillAppear(_ animated: Bool) {
         // Definindo cor de fundo da view principal
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .customBGColor
         
         print(pomoDefaults.workDuration)
         print(pomoDefaults.breakDuration)
@@ -106,7 +93,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .systemBackground // Definindo a cor de fundo para a UICollectionView
+        collectionView.backgroundColor = .customBGColor // Definindo a cor de fundo para a UICollectionView
         collectionView.register(ConfigCell.self, forCellWithReuseIdentifier: "ConfigCell")
     }
     
@@ -124,7 +111,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ConfigCell", for: indexPath) as! ConfigCell
         let config = configs[indexPath.item]
-        cell.configure(title: config.title, seconds: config.seconds)
+        cell.configure(title: config.title, type: config.type, seconds: config.seconds)
         return cell
     }
 
@@ -141,6 +128,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
 class ConfigCell: UICollectionViewCell {
     
     let titleLabel = UILabel()
+    let descriptionLabel = UILabel()
     let pomoTime: PomoSelectorUIVIew = PomoSelectorUIVIew(NumText: "")
     
     override init(frame: CGRect) {
@@ -156,16 +144,23 @@ class ConfigCell: UICollectionViewCell {
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         pomoTime.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        
         
         addSubview(titleLabel)
+        addSubview(descriptionLabel)
         addSubview(pomoTime)
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             
-            pomoTime.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            pomoTime.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 1),
+            descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            
+            pomoTime.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 5),
+            pomoTime.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
             
         ])
         
@@ -173,10 +168,33 @@ class ConfigCell: UICollectionViewCell {
     }
 
     // Função para configurar os valores (minutos e segundos)
-    func configure(title: String, seconds: Int) {
-        titleLabel.text = title
-        pomoTime.NumText = String(format: title == "Ciclos de Pomodoro" ? "%02d" : "%02d:00", seconds) // Converte segundos em minutos
+    func configure(title: String, type: ConfigType, seconds: Int) {
         
-        pomoTime.widthAnchor.constraint(equalToConstant: title == NSLocalizedString("Ciclos de Pomodoro", comment: "SelectorViewController") ? 155 : 251).isActive = true
+        titleLabel.text = title
+        pomoTime.NumText = String(format: type == .ciclosPomodoro ? "%02d" : "%02d:00", seconds) // Converte segundos em minuto
+        
+        titleLabel.textColor = AppColors.textPrimary
+        titleLabel.font = AppFonts.title2.bold()
+        
+        descriptionLabel.textColor = AppColors.textPrimary
+        descriptionLabel.font = AppFonts.regular
+        
+        switch type {
+            
+        case .foco:
+                descriptionLabel.text = "Período de concentração"
+            
+        case .intervaloCurto:
+                descriptionLabel.text = "Intervalo após o período de concentração"
+        
+        case .intervaloLongo:
+                descriptionLabel.text = "Intervalo após concluir um ciclo completo"
+        
+        case .ciclosPomodoro:
+                descriptionLabel.text = "Repetições do ciclo de foco e intervalo curto"
+            
+        }
+        
+        pomoTime.widthAnchor.constraint(equalToConstant: type == .ciclosPomodoro ? 155 : 251).isActive = true
     }
 }

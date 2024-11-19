@@ -83,6 +83,8 @@ class TimeSelectorViewController: UIViewController {
     
     let saveButton: PomoButton = {
         let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 292, height: 60), titulo: NSLocalizedString("Salvar", comment: "TimeSelectorViewController"))
+        button.backgroundColor = .customAccentColor
+        button.setTitleColor(.customTextOpposite, for: .normal)
         button.addTarget(self, action: #selector(save), for: .touchUpInside)
         
         return button
@@ -151,7 +153,7 @@ class TimeSelectorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .customBGColor
         
             
         

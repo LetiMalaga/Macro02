@@ -17,19 +17,20 @@ protocol SettingsIteractorProtocol: AnyObject {
     func changeBreathing()
     func changeRecomendations()
     
-    func fetchActivities()
+    func fetchActivities(isCSV: Bool)
     func fetchTags()
     func addActivity(_ activity: ActivitiesModel)
     func deleteActivity(at activityID: UUID)
     func updateActivity(_ activity: ActivitiesModel)
-    func validateActivityName(_ name: String) -> Bool
+    func loadActivitiesFromCSV()
+    func validateActivityName(_ activity: ActivitiesModel,_ action: ActionForActivity) -> Bool
 }
 
 class SettingsIteractor: SettingsIteractorProtocol {
     var activities: [ActivitiesModel] = []
     var presenter: SettingsPresenterProtocol?
     var dataModel: SettingsDataProtocol?
-
+    
     func changeSound() {
         var sound = UserDefaults.standard.bool(forKey: "sound")
         sound.toggle()
@@ -58,22 +59,22 @@ class SettingsIteractor: SettingsIteractorProtocol {
         UserDefaults.standard.set(recomendations, forKey: "recomendations")
     }
     
-    func fetchActivities(){
-        
-        let activities = dataModel?.fetchActivities()
-        
-        var activitiesModel: [ActivitiesModel] = []
-        
-        guard let activities else { return }
-        
-        for activity in activities {
-            activitiesModel.append(ActivitiesModel(id: activity.id,
-                                                   type: ActivitiesType(rawValue: activity.type) ?? .short,
-                                                   description: activity.descriptionText,
-                                                   tag: activity.tag))
+    func fetchActivities(isCSV: Bool) {
+        let activities = dataModel?.fetchActivities() ?? []
+
+        let filteredActivities = activities.filter { !$0.isCSV } // Fetch only non-CSV activities
+
+        self.activities = filteredActivities.map {
+            ActivitiesModel(
+                id: $0.id,
+                type: ActivitiesType(rawValue: $0.type) ?? .short,
+                description: $0.descriptionText,
+                tag: $0.tag,
+                isCSV: $0.isCSV
+            )
         }
-        self.activities = activitiesModel
-        self.presenter?.uploadActivitys(activitiesModel)
+
+        self.presenter?.uploadActivitys(self.activities)
     }
     
     func fetchTags(){
@@ -113,14 +114,44 @@ class SettingsIteractor: SettingsIteractorProtocol {
         })
     }
     
-    
-    
-    func validateActivityName(_ name: String) -> Bool {
-        if (!name.isEmpty && !activities.contains(where: { $0.description == name })){
-            return true
-        }else{
-            return false
+    func loadActivitiesFromCSV() {
+        print("🔄 Starting to load activities from CSV...")
+        let shortActivities = CSVParser.parseCSV(from: "Atividades_Curtas_Simples")
+        let longActivities = CSVParser.parseCSV(from: "Atividades_Longas_Simples")
+        let allActivities = shortActivities + longActivities
+        
+        print("✅ Found \(allActivities.count) activities in total.")
+        
+        for activity in allActivities {
+            if !activities.contains(where: { $0.description == activity.description }) {
+                print("➕ Adding activity: \(activity.description)")
+                addActivity(activity)
+            } else {
+                print("⏩ Skipping already existing activity: \(activity.description)")
+            }
         }
     }
     
+    func validateActivityName(_ activity: ActivitiesModel, _ action: ActionForActivity) -> Bool {
+        switch action {
+        case .adding:
+            if (!activity.description.isEmpty && !activities.contains(where: { $0.description == activity.description })){
+                return true
+            }else{
+                return false
+            }
+        case .edit:
+            if (!activity.description.isEmpty && (!activities.contains(where: { $0.description == activity.description && $0.tag == activity.tag} ))){
+                return true
+            }else{
+                return false
+            }
+        }
+    }
+    
+}
+
+enum ActionForActivity{
+    case edit
+    case adding
 }

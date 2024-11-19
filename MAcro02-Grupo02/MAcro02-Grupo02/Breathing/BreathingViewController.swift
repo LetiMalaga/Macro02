@@ -28,7 +28,7 @@ class BreathingViewController: UIViewController {
         let bezier = UIBezierPath(arcCenter: .zero, radius: 150, startAngle: 0, endAngle: .pi * 2, clockwise: true)
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = bezier.cgPath
-        shapeLayer.fillColor = AppColors.progressPrimary.cgColor
+        shapeLayer.fillColor = UIColor.customCircleColor.cgColor
         return shapeLayer
     }()
     
@@ -36,14 +36,14 @@ class BreathingViewController: UIViewController {
         let bezier = UIBezierPath(arcCenter: .zero, radius: 50, startAngle: 0, endAngle: .pi * 2, clockwise: true)
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = bezier.cgPath
-        shapeLayer.fillColor = AppColors.progressSecundary.withAlphaComponent(0.5).cgColor
+        shapeLayer.fillColor = UIColor.customAccentColor.cgColor
         shapeLayer.transform = CATransform3DMakeScale(1.0, 1.0, 1.0)
         return shapeLayer
     }()
     
     private var stateLabel: UILabel = {
         let label = UILabel()
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         label.font = AppFonts.largeTitle.bold()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = NSLocalizedString("Aperte para começar", comment: "Tela de respiração")
@@ -56,7 +56,7 @@ class BreathingViewController: UIViewController {
     }
     
     func setup() {
-        view.backgroundColor = AppColors.backgroundPrimary
+        view.backgroundColor = UIColor.customBGColor
         
         progressView.function = { _ in self.endBreathingCycle() }
         

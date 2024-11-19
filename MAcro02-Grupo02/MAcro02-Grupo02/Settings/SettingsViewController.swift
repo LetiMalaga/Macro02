@@ -48,9 +48,9 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         super.viewDidLoad()
         
         title = NSLocalizedString("Ajustes", comment: "Settings")
-        view.backgroundColor = .white
+        view.backgroundColor = .customBGColor
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomTableViewCell")
-        interactor?.fetchActivities()
+        interactor?.fetchActivities(isCSV: false)
         interactor?.fetchTags()
         
         setupTableView()
@@ -156,7 +156,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 1:
             let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
             cell.textLabel?.text = tableView.isEditing ? NSLocalizedString("Concluir", comment: "Settings") : NSLocalizedString("Editar", comment: "Settings")
-            cell.textLabel?.textColor = .systemBlue
+            cell.textLabel?.textColor = .customAccentColor
             cell.textLabel?.textAlignment = .right
             return cell
             
@@ -189,7 +189,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso curto", comment: "Settings")
-                cell.textLabel?.textColor = .systemBlue
+                cell.textLabel?.textColor = .customAccentColor
                 return cell
             } else {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as? CustomTableViewCell else {
@@ -209,7 +209,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso longo", comment: "Settings")
-                cell.textLabel?.textColor = .systemBlue
+                cell.textLabel?.textColor = .customAccentColor
                 return cell
             }
             
@@ -254,7 +254,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         func font(_ title:String) -> UITableViewHeaderFooterView?{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomHeader")
-            header?.textLabel?.textColor = .black
+            header?.textLabel?.textColor = .customText
             header?.textLabel?.text = title
             header?.textLabel?.font = .preferredFont(forTextStyle: .title3)
             
@@ -381,7 +381,7 @@ class CustomTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         label.numberOfLines = 0
         return label
     }()
@@ -390,8 +390,8 @@ class CustomTableViewCell: UITableViewCell {
         let label = PaddedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = AppColors.progressPrimary
-        label.backgroundColor = .systemGray
+        label.textColor = UIColor.customText
+        label.backgroundColor = .customBGColor
         label.layer.cornerRadius = 5
         label.clipsToBounds = true
         label.textAlignment = .center

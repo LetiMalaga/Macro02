@@ -33,7 +33,7 @@ class DentsView: UIView {
     }
 
     private func setupShadowView() {
-        shadowView.backgroundColor = UIColor.label.withAlphaComponent(0.2)
+        shadowView.backgroundColor = AppColors.primaryColor
         shadowView.layer.cornerRadius = 5
         addSubview(shadowView)
     }
@@ -41,13 +41,13 @@ class DentsView: UIView {
     private func setupChevronImages() {
         // Configura a imagem do chevron esquerdo
         leftChevronImageView.image = UIImage(systemName: "chevron.left")
-        leftChevronImageView.tintColor = .label
+        leftChevronImageView.tintColor = AppColors.primaryColor
         leftChevronImageView.contentMode = .scaleAspectFit
         addSubview(leftChevronImageView)
 
         // Configura a imagem do chevron direito
         rightChevronImageView.image = UIImage(systemName: "chevron.right")
-        rightChevronImageView.tintColor = .label
+        rightChevronImageView.tintColor = AppColors.primaryColor
         rightChevronImageView.contentMode = .scaleAspectFit
         addSubview(rightChevronImageView)
     }
@@ -77,7 +77,7 @@ class DentsView: UIView {
 
         shapeLayer.path = path.cgPath
         shapeLayer.lineWidth = 1
-        shapeLayer.strokeColor = UIColor.gray.cgColor
+        shapeLayer.strokeColor = AppColors.primaryColor.cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
 
         layer.addSublayer(shapeLayer) // Adiciona a barra dentada como sublayer
