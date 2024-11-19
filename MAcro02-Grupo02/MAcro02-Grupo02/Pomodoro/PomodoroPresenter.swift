@@ -35,6 +35,7 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
             viewController?.displayActivity(description) // Send it to the view controller
         
         print("the activity is: \(description)")
+        print("the tag is: \(activity.tag)")
         }
     
     func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool = false) {

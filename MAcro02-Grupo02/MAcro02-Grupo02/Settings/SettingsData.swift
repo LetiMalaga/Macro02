@@ -27,6 +27,7 @@ struct ActivitiesModel: Decodable{
     var type: ActivitiesType
     var description: String
     var tag: String
+    var isCSV: Bool
 }
 
 protocol SettingsDataProtocol {
@@ -77,6 +78,7 @@ class SettingsData: SettingsDataProtocol {
         activity.type = activityModel.type.rawValue
         activity.descriptionText = activityModel.description
         activity.tag = activityModel.tag
+        activity.isCSV = activityModel.isCSV
         
         do {
             try context.save()

@@ -315,7 +315,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         completion(ActivitiesModel(id: activity.id,
                                    type: ActivitiesType(rawValue: activity.type) ?? .short,
                                    description: activity.descriptionText,
-                                   tag: activity.tag))
+                                   tag: activity.tag, isCSV: true))
         
 
     }
