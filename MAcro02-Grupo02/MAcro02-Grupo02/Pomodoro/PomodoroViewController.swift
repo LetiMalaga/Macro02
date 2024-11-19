@@ -33,13 +33,13 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let activityLabel: PaddingLabel = {
         let label = PaddingLabel()
         label.font = UIFont.systemFont(ofSize: 22)
-        label.textColor = .label
+        label.textColor = .customText
         label.textAlignment = .center
         label.numberOfLines = 0
         label.isHidden = true // Initially hidden until we load an activity
         label.layer.cornerRadius = 10
         label.layer.borderWidth = 2
-        label.layer.borderColor = UIColor.label.cgColor // Add border color for visibility
+        label.layer.borderColor = UIColor.customText.cgColor // Add border color for visibility
         label.textInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) // Customize padding as needed
         return label
     }()
@@ -112,7 +112,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         // Create the image with the configuration and set it to the button
         if let image = UIImage(systemName: "arrow.triangle.2.circlepath.circle.fill")?.applyingSymbolConfiguration(symbolConfiguration) {
             button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
-            button.tintColor = .label
+            button.tintColor = .customText
         }
         button.addTarget(self, action: #selector(showActivity), for: .touchUpInside)
         button.isHidden = true

@@ -58,6 +58,8 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
 
+        collectionView.backgroundColor = .customBGColor
+        
         return collectionView
     }()
 
@@ -68,7 +70,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         setupView()
         interactor?.fetchTags()
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: isEditingMode ? "ellipsis.circle.fill" : "ellipsis.circle"), style: .plain, target: self, action: #selector(toggleState))
-        navigationItem.rightBarButtonItem?.tintColor = .label
+        navigationItem.rightBarButtonItem?.tintColor = .customText
 
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
@@ -264,11 +266,23 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         myTagsView.setTitle(tags[indexPath.item], for: .normal)
         myTagsView.layer.borderWidth = 3
         myTagsView.layer.borderColor = UIColor.customText.cgColor
+        myTagsView.setTitleColor(UIColor.customText, for: .normal)
         myTagsView.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         myTagsView.layer.cornerRadius = .tagCornerRadius
         myTagsView.translatesAutoresizingMaskIntoConstraints = false
         myTagsView.tag = indexPath.item
         myTagsView.addTarget(self, action: #selector(didTapButtonCV), for: .touchUpInside)
+        myTagsView.layer.maskedCorners = [
+            .layerMinXMaxYCorner,
+            .layerMaxXMinYCorner,
+            .layerMaxXMaxYCorner
+        ]
+        
+        
+        // Adjusting title label size to fit button width with padding
+        myTagsView.titleLabel?.adjustsFontSizeToFitWidth = true
+        myTagsView.titleLabel?.minimumScaleFactor = 0.3
+        myTagsView.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         
         // Verifique se o índice do botão é igual ao índice selecionado para alternar a cor
         if indexPath.item == selectedIndex {
@@ -305,8 +319,8 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         NSLayoutConstraint.activate([
             removeButton.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
             removeButton.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
-            removeButton.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * .tagWidthCtt),
-            removeButton.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * .tagHeightCtt)
+            removeButton.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * .removeButtonWidthCtt),
+            removeButton.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * .removeButtonHeightCtt)
         ])
 
         return cell

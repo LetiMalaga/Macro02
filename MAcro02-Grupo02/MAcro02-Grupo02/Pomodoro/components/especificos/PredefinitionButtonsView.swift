@@ -61,7 +61,7 @@ class PredefinitionButtonsView: UIView {
             button.layer.cornerRadius = 13
             button.layer.borderWidth = 3
             button.layer.borderColor = UIColor.customPersonalizationButtonStrokeColor.cgColor
-            button.setTitleColor(.label, for: .normal)
+            button.setTitleColor(.customText, for: .normal)
             button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
             buttons.append(button)
             stackView.addArrangedSubview(button)
