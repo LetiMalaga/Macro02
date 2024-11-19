@@ -33,7 +33,7 @@ class ActivitiesScreen: UIView{
         let button = UIButton()
         button.setTitle("Salvar", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.setTitleColor(.systemBlue, for: .normal)
+        button.setTitleColor(.customAccentColor, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

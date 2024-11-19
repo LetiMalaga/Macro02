@@ -34,7 +34,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     var delegate: PassingTag?
     private var selectedIndex: Int?
 
-    public var interactor:ModalTagsInteractorProtocol?
+    public var interactor: ModalTagsInteractorProtocol?
 //    var tags: [String] = []
     var arraybuttons: [UIButton] = []
 
@@ -44,8 +44,8 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         let textField = UITextField()
         textField.placeholder = "Adicionar Tag"
         textField.borderStyle = .roundedRect
-        textField.backgroundColor = .secondarySystemBackground
-        textField.textColor = .label
+        textField.backgroundColor = .customBGColor
+        textField.textColor = .customText
         textField.font = .preferredFont(forTextStyle: .caption1)
 
         return textField
