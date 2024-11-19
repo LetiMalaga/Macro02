@@ -11,8 +11,9 @@ import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    
+    var settingsInteractor: SettingsIteractorProtocol?
+    var settingsData: SettingsDataProtocol?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -89,6 +90,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UserDefaults.standard.object(forKey: "recomendations") == nil {
             UserDefaults.standard.set(true, forKey: "recomendations")
         }
+        
+        settingsInteractor = SettingsIteractor()
+        settingsData = SettingsData()
+        settingsData?.parseAndSaveActivities(from: "Atividades_Curtas_Simples")
+        settingsData?.parseAndSaveActivities(from: "Atividades_Longas_Simples")
         
     }
 }

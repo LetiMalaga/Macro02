@@ -50,7 +50,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         title = NSLocalizedString("Ajustes", comment: "Settings")
         view.backgroundColor = .customBGColor
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomTableViewCell")
-        interactor?.fetchActivities()
+        interactor?.fetchActivities(isCSV: false)
         interactor?.fetchTags()
         
         setupTableView()

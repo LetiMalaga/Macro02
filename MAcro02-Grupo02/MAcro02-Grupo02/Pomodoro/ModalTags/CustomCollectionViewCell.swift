@@ -50,7 +50,6 @@ class CustomCollectionViewCell: UICollectionViewCell {
             .layerMaxXMaxYCorner
         ]
         
-        
         myTagsView.backgroundColor = .customBGColor
         self.backgroundColor = .customBGColor
         
