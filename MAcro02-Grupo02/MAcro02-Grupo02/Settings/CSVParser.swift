@@ -72,7 +72,8 @@ struct CSVParser {
                         id: UUID(),
                         type: type,
                         description: description,
-                        tag: tag
+                        tag: tag,
+                        isCSV: true
                     )
                     activities.append(activity)
                     

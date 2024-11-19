@@ -151,19 +151,25 @@ class PomodoroData {
         }
     }
     
-    func fetchActivities(_ type:ActivitiesType, tag:String) -> Activity? {
-        
+    func fetchActivities(_ type: ActivitiesType, tag: String) -> Activity? {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil }
-        
+
         let contexts = appDelegate.persistentContainer.viewContext
-        
+
+        // Create the fetch request
         let request: NSFetchRequest<Activity> = Activity.fetchRequest()
-        request.predicate = NSPredicate(format: "tag == %@ AND type == %@", tag, type.rawValue)
-        
+
+        // Update predicate to include both isCSV true and false
+        request.predicate = NSPredicate(
+            format: "tag == %@ AND type == %@ AND (isCSV == true OR isCSV == false)",
+            tag,
+            type.rawValue
+        )
+
         do {
+            // Fetch and return a random activity
             let activities = try contexts.fetch(request)
             return activities.randomElement()
-            
         } catch {
             print("Failed to fetch activities: \(error)")
             return nil
