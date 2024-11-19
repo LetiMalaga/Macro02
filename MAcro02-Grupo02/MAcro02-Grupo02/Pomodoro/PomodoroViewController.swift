@@ -127,17 +127,14 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         pomo.setTitleColor(.customText, for: .normal)
         
         pomo.layer.borderWidth = 2
-        pomo.layer.borderColor = AppColors.textPrimary.cgColor
-        pomo.backgroundColor = .clear
+        pomo.layer.borderColor = UIColor.customText.cgColor
+        pomo.backgroundColor = .customBGColor
         
         pomo.addTarget(self, action: #selector(reset), for: .touchUpInside)
         
-        pomo.setTitleColor(AppColors.textPrimary, for: .normal)
+        pomo.setTitleColor(.customText, for: .normal)
         
         pomo.isHidden = true // Inicialmente oculto
-        
-        pomo.setTitleColor(AppColors.textPrimary, for: .normal)
-        pomo.layer.borderColor = AppColors.textPrimary.cgColor
         
         return pomo
     }()

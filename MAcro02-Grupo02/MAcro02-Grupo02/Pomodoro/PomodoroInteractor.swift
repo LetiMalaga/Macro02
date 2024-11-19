@@ -67,7 +67,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
         currentState = "work"
         isWorkPhase = true
         isBreathingPhase = false
-        remainingTime = workDuration * 60
+        remainingTime = /*workDuration * 60*/ 5 // TODO: Descomentar para postar na AppStore
         
         presenter?.displayTime(formatTime(remainingTime), isWorkPhase: isWorkPhase, isLongBreak: false)
         
@@ -199,7 +199,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             pausePomodoro()
             isBreathingPhase = false
             isWorkPhase = true
-            remainingTime = workDuration * 60
+            remainingTime = /*workDuration * 60*/ 5 // TODO: Descomentar para postar na AppStore
             currentState = "work"
             presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
             
@@ -217,21 +217,21 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             if remainingLoops == 0 {
                 // Final long break after last work session, then conclude Pomodoro
                 fetchAndPresentRandomActivity(tag: tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
-                remainingTime = longBreakDuration * 60  // Set to the actual long break duration
+                remainingTime = /*longBreakDuration * 60*/ 6 // TODO: Descomentar para postar na AppStore  // Set to the actual long break duration
                 currentState = "long pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 pendingPhaseSwitch = true
             } else if remainingLoops % longBreakInterval == 0 && remainingLoops > 0 {
                 // Long break every 4 loops
                 fetchAndPresentRandomActivity(tag: tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
-                remainingTime = longBreakDuration * 60  // Set to the actual long break duration
+                remainingTime = /*longBreakDuration * 60*/ 6 // TODO: Descomentar para postar na AppStore  // Set to the actual long break duration
                 currentState = "long pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 pendingPhaseSwitch = true
             } else {
                 // Normal break
                 fetchAndPresentRandomActivity(tag: tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .short)
-                remainingTime = breakDuration * 60  // Use actual break duration
+                remainingTime = /*breakDuration * 60*/ 5 // TODO: Descomentar para postar na AppStore  // Use actual break duration
                 currentState = "pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: false)
                 pendingPhaseSwitch = true
@@ -247,7 +247,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                     pausePomodoro()
                     isBreathingPhase = false
                     isWorkPhase = true
-                    remainingTime = workDuration * 60  // Start next work phase
+                    remainingTime = /*workDuration * 60*/ 5 // TODO: Descomentar para postar na AppStore  // Start next work phase
                     currentState = "work"
                     presenter?.displayTime(formatTime(remainingTime), isWorkPhase: true, isLongBreak: false)
                 }
@@ -257,7 +257,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                     await saveTimeData()
                 }
                 currentState = "work"
-                remainingTime = workDuration * 60
+                remainingTime = /*workDuration * 60*/ 5 // TODO: Descomentar para postar na AppStore
                 stopPomodoro()
                 isRunning = false
                 isPaused = false
