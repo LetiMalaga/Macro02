@@ -73,6 +73,9 @@
         }
       }
     },
+    "Atividades Default" : {
+      "comment" : "Settings"
+    },
     "Atividades Personalizadas" : {
       "comment" : "Settings",
       "localizations" : {
@@ -85,7 +88,14 @@
       }
     },
     "Atualizando em %lld segundos..." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updating in %lld seconds…"
+          }
+        }
+      }
     },
     "Ciclos de Pomodoro" : {
       "comment" : "SelectorViewController",
@@ -132,7 +142,14 @@
       }
     },
     "Conecte-se à internet para voltar a ver os resultados!" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect to the internet to see the results!"
+          }
+        }
+      }
     },
     "Continuar" : {
       "comment" : "Botão de continuar pomodoro",
@@ -207,7 +224,15 @@
       }
     },
     "Escolha uma etiqueta que faça mais sentido para sua atividade" : {
-      "comment" : "NewActivityViewController"
+      "comment" : "NewActivityViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a tag that makes the most sense for your activity"
+          }
+        }
+      }
     },
     "Estudo" : {
       "comment" : "ModalTagsData",
@@ -259,23 +284,6 @@
         }
       }
     },
-    "Hoje" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Today"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hoje"
-          }
-        }
-      }
-    },
     "Hora de focar! Escolha o tempo ideal para mergulhar na sua tarefa e bloquear distrações." : {
       "comment" : "TimeSelectorViewController",
       "localizations" : {
@@ -283,23 +291,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Time to focus! Pick the ideal time to submerge in your task and block all distractions."
-          }
-        }
-      }
-    },
-    "horas" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hours"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Horas"
           }
         }
       }
@@ -454,7 +445,7 @@
       }
     },
     "Ops! Cadê o Wi-Fi?!" : {
-
+      "comment" : "Oops! Where's the Wi-Fi?!"
     },
     "Outros" : {
       "comment" : "Insights",
@@ -544,18 +535,6 @@
         }
       }
     },
-    "Refrescar" : {
-      "comment" : "Insights",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Refresh"
-          }
-        }
-      }
-    },
     "Resetar" : {
       "comment" : "Botão de resetar pomodoro",
       "localizations" : {
@@ -606,18 +585,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hold"
-          }
-        }
-      }
-    },
-    "Selecione uma Etiqueta" : {
-      "comment" : "NewActivityViewController",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pick a Tag"
           }
         }
       }
@@ -728,17 +695,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Training"
-          }
-        }
-      }
-    },
-    "Verifique sua conexão à internet" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check your Internet connection"
           }
         }
       }

@@ -25,6 +25,10 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         didSet { recommendationSwitch.isOn = recommendationButton }
     }
     
+    var defaultActivitiesButton: Bool = UserDefaults.standard.bool(forKey: "defaultActivities") {
+        didSet { defaultActivitiesSwitch.isOn = defaultActivitiesButton }
+    }
+    
     var shortBreakActivities: [ActivitiesModel] = []
     
     var longBreakActivities: [ActivitiesModel] = []
@@ -38,6 +42,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     private let vibrationSwitch = UISwitch()
     private let breathingSwitch = UISwitch()
     private let recommendationSwitch = UISwitch()
+    private let defaultActivitiesSwitch = UISwitch()
     var tags:[String] = []
     var editableSections: Set<Int> = []
     
@@ -108,6 +113,10 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     @objc func recommendationSwitchChanged(_ sender: UISwitch) {
         interactor?.changeRecomendations()
     }
+    
+    @objc func defaultActivitiesSwitchChanged(_ sender: UISwitch) {
+        interactor?.changeDefaultActivities()
+    }
 }
 
 
@@ -122,9 +131,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 2 // Sons e Vibrações
         case 1:
-            return 0 // Respiração ao iniciar e Recomendação de atividades
+            return 0 // Botão "Editar" 
         case 2:
-            return 2 // Botão "Editar"
+            return 3 // Respiração ao iniciar, Recomendação de atividades, Atividades Padrão
         case 3:
             return shortBreakActivities.count + 1 // Atividades de intervalo curto + opção para adicionar
         case 4:
@@ -169,11 +178,16 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 breathingSwitch.isOn = breathingButton
                 breathingSwitch.addTarget(self, action: #selector(breathingSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = breathingSwitch
-            } else {
+            } else if indexPath.row == 1 {
                 cell.textLabel?.text = NSLocalizedString("Recomendação de Atividades", comment: "Settings")
                 recommendationSwitch.isOn = recommendationButton
                 recommendationSwitch.addTarget(self, action: #selector(recommendationSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = recommendationSwitch
+            } else if indexPath.row == 2 {
+                cell.textLabel?.text = NSLocalizedString("Atividades Default", comment: "Settings")
+                defaultActivitiesSwitch.isOn = defaultActivitiesButton
+                defaultActivitiesSwitch.addTarget(self, action: #selector(defaultActivitiesSwitchChanged(_:)), for: .valueChanged)
+                cell.accessoryView = defaultActivitiesSwitch
             }
             return cell
             
