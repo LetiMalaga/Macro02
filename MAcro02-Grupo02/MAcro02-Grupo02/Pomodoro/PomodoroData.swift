@@ -16,9 +16,9 @@ class PomodoroData {
     
     let privateDatabase = CKContainer.default().privateCloudDatabase
     let userDefaultsStd = UserDefaults.standard
-    let sp = SettingsPresenter()
-    let si = SettingsIteractor()
-    let svc = SettingsViewController()
+//    let sp = SettingsPresenter()
+//    let si = SettingsIteractor()
+//    let svc = SettingsViewController()
     
     private let cachedDataKey = "cachedData"
     private let reachability = try! Reachability()
@@ -190,6 +190,9 @@ class PomodoroData {
             if activities.isEmpty == false {
                 return activities.randomElement()
             } else {
+                
+                // If no custom activities, it fetches from CSV.
+                
                 include = true
 //                si.changeDefaultActivities()
 //                svc.reloadData()
