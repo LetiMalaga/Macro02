@@ -16,6 +16,7 @@ protocol SettingsIteractorProtocol: AnyObject {
     func changeVibration()
     func changeBreathing()
     func changeRecomendations()
+    func changeDefaultActivities()
     
     func fetchActivities(isCSV: Bool)
     func fetchTags()
@@ -57,6 +58,13 @@ class SettingsIteractor: SettingsIteractorProtocol {
         recomendations.toggle()
         presenter?.toggleButtonRecomendation(value: recomendations)
         UserDefaults.standard.set(recomendations, forKey: "recomendations")
+    }
+    
+    func changeDefaultActivities() {
+        var defaultActivities = UserDefaults.standard.bool(forKey: "defaultActivities")
+        defaultActivities.toggle()
+        presenter?.toggleButtonDefaultActivities(value: defaultActivities)
+        UserDefaults.standard.set(defaultActivities, forKey: "defaultActivities")
     }
     
     func fetchActivities(isCSV: Bool) {
