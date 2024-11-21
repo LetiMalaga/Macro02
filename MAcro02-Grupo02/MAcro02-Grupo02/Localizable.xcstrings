@@ -73,8 +73,16 @@
         }
       }
     },
-    "Atividades Default" : {
-      "comment" : "Settings"
+    "Atividades Padrão" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default Activities"
+          }
+        }
+      }
     },
     "Atividades Personalizadas" : {
       "comment" : "Settings",

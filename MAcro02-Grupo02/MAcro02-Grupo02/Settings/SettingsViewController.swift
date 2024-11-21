@@ -184,7 +184,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 recommendationSwitch.addTarget(self, action: #selector(recommendationSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = recommendationSwitch
             } else if indexPath.row == 2 {
-                cell.textLabel?.text = NSLocalizedString("Atividades Default", comment: "Settings")
+                cell.textLabel?.text = NSLocalizedString("Atividades Padrão", comment: "Settings")
                 defaultActivitiesSwitch.isOn = defaultActivitiesButton
                 defaultActivitiesSwitch.addTarget(self, action: #selector(defaultActivitiesSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = defaultActivitiesSwitch
