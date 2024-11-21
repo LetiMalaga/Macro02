@@ -36,7 +36,7 @@ class ActivityDetailViewController: UIViewController{
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = UIColor.customText
-        label.backgroundColor = .systemGray
+        label.backgroundColor = .customBGColor
         label.clipsToBounds = true
         label.layer.cornerRadius = 10
         label.layer.borderWidth = 1
@@ -84,8 +84,7 @@ class ActivityDetailViewController: UIViewController{
         let button = UIButton(type: .system)
         button.setTitle(NSLocalizedString("Editar", comment: "NewActivityViewController"), for: .normal)
         button.addTarget(self, action: #selector(saveEditButtonTapped), for: .touchUpInside)
-        button.backgroundColor = .customAccentColor
-        button.setTitleColor(.customTextOpposite, for: .normal)
+        button.setTitleColor(.customAccentColor, for: .normal)
         return button
     }()
     
