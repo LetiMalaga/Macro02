@@ -136,7 +136,7 @@ class ActivityDetailViewController: UIViewController{
         tagsCollectionView.dataSource = self
         tagsCollectionView.delegate = self
         descriptionTextField.delegate = self
-    }
+    } 
     
     // MARK: - UI Setup
     private func setupUISave() {

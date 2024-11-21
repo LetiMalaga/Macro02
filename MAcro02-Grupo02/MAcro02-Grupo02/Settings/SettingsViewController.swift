@@ -436,7 +436,8 @@ class CustomTableViewCell: UITableViewCell {
             NSLayoutConstraint.activate([
                 mainLabel.leadingAnchor.constraint(equalTo: tagLabel.trailingAnchor, constant: 10),
                 mainLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-                mainLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+                mainLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+                mainLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             ])
 
             // Constraints para o tagLabel
