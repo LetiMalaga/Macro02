@@ -309,7 +309,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     
     func fetchActivities(_ breakType:ActivitiesType,_ tag:String, completion: @escaping (ActivitiesModel) -> Void){
         
-        let activity = dataManager.fetchActivities(breakType, tag: tag)
+        let activity = dataManager.fetchActivities(breakType, tag: tag, includeDefaultActivities: UserDefaults.standard.bool(forKey: "defaultActivities"))
 
         guard let activity else { return }
         completion(ActivitiesModel(id: activity.id,
