@@ -80,11 +80,21 @@
 			);
 			target = 707B8AFA2C9A0EE000503819 /* MAcro02-Grupo02 */;
 		};
+		70FBE65D2CEFD37400BD6F5C /* Exceptions for "Pomdera Watch App" folder in "Pomdera Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Pomdera-Watch-App-Info.plist",
+			);
+			target = 0AFE03962CEFA24200B2E495 /* Pomdera Watch App */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0AFE03982CEFA24200B2E495 /* Pomdera Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				70FBE65D2CEFD37400BD6F5C /* Exceptions for "Pomdera Watch App" folder in "Pomdera Watch App" target */,
+			);
 			path = "Pomdera Watch App";
 			sourceTree = "<group>";
 		};
@@ -529,9 +539,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pomdera Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CU2V2363W7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Pomdera-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Pomdera;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "uikittestes.Macro02-Grupo02.leticiamalagutti";
@@ -559,9 +570,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pomdera Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CU2V2363W7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Pomdera-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Pomdera;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "uikittestes.Macro02-Grupo02.leticiamalagutti";
