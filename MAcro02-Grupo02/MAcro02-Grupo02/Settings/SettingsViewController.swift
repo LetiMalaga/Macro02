@@ -162,14 +162,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
             return cell
             
+
         case 1:
             let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
             cell.textLabel?.text = tableView.isEditing ? NSLocalizedString("Concluir", comment: "Settings") : NSLocalizedString("Editar", comment: "Settings")
             cell.textLabel?.textColor = .customAccentColor
             cell.textLabel?.textAlignment = .right
             return cell
-            
-            
             
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath)
@@ -253,19 +252,39 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 2:
             titleLabel.text = NSLocalizedString("Sugestões", comment: "Settings")
             titleLabel.textColor = .gray
+            let descriptionLabel = UILabel()
+            descriptionLabel.font = .preferredFont(forTextStyle: .caption1)
+            descriptionLabel.textColor = .gray
+            descriptionLabel.numberOfLines = 0
+            descriptionLabel.text = NSLocalizedString("Aqui você pode adicionar suas próprias atividades personalizadas e desativar nossas recomendações", comment: "Settings")
+            descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            headerView.addSubview(descriptionLabel)
+            
+            NSLayoutConstraint.activate([
+                
+                descriptionLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -50),
+                descriptionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+                descriptionLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+                
+            ])
+            
         case 3:
             titleLabel.text = NSLocalizedString("Intervalo Curto", comment: "Settings")
-            titleLabel.font = .preferredFont(forTextStyle: .headline)
+            titleLabel.textColor = .gray
             
             makeButton()
+            
         case 4:
             titleLabel.text = NSLocalizedString("Intervalo Longo", comment: "Settings")
-            titleLabel.font = .preferredFont(forTextStyle: .headline)
+            titleLabel.textColor = .gray
             
             makeButton()
+            
         default:
             titleLabel.text = ""
         }
+        
         func font(_ title:String) -> UITableViewHeaderFooterView?{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomHeader")
             header?.textLabel?.textColor = .customText
@@ -297,9 +316,11 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         
         NSLayoutConstraint.activate([
             // Constraints para o título
-            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: section == 0 || section == 2 ? 20 : 16),
             titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 30)
+            
+            
+            headerView.heightAnchor.constraint(equalToConstant: section == 2 ? 60 : 40)
         ])
         
         return headerView
@@ -348,7 +369,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         detailVC.onSave = { [weak self] updatedActivity in
             self?.updateActivity(updatedActivity)
         }
-        navigationController?.pushViewController(detailVC, animated: true)
+        detailVC.modalPresentationStyle = .fullScreen
+        present(detailVC, animated: true, completion: nil)
+
     }
     
     func presentNewActivity(type: ActivitiesType) {
@@ -362,9 +385,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     private func updateActivity(_ updatedActivity: ActivitiesModel) {
-        if let index = activities.firstIndex(where: { $0.id == updatedActivity.id }) {
             interactor?.updateActivity(updatedActivity)
-        }
+        
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -408,6 +430,9 @@ class CustomTableViewCell: UITableViewCell {
         label.backgroundColor = .customBGColor
         label.layer.cornerRadius = 5
         label.clipsToBounds = true
+        label.layer.cornerRadius = 10
+        label.layer.borderWidth = 1
+        label.layer.borderColor = CGColor(red: 1, green: 0, blue: 0, alpha: 0.5)
         label.textAlignment = .center
         label.padding = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
         return label
@@ -432,15 +457,15 @@ class CustomTableViewCell: UITableViewCell {
 
             // Constraints para o mainLabel
             NSLayoutConstraint.activate([
-                mainLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                mainLabel.leadingAnchor.constraint(equalTo: tagLabel.trailingAnchor, constant: 10),
                 mainLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-                mainLabel.trailingAnchor.constraint(lessThanOrEqualTo: tagLabel.leadingAnchor, constant: -8),
-                mainLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+                mainLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+                mainLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             ])
 
             // Constraints para o tagLabel
             NSLayoutConstraint.activate([
-                tagLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+                tagLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
                 tagLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
                 tagLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 50), // largura mínima
                 tagLabel.heightAnchor.constraint(equalToConstant: 24)
@@ -449,7 +474,13 @@ class CustomTableViewCell: UITableViewCell {
     
     func configure(withText text: String, tagText: String) {
         mainLabel.text = text
+        mainLabel.numberOfLines = 1 // Limita a uma linha
+        mainLabel.lineBreakMode = .byTruncatingTail // Adiciona "..." no final quando o texto é cortado
+        mainLabel.adjustsFontSizeToFitWidth = false // Não ajusta o tamanho da fonte
         tagLabel.text = tagText
+        tagLabel.numberOfLines = 1 // Limita a uma linha
+        tagLabel.lineBreakMode = .byTruncatingTail // Adiciona "..." no final quando o texto é cortado
+        tagLabel.adjustsFontSizeToFitWidth = false // Não ajusta o tamanho da fonte
     }
 }
 

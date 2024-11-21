@@ -282,6 +282,9 @@ class TagCollectionViewCell: UICollectionViewCell {
     func configure(with tag: String) {
         tagLabel.text = tag
     }
+    func setSelectedTagColor(){
+        contentView.backgroundColor = .systemBlue
+    }
 }
 #Preview {
     NewActivityViewController()
