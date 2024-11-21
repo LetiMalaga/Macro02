@@ -51,6 +51,9 @@
         }
       }
     },
+    "Aparência" : {
+      "comment" : "Settings"
+    },
     "Aperte para começar" : {
       "comment" : "Tela de respiração",
       "localizations" : {
@@ -179,6 +182,9 @@
         }
       }
     },
+    "Cor" : {
+      "comment" : "Settings"
+    },
     "Defina quantos ciclos de foco e intervalos você deseja realizar. O app automatiza essas sessões, permitindo que você se concentre sem precisar se preocupar com os tempos." : {
       "comment" : "TimeSelectorViewController",
       "localizations" : {
@@ -305,6 +311,9 @@
           }
         }
       }
+    },
+    "Ícone" : {
+      "comment" : "Settings"
     },
     "Iniciar" : {
       "comment" : "Botão de iniciar pomodoro",
