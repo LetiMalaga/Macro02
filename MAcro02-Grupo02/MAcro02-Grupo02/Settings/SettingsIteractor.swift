@@ -143,7 +143,7 @@ class SettingsIteractor: SettingsIteractorProtocol {
     func validateActivityName(_ activity: ActivitiesModel, _ action: ActionForActivity) -> Bool {
         switch action {
         case .adding:
-            if (!activity.description.isEmpty && !activities.contains(where: { $0.description == activity.description })){
+            if (!activity.description.isEmpty && !activities.contains(where: { $0.description == activity.description && $0.type == activity.type })){
                 return true
             }else{
                 return false

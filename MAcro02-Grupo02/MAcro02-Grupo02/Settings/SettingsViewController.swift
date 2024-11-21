@@ -89,6 +89,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SwitchCell")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ActivityCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ColorIconCell")
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "CustomHeader")
     }
     
@@ -123,7 +124,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 5 // APP, Sugestões, Atividades Personalizadas, Intervalo Curto, Intervalo Longo
+        return 6 // APP, Sugestões, Atividades Personalizadas, Intervalo Curto, Intervalo Longo, Aparência
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -131,13 +132,15 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 2 // Sons e Vibrações
         case 1:
-            return 0 // Botão "Editar" 
+            return 0 // Botão "Editar"
         case 2:
             return 3 // Respiração ao iniciar, Recomendação de atividades, Atividades Padrão
         case 3:
             return shortBreakActivities.count + 1 // Atividades de intervalo curto + opção para adicionar
         case 4:
             return longBreakActivities.count + 1 // Atividades de intervalo longo + opção para adicionar
+        case 5:
+            return 2
         default:
             return 0
         }
@@ -164,7 +167,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
             return cell
             
-
+            
         case 1:
             let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
             cell.textLabel?.text = tableView.isEditing ? NSLocalizedString("Concluir", comment: "Settings") : NSLocalizedString("Editar", comment: "Settings")
@@ -204,7 +207,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 3:
             
             if indexPath.row == shortBreakActivities.count {
-
+                
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso curto", comment: "Settings")
                 cell.textLabel?.textColor = .customAccentColor
@@ -230,6 +233,52 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.textLabel?.textColor = .customAccentColor
                 return cell
             }
+        case 5:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ColorIconCell", for: indexPath)
+            cell.selectionStyle = .gray
+            if indexPath.row == 0 {
+                cell.textLabel?.text = NSLocalizedString("Cor", comment: "Settings")
+                let circleView = UIView()
+                circleView.translatesAutoresizingMaskIntoConstraints = false
+                circleView.backgroundColor = .blue // Cor do círculo
+                circleView.layer.cornerRadius = 15 // Define o raio (para um círculo de 20x20)
+                circleView.layer.masksToBounds = true
+                let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+                chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+                chevronImageView.tintColor = .systemGray
+                
+                // Adiciona o círculo à célula
+                cell.contentView.addSubview(circleView)
+                cell.contentView.addSubview(chevronImageView)
+                
+                // Configura constraints para posicionar o círculo
+                NSLayoutConstraint.activate([
+                    circleView.widthAnchor.constraint(equalToConstant: 30),
+                    circleView.heightAnchor.constraint(equalToConstant: 30),
+                    circleView.centerYAnchor.constraint(equalTo: cell.textLabel!.centerYAnchor),
+                    circleView.leadingAnchor.constraint(equalTo: cell.textLabel!.trailingAnchor, constant: -35),
+                    
+                    chevronImageView.centerYAnchor.constraint(equalTo: cell.textLabel!.centerYAnchor),
+                    chevronImageView.leadingAnchor.constraint(equalTo: cell.textLabel!.trailingAnchor),
+                    
+                ])
+            } else {
+                cell.textLabel?.text = NSLocalizedString("Ícone", comment: "Settings")
+                let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+                chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+                chevronImageView.tintColor = .systemGray
+                
+                // Adiciona o círculo à célula
+                cell.contentView.addSubview(chevronImageView)
+                
+                // Configura constraints para posicionar o círculo
+                NSLayoutConstraint.activate([
+                    chevronImageView.centerYAnchor.constraint(equalTo: cell.textLabel!.centerYAnchor),
+                    chevronImageView.leadingAnchor.constraint(equalTo: cell.textLabel!.trailingAnchor),
+                    
+                ])
+            }
+            return cell
             
             
         default:
@@ -285,6 +334,10 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             titleLabel.textColor = .gray
             
             makeButton()
+        case 5:
+            titleLabel.text = NSLocalizedString("Aparência", comment: "Settings")
+            titleLabel.textColor = .gray
+            
             
         default:
             titleLabel.text = ""
@@ -361,6 +414,10 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         } else if indexPath.section == 4 {
             let selectedActivity = longBreakActivities[indexPath.row]
             presentActivityDetail(for: selectedActivity)
+        }else if indexPath.section == 5 && indexPath.row == 0{
+            presentColor()
+        }else if indexPath.section == 5 && indexPath.row == 1{
+            //MARK: icon
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -376,7 +433,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         detailVC.modalPresentationStyle = .fullScreen
         present(detailVC, animated: true, completion: nil)
-
+        
     }
     
     func presentNewActivity(type: ActivitiesType) {
@@ -389,10 +446,18 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         present(newActivityVC, animated: true, completion: nil)
     }
     
+    private func presentColor(){
+        let selectorColorVC = SelectorColorBaseViewController()
+        
+        selectorColorVC.modalPresentationStyle = .fullScreen
+        present(selectorColorVC, animated: true, completion: nil)
+    }
+    
     private func updateActivity(_ updatedActivity: ActivitiesModel) {
-            interactor?.updateActivity(updatedActivity)
+        interactor?.updateActivity(updatedActivity)
         
     }
+    
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if editableSections.contains(indexPath.section) {
@@ -453,29 +518,29 @@ class CustomTableViewCell: UITableViewCell {
     }
     
     private func setupCell() {
-            contentView.addSubview(mainLabel)
-            contentView.addSubview(tagLabel)
-
-            // Definindo prioridades de hugging e resistência à compressão para manter o tamanho de tagLabel
-            tagLabel.setContentHuggingPriority(.required, for: .horizontal)
-            tagLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-
-            // Constraints para o mainLabel
-            NSLayoutConstraint.activate([
-                mainLabel.leadingAnchor.constraint(equalTo: tagLabel.trailingAnchor, constant: 10),
-                mainLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-                mainLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-                mainLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            ])
-
-            // Constraints para o tagLabel
-            NSLayoutConstraint.activate([
-                tagLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-                tagLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-                tagLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 50), // largura mínima
-                tagLabel.heightAnchor.constraint(equalToConstant: 24)
-            ])
-        }
+        contentView.addSubview(mainLabel)
+        contentView.addSubview(tagLabel)
+        
+        // Definindo prioridades de hugging e resistência à compressão para manter o tamanho de tagLabel
+        tagLabel.setContentHuggingPriority(.required, for: .horizontal)
+        tagLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        // Constraints para o mainLabel
+        NSLayoutConstraint.activate([
+            mainLabel.leadingAnchor.constraint(equalTo: tagLabel.trailingAnchor, constant: 10),
+            mainLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            mainLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            mainLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+        ])
+        
+        // Constraints para o tagLabel
+        NSLayoutConstraint.activate([
+            tagLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            tagLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            tagLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 50), // largura mínima
+            tagLabel.heightAnchor.constraint(equalToConstant: 24)
+        ])
+    }
     
     func configure(withText text: String, tagText: String) {
         mainLabel.text = text
@@ -491,12 +556,12 @@ class CustomTableViewCell: UITableViewCell {
 
 class PaddedLabel: UILabel {
     var padding = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
-
+    
     override func drawText(in rect: CGRect) {
         let insetRect = rect.inset(by: padding)
         super.drawText(in: insetRect)
     }
-
+    
     override var intrinsicContentSize: CGSize {
         let size = super.intrinsicContentSize
         return CGSize(width: size.width + padding.left + padding.right,
