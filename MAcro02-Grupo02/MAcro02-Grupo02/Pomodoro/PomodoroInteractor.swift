@@ -321,11 +321,13 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     }
     
     func fetchAndPresentRandomActivity(tag: String, breakType: ActivitiesType) {
-        print("Fetching activity with tag: \(tag) and break type: \(breakType)")
-        fetchActivities(breakType, tag) { [weak self] activity in
-            guard let self = self else { return }
-            print("Fetched activity: \(activity.description)")
-            self.presenter?.presentActivity(activity)  // Pass activity to presenter
+        if UserDefaults.standard.bool(forKey: "recomendations") {
+            print("Fetching activity with tag: \(tag) and break type: \(breakType)")
+            fetchActivities(breakType, tag) { [weak self] activity in
+                guard let self = self else { return }
+                print("Fetched activity: \(activity.description)")
+                self.presenter?.presentActivity(activity)  // Pass activity to presenter
+            }
         }
     }
     
