@@ -74,7 +74,15 @@
       }
     },
     "Aqui você pode adicionar suas próprias atividades personalizadas e desativar nossas recomendações" : {
-      "comment" : "Settings"
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Here you can add your own personalized activities and turn off our recommendations"
+          }
+        }
+      }
     },
     "Atividades Padrão" : {
       "comment" : "Settings",
