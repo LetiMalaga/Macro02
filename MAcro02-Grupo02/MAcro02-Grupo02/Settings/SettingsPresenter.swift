@@ -17,6 +17,7 @@ protocol SettingsPresenterProtocol: AnyObject {
     func toggleButtonVibration(value: Bool)
     func toggleButtonBreathing(value: Bool)
     func toggleButtonRecomendation(value: Bool)
+    func toggleButtonDefaultActivities(value: Bool)
 }
 
 class SettingsPresenter: SettingsPresenterProtocol {
@@ -63,6 +64,10 @@ class SettingsPresenter: SettingsPresenterProtocol {
         view?.recommendationButton = value
     }
     
+    func toggleButtonDefaultActivities(value: Bool) {
+        view?.defaultActivitiesButton = value
+    }
+    
 }
 
 protocol SettingsViewProtocol: AnyObject {
@@ -70,6 +75,7 @@ protocol SettingsViewProtocol: AnyObject {
     var vibrationButton: Bool { get set }
     var breathingButton: Bool { get set }
     var recommendationButton: Bool { get set }
+    var defaultActivitiesButton: Bool { get set }
     var activities: [ActivitiesModel] { get set }
     var tags:[String] { get set }
     

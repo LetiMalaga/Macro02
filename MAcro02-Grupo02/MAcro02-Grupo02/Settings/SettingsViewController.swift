@@ -25,11 +25,15 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         didSet { recommendationSwitch.isOn = recommendationButton }
     }
     
+    var defaultActivitiesButton: Bool = UserDefaults.standard.bool(forKey: "defaultActivities") {
+        didSet { defaultActivitiesSwitch.isOn = defaultActivitiesButton }
+    }
+    
     var shortBreakActivities: [ActivitiesModel] = []
     
     var longBreakActivities: [ActivitiesModel] = []
     
-    var activities: [ActivitiesModel] = [ActivitiesModel(id: UUID(), type: .short, description: "teste", tag: "teste")] {
+    var activities: [ActivitiesModel] = [] {
         didSet { reloadData()}
     }
     
@@ -38,6 +42,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     private let vibrationSwitch = UISwitch()
     private let breathingSwitch = UISwitch()
     private let recommendationSwitch = UISwitch()
+    private let defaultActivitiesSwitch = UISwitch()
     var tags:[String] = []
     var editableSections: Set<Int> = []
     
@@ -48,9 +53,9 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         super.viewDidLoad()
         
         title = NSLocalizedString("Ajustes", comment: "Settings")
-        view.backgroundColor = AppColors.backgroundPrimary
+        view.backgroundColor = .customBGColor
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomTableViewCell")
-        interactor?.fetchActivities()
+        interactor?.fetchActivities(isCSV: false)
         interactor?.fetchTags()
         
         setupTableView()
@@ -108,6 +113,10 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     @objc func recommendationSwitchChanged(_ sender: UISwitch) {
         interactor?.changeRecomendations()
     }
+    
+    @objc func defaultActivitiesSwitchChanged(_ sender: UISwitch) {
+        interactor?.changeDefaultActivities()
+    }
 }
 
 
@@ -122,9 +131,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 2 // Sons e Vibrações
         case 1:
-            return 0 // Respiração ao iniciar e Recomendação de atividades
+            return 0 // Botão "Editar" 
         case 2:
-            return 2 // Botão "Editar"
+            return 3 // Respiração ao iniciar, Recomendação de atividades, Atividades Padrão
         case 3:
             return shortBreakActivities.count + 1 // Atividades de intervalo curto + opção para adicionar
         case 4:
@@ -153,6 +162,14 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
             return cell
             
+
+        case 1:
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
+            cell.textLabel?.text = tableView.isEditing ? NSLocalizedString("Concluir", comment: "Settings") : NSLocalizedString("Editar", comment: "Settings")
+            cell.textLabel?.textColor = .customAccentColor
+            cell.textLabel?.textAlignment = .right
+            return cell
+            
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath)
             if indexPath.row == 0 {
@@ -160,11 +177,16 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 breathingSwitch.isOn = breathingButton
                 breathingSwitch.addTarget(self, action: #selector(breathingSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = breathingSwitch
-            } else {
+            } else if indexPath.row == 1 {
                 cell.textLabel?.text = NSLocalizedString("Recomendação de Atividades", comment: "Settings")
                 recommendationSwitch.isOn = recommendationButton
                 recommendationSwitch.addTarget(self, action: #selector(recommendationSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = recommendationSwitch
+            } else if indexPath.row == 2 {
+                cell.textLabel?.text = NSLocalizedString("Atividades Padrão", comment: "Settings")
+                defaultActivitiesSwitch.isOn = defaultActivitiesButton
+                defaultActivitiesSwitch.addTarget(self, action: #selector(defaultActivitiesSwitchChanged(_:)), for: .valueChanged)
+                cell.accessoryView = defaultActivitiesSwitch
             }
             return cell
             
@@ -180,7 +202,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso curto", comment: "Settings")
-                cell.textLabel?.textColor = .systemBlue
+                cell.textLabel?.textColor = .customAccentColor
                 return cell
             } else {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as? CustomTableViewCell else {
@@ -200,7 +222,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso longo", comment: "Settings")
-                cell.textLabel?.textColor = .systemBlue
+                cell.textLabel?.textColor = .customAccentColor
                 return cell
             }
             
@@ -265,7 +287,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         
         func font(_ title:String) -> UITableViewHeaderFooterView?{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomHeader")
-            header?.textLabel?.textColor = .black
+            header?.textLabel?.textColor = .customText
             header?.textLabel?.text = title
             header?.textLabel?.font = .preferredFont(forTextStyle: .title3)
             
@@ -395,7 +417,7 @@ class CustomTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         label.numberOfLines = 0
         return label
     }()
@@ -404,8 +426,9 @@ class CustomTableViewCell: UITableViewCell {
         let label = PaddedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = AppColors.progressPrimary
-        label.backgroundColor = .systemGray
+        label.textColor = UIColor.customText
+        label.backgroundColor = .customBGColor
+        label.layer.cornerRadius = 5
         label.clipsToBounds = true
         label.layer.cornerRadius = 10
         label.layer.borderWidth = 1

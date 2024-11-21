@@ -92,8 +92,7 @@ class NewActivityViewController: UIViewController {
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AppColors.backgroundPrimary
-
+        view.backgroundColor = .customBGColor
         setupUI()
         configureTitle()
         interactor?.fetchTags()
@@ -180,7 +179,7 @@ class NewActivityViewController: UIViewController {
         let activityDescription = descriptionTextField.text
         guard let activityType,
               let activityDescription else { return }
-        let activity = ActivitiesModel(id: UUID(), type: activityType, description: activityDescription, tag: selectedTag ?? tags.first!)
+        let activity = ActivitiesModel(id: UUID(), type: activityType, description: activityDescription, tag: selectedTag ?? tags.first!, isCSV: false)
         if !interactor!.validateActivityName(activity, .adding) {
             showAlert(with: "Error", message: "Activity description already exists or is empty")
         } else {

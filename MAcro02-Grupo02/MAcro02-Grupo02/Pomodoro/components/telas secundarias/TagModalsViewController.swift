@@ -12,7 +12,7 @@ class TagModalsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .customBGColor
         view.layer.cornerRadius = 35
         
         setupSubviews()

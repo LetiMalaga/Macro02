@@ -30,7 +30,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewWillAppear(_ animated: Bool) {
         // Definindo cor de fundo da view principal
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .customBGColor
         
         print(pomoDefaults.workDuration)
         print(pomoDefaults.breakDuration)
@@ -93,7 +93,7 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .systemBackground // Definindo a cor de fundo para a UICollectionView
+        collectionView.backgroundColor = .customBGColor // Definindo a cor de fundo para a UICollectionView
         collectionView.register(ConfigCell.self, forCellWithReuseIdentifier: "ConfigCell")
     }
     
@@ -173,10 +173,10 @@ class ConfigCell: UICollectionViewCell {
         titleLabel.text = title
         pomoTime.NumText = String(format: type == .ciclosPomodoro ? "%02d" : "%02d:00", seconds) // Converte segundos em minuto
         
-        titleLabel.textColor = AppColors.textPrimary
+        titleLabel.textColor = .customText
         titleLabel.font = AppFonts.title2.bold()
         
-        descriptionLabel.textColor = AppColors.textPrimary
+        descriptionLabel.textColor = .customText
         descriptionLabel.font = AppFonts.regular
         
         switch type {

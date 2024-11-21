@@ -15,7 +15,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
         let iv = UIButton(type: .system)
         iv.setTitle("My Title", for: .normal)
         iv.contentMode = .scaleAspectFill
-        iv.tintColor = AppColors.backgroundPrimary
+        iv.tintColor = .customBGColor
         iv.clipsToBounds = true
         iv.addTarget(CustomCollectionViewCell.self, action: #selector(didTapButtonCV), for: .touchUpInside)
         return iv
@@ -40,8 +40,8 @@ class CustomCollectionViewCell: UICollectionViewCell {
     private func setupUI() {
         myTagsView.center = self.center
         myTagsView.layer.borderWidth = 3
-        myTagsView.layer.borderColor = UIColor.black.cgColor
-        myTagsView.setTitleColor(.black, for: .normal)
+        myTagsView.layer.borderColor = UIColor.customAccentColor.cgColor
+        myTagsView.setTitleColor(.customTextOpposite, for: .normal)
         myTagsView.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         myTagsView.layer.cornerRadius = .tagCornerRadius
         myTagsView.layer.maskedCorners = [
@@ -50,9 +50,8 @@ class CustomCollectionViewCell: UICollectionViewCell {
             .layerMaxXMaxYCorner
         ]
         
-        
-        myTagsView.backgroundColor = .systemBlue
-        self.backgroundColor = AppColors.backgroundPrimary
+        myTagsView.backgroundColor = .customBGColor
+        self.backgroundColor = .customBGColor
         
         // Adjusting title label size to fit button width with padding
         myTagsView.titleLabel?.adjustsFontSizeToFitWidth = true

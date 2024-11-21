@@ -33,13 +33,13 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let activityLabel: PaddingLabel = {
         let label = PaddingLabel()
         label.font = UIFont.systemFont(ofSize: 22)
-        label.textColor = .label
+        label.textColor = .customText
         label.textAlignment = .center
         label.numberOfLines = 0
         label.isHidden = true // Initially hidden until we load an activity
         label.layer.cornerRadius = 10
         label.layer.borderWidth = 2
-        label.layer.borderColor = UIColor.label.cgColor // Add border color for visibility
+        label.layer.borderColor = UIColor.customText.cgColor // Add border color for visibility
         label.textInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) // Customize padding as needed
         return label
     }()
@@ -63,7 +63,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         label.textAlignment = .center
         label.isUserInteractionEnabled = true
         
@@ -74,7 +74,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 22)
         label.layer.opacity = 0.3
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         
         return label
     }()
@@ -83,6 +83,8 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     private let playButton: PomoButton = {
         let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Iniciar", comment: "Botão de iniciar pomodoro"))
+        pomo.backgroundColor = .customAccentColor
+        pomo.setTitleColor(.customTextOpposite, for: .normal)
         pomo.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
         return pomo
     }()
@@ -90,6 +92,8 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     // Novo botão para retomar o Pomodoro
     private let resumeButton: PomoButton = {
         let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Continuar", comment: "Botão de continuar pomodoro"))
+        pomo.backgroundColor = .customAccentColor
+        pomo.setTitleColor(.customTextOpposite, for: .normal)
         pomo.addTarget(self, action: #selector(resume), for: .touchUpInside)
         pomo.isHidden = true // Inicialmente oculto
         return pomo
@@ -108,7 +112,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         // Create the image with the configuration and set it to the button
         if let image = UIImage(systemName: "arrow.triangle.2.circlepath.circle.fill")?.applyingSymbolConfiguration(symbolConfiguration) {
             button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
-            button.tintColor = .label
+            button.tintColor = .customText
         }
         button.addTarget(self, action: #selector(showActivity), for: .touchUpInside)
         button.isHidden = true
@@ -120,19 +124,17 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     // Novo botão para resetar o Pomodoro
     private let resetButton: PomoButton = {
         let pomo = PomoButton(frame: CGRect(x: 0, y: 0, width: 157, height: 60), titulo: NSLocalizedString("Resetar", comment: "Botão de resetar pomodoro"))
+        pomo.setTitleColor(.customText, for: .normal)
         
         pomo.layer.borderWidth = 2
-        pomo.layer.borderColor = AppColors.textPrimary.cgColor
-        pomo.backgroundColor = .clear
+        pomo.layer.borderColor = UIColor.customText.cgColor
+        pomo.backgroundColor = .customBGColor
         
         pomo.addTarget(self, action: #selector(reset), for: .touchUpInside)
         
-        pomo.setTitleColor(AppColors.textPrimary, for: .normal)
+        pomo.setTitleColor(.customText, for: .normal)
         
         pomo.isHidden = true // Inicialmente oculto
-        
-        pomo.setTitleColor(AppColors.textPrimary, for: .normal)
-        pomo.layer.borderColor = AppColors.textPrimary.cgColor
         
         return pomo
     }()
@@ -176,7 +178,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.clipsToBounds = false
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .customBGColor
         
         view.bringSubviewToFront(refreshActivityButton)
         
@@ -204,6 +206,12 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     // MARK: - Layout
     
     private func setupLayout() {
+        
+//        // Adjusting title label size to fit button width with padding
+//        activityLabel.titleLabel?.adjustsFontSizeToFitWidth = true
+//        activityLabel.titleLabel?.minimumScaleFactor = 0.3
+//        activityLabel.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        
         // Add subviews
         view.addSubview(progressView)
         view.addSubview(timeLabel)
@@ -267,6 +275,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             
             refreshActivityButton.centerXAnchor.constraint(equalTo: activityLabel.centerXAnchor),
             refreshActivityButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30), // Spacing above the label
+            
         ])
     }
     
@@ -396,20 +405,22 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     @objc func showActivity() {
-        if interactor?.returnCurrentState() == "long pause" {
-//            print(tagframe.tagline.text ?? "0")
-            activityLabel.isHidden = false
-            refreshActivityButton.isHidden = false
-            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
-        } else if interactor?.returnCurrentState() == "pause" {
-//            print(tagframe.tagline.text ?? "0")
-            activityLabel.isHidden = false
-            refreshActivityButton.isHidden = false
-            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .short)
-        } else {
-            print("aiaiaiai")
-            activityLabel.isHidden = true
-            refreshActivityButton.isHidden = true
+        if UserDefaults.standard.bool(forKey: "recomendations") {
+            if interactor?.returnCurrentState() == "long pause" {
+                //            print(tagframe.tagline.text ?? "0")
+                activityLabel.isHidden = false
+                refreshActivityButton.isHidden = false
+                interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
+            } else if interactor?.returnCurrentState() == "pause" {
+                //            print(tagframe.tagline.text ?? "0")
+                activityLabel.isHidden = false
+                refreshActivityButton.isHidden = false
+                interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .short)
+            } else {
+                print("aiaiaiai")
+                activityLabel.isHidden = true
+                refreshActivityButton.isHidden = true
+            }
         }
     }
     
@@ -420,6 +431,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
 }
+
+//#Preview {
+//    PomodoroViewController()
+//}
 
 extension PomodoroViewController: UIViewControllerTransitioningDelegate, PassingTag {
     func passing(_ tag: String) {

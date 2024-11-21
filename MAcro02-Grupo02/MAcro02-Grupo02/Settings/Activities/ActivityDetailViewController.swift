@@ -35,7 +35,7 @@ class ActivityDetailViewController: UIViewController{
         let label = PaddedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = AppColors.progressPrimary
+        label.textColor = UIColor.customText
         label.backgroundColor = .systemGray
         label.clipsToBounds = true
         label.layer.cornerRadius = 10
@@ -84,6 +84,8 @@ class ActivityDetailViewController: UIViewController{
         let button = UIButton(type: .system)
         button.setTitle(NSLocalizedString("Editar", comment: "NewActivityViewController"), for: .normal)
         button.addTarget(self, action: #selector(saveEditButtonTapped), for: .touchUpInside)
+        button.backgroundColor = .customAccentColor
+        button.setTitleColor(.customTextOpposite, for: .normal)
         return button
     }()
     
@@ -128,7 +130,7 @@ class ActivityDetailViewController: UIViewController{
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AppColors.backgroundPrimary
+        view.backgroundColor = UIColor.customBGColor
         title = "Detalhes da Atividade"
         
         setupUIEditing()

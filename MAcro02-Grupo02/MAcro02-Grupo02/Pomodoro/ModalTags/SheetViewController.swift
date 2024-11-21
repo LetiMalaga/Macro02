@@ -34,7 +34,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     var delegate: PassingTag?
     private var selectedIndex: Int?
 
-    public var interactor:ModalTagsInteractorProtocol?
+    public var interactor: ModalTagsInteractorProtocol?
 //    var tags: [String] = []
     var arraybuttons: [UIButton] = []
 
@@ -44,8 +44,8 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         let textField = UITextField()
         textField.placeholder = "Adicionar Tag"
         textField.borderStyle = .roundedRect
-        textField.backgroundColor = .secondarySystemBackground
-        textField.textColor = .label
+        textField.backgroundColor = .customBGColor
+        textField.textColor = .customText
         textField.font = .preferredFont(forTextStyle: .caption1)
 
         return textField
@@ -58,6 +58,8 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
 
+        collectionView.backgroundColor = .customBGColor
+        
         return collectionView
     }()
 
@@ -68,7 +70,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         setupView()
         interactor?.fetchTags()
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: isEditingMode ? "ellipsis.circle.fill" : "ellipsis.circle"), style: .plain, target: self, action: #selector(toggleState))
-        navigationItem.rightBarButtonItem?.tintColor = .label
+        navigationItem.rightBarButtonItem?.tintColor = .customText
 
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
@@ -77,7 +79,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         delegate?.passing(selectedTag ?? tags.first!)
     }
     private func setupView(){
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .customBGColor
         configureSheet()
         setupButtons()
         setupConstraints()
@@ -90,7 +92,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         modalIdentifierLine.layer.cornerRadius = .modalIdentifierLineCornerRadius
 
         // MARK: Label
-        modalTagLabel.textColor = .label
+        modalTagLabel.textColor = .customText
         modalTagLabel.text = NSLocalizedString("Escolha uma Etiqueta", comment: "Modal de Tags")
         modalTagLabel.font = .preferredFont(for: .title2, weight: .bold)
 
@@ -98,11 +100,16 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         // MARK: Button & TextField
         tagNewTagButton.center = view.center
         tagNewTagButton.layer.borderWidth = 3
-        tagNewTagButton.layer.borderColor = UIColor.label.cgColor
-        tagNewTagButton.setTitleColor(.label, for: .normal)
+        tagNewTagButton.layer.borderColor = UIColor.customText.cgColor
+        tagNewTagButton.setTitleColor(.customText, for: .normal)
         tagNewTagButton.setTitle(NSLocalizedString("Nova Etiqueta", comment: "Modal de Tags"), for: .normal)
         tagNewTagButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         tagNewTagButton.layer.cornerRadius = .tagCornerRadius
+        tagNewTagButton.layer.maskedCorners = [
+                .layerMinXMaxYCorner,
+                .layerMaxXMinYCorner,
+                .layerMaxXMaxYCorner
+        ]
 
         textFieldTag.center = view.center
         textFieldTag.isHidden = true
@@ -258,20 +265,32 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         let myTagsView = UIButton(type: .system)
         myTagsView.setTitle(tags[indexPath.item], for: .normal)
         myTagsView.layer.borderWidth = 3
-        myTagsView.layer.borderColor = UIColor.label.cgColor
+        myTagsView.layer.borderColor = UIColor.customText.cgColor
+        myTagsView.setTitleColor(UIColor.customText, for: .normal)
         myTagsView.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
         myTagsView.layer.cornerRadius = .tagCornerRadius
         myTagsView.translatesAutoresizingMaskIntoConstraints = false
         myTagsView.tag = indexPath.item
         myTagsView.addTarget(self, action: #selector(didTapButtonCV), for: .touchUpInside)
+        myTagsView.layer.maskedCorners = [
+            .layerMinXMaxYCorner,
+            .layerMaxXMinYCorner,
+            .layerMaxXMaxYCorner
+        ]
+        
+        
+        // Adjusting title label size to fit button width with padding
+        myTagsView.titleLabel?.adjustsFontSizeToFitWidth = true
+        myTagsView.titleLabel?.minimumScaleFactor = 0.3
+        myTagsView.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         
         // Verifique se o índice do botão é igual ao índice selecionado para alternar a cor
         if indexPath.item == selectedIndex {
-            myTagsView.backgroundColor = .systemGray
-            myTagsView.setTitleColor(AppColors.backgroundPrimary, for: .normal)
+            myTagsView.backgroundColor = .customTextGray
+            myTagsView.setTitleColor(.customText, for: .normal)
         } else {
-            myTagsView.backgroundColor = .clear
-            myTagsView.setTitleColor(.label, for: .normal)
+            myTagsView.backgroundColor = .customBGColor
+            myTagsView.setTitleColor(.customText, for: .normal)
         }
         
         cell.contentView.addSubview(myTagsView)
@@ -285,7 +304,7 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
 
         let removeButton = UIButton(type: .system)
         removeButton.setBackgroundImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
-        removeButton.tintColor = .systemGray
+        removeButton.tintColor = .customAccentColor
         removeButton.translatesAutoresizingMaskIntoConstraints = false
         removeButton.tag = indexPath.item
         removeButton.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
@@ -300,8 +319,8 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         NSLayoutConstraint.activate([
             removeButton.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
             removeButton.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
-            removeButton.widthAnchor.constraint(equalToConstant: 24),
-            removeButton.heightAnchor.constraint(equalToConstant: 24)
+            removeButton.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * .removeButtonWidthCtt),
+            removeButton.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * .removeButtonHeightCtt)
         ])
 
         return cell

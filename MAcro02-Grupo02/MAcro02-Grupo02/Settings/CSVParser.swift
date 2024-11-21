@@ -12,12 +12,29 @@ struct CSVParser {
     static func parseCSV(from fileName: String) -> [ActivitiesModel] {
         var activities: [ActivitiesModel] = []
         
-        guard let path = Bundle.main.path(forResource: fileName, ofType: "csv") else {
+        guard let path = Bundle.main.path(forResource: csvTranslation(csvName: fileName), ofType: "csv") else {
             print("❌ CSV file \(fileName) not found")
             return activities
         }
         
         print("✅ CSV file \(fileName) found at path: \(path)")
+        
+        // csvTranslation: Checks which language the App is in, returns specific CSV name accordingly
+        func csvTranslation(csvName: String) -> String {
+            var csvString: String = csvName
+            if let appLanguage = Bundle.main.preferredLocalizations.first {
+                if appLanguage.lowercased().contains("en") {
+                    if fileName.lowercased().contains("short") || fileName.lowercased().contains("curtas") {
+                        csvString = "Atividades_Curtas_Eng"
+                        
+                    } else if fileName.lowercased().contains("long") || fileName.lowercased().contains("longas") {
+                        csvString = "Atividades_Longas_Eng"
+                        
+                    }
+                }
+            }
+            return csvString
+        }
         
         do {
             let data = try String(contentsOfFile: path, encoding: .utf8)
@@ -34,30 +51,6 @@ struct CSVParser {
                     var tag = columns[1].trimmingCharacters(in: .whitespacesAndNewlines)
                     let type: ActivitiesType
                     
-    // tagTranslation: Function to translate incoming CSV tags into the language the app is in.
-                    
-                    func tagTranslation (translatedTag: String) {
-                        if let appLanguage = Bundle.main.preferredLocalizations.first {
-                            if appLanguage.lowercased().contains("en") {
-                                if translatedTag == "Trabalho" {
-                                    tag = "Work"
-                                } else if translatedTag == "Estudo" {
-                                    tag = "Study"
-                                }else if translatedTag == "Foco" {
-                                    tag = "Focus"
-                                } else if translatedTag == "Treino" {
-                                    tag = "Training"
-                                } else if translatedTag == "Meditação" {
-                                    tag = "Meditation"
-                                } else if translatedTag == "Sem Tag" {
-                                    tag = "No Tag"
-                                }
-                            }
-                            
-                        }
-                    }
-                    
-                    tagTranslation(translatedTag: tag)
 
                     if fileName.lowercased().contains("short") || fileName.lowercased().contains("curtas") {
                         type = .short
@@ -72,7 +65,8 @@ struct CSVParser {
                         id: UUID(),
                         type: type,
                         description: description,
-                        tag: tag
+                        tag: tag,
+                        isCSV: true
                     )
                     activities.append(activity)
                     

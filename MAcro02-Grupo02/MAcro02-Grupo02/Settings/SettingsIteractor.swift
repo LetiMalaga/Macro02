@@ -16,8 +16,9 @@ protocol SettingsIteractorProtocol: AnyObject {
     func changeVibration()
     func changeBreathing()
     func changeRecomendations()
+    func changeDefaultActivities()
     
-    func fetchActivities()
+    func fetchActivities(isCSV: Bool)
     func fetchTags()
     func addActivity(_ activity: ActivitiesModel)
     func deleteActivity(at activityID: UUID)
@@ -59,22 +60,29 @@ class SettingsIteractor: SettingsIteractorProtocol {
         UserDefaults.standard.set(recomendations, forKey: "recomendations")
     }
     
-    func fetchActivities(){
-        
-        let activities = dataModel?.fetchActivities()
-        
-        var activitiesModel: [ActivitiesModel] = []
-        
-        guard let activities else { return }
-        
-        for activity in activities {
-            activitiesModel.append(ActivitiesModel(id: activity.id,
-                                                   type: ActivitiesType(rawValue: activity.type) ?? .short,
-                                                   description: activity.descriptionText,
-                                                   tag: activity.tag))
+    func changeDefaultActivities() {
+        var defaultActivities = UserDefaults.standard.bool(forKey: "defaultActivities")
+        defaultActivities.toggle()
+        presenter?.toggleButtonDefaultActivities(value: defaultActivities)
+        UserDefaults.standard.set(defaultActivities, forKey: "defaultActivities")
+    }
+    
+    func fetchActivities(isCSV: Bool) {
+        let activities = dataModel?.fetchActivities() ?? []
+
+        let filteredActivities = activities.filter { !$0.isCSV } // Fetch only non-CSV activities
+
+        self.activities = filteredActivities.map {
+            ActivitiesModel(
+                id: $0.id,
+                type: ActivitiesType(rawValue: $0.type) ?? .short,
+                description: $0.descriptionText,
+                tag: $0.tag,
+                isCSV: $0.isCSV
+            )
         }
-        self.activities = activitiesModel
-        self.presenter?.uploadActivitys(activitiesModel)
+
+        self.presenter?.uploadActivitys(self.activities)
     }
     
     func fetchTags(){
