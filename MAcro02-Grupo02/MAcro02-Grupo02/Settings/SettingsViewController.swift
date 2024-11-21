@@ -144,11 +144,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.textLabel?.text = NSLocalizedString("Sons", comment: "Settings")
                 soundSwitch.isOn = soundButton
                 soundSwitch.addTarget(self, action: #selector(soundSwitchChanged(_:)), for: .valueChanged)
+                soundSwitch.onTintColor = .customAccentColor
                 cell.accessoryView = soundSwitch
             } else {
                 cell.textLabel?.text = NSLocalizedString("Vibrações", comment: "Settings")
                 vibrationSwitch.isOn = vibrationButton
                 vibrationSwitch.addTarget(self, action: #selector(vibrationSwitchChanged(_:)), for: .valueChanged)
+                vibrationSwitch.onTintColor = .customAccentColor
                 cell.accessoryView = vibrationSwitch
             }
             return cell
@@ -168,11 +170,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.textLabel?.text = NSLocalizedString("Respiração ao iniciar Pomodoro", comment: "Settings")
                 breathingSwitch.isOn = breathingButton
                 breathingSwitch.addTarget(self, action: #selector(breathingSwitchChanged(_:)), for: .valueChanged)
+                breathingSwitch.onTintColor = .customAccentColor
                 cell.accessoryView = breathingSwitch
             } else {
                 cell.textLabel?.text = NSLocalizedString("Recomendação de Atividades", comment: "Settings")
                 recommendationSwitch.isOn = recommendationButton
                 recommendationSwitch.addTarget(self, action: #selector(recommendationSwitchChanged(_:)), for: .valueChanged)
+                recommendationSwitch.onTintColor = .customAccentColor
                 cell.accessoryView = recommendationSwitch
             }
             return cell
