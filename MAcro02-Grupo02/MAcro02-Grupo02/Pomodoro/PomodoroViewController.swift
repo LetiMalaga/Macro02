@@ -206,6 +206,12 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     // MARK: - Layout
     
     private func setupLayout() {
+        
+//        // Adjusting title label size to fit button width with padding
+//        activityLabel.titleLabel?.adjustsFontSizeToFitWidth = true
+//        activityLabel.titleLabel?.minimumScaleFactor = 0.3
+//        activityLabel.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        
         // Add subviews
         view.addSubview(progressView)
         view.addSubview(timeLabel)
@@ -269,6 +275,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             
             refreshActivityButton.centerXAnchor.constraint(equalTo: activityLabel.centerXAnchor),
             refreshActivityButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30), // Spacing above the label
+            
         ])
     }
     
