@@ -15,8 +15,8 @@ class ProgressUiView: UIView {
     private var progressBar:UIProgressView = {
         let progressView = UIProgressView()
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.trackTintColor = AppColors.progressPrimary
-        progressView.progressTintColor = AppColors.progressSecundary
+        progressView.trackTintColor = UIColor.customCircleColor
+        progressView.progressTintColor = UIColor.customAccentColor
         progressView.isHidden = true
                 
         return progressView
@@ -28,7 +28,7 @@ class ProgressUiView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         
         label.font = AppFonts.regular
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         
         label.text = NSLocalizedString("Mantenha pressionado para pular", comment: "Tela de respiração") 
         

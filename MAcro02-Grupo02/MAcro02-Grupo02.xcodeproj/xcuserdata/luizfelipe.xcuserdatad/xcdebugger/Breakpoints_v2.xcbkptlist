@@ -142,8 +142,8 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsPresenter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
             landmarkName = "InsightsPresenterProtocol"
             landmarkType = "5">
          </BreakpointContent>
@@ -162,36 +162,6 @@
             endingLineNumber = "15"
             landmarkName = "scheduleEndOfDayNotification(insights:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "B9F3E89B-EA39-466F-B872-EAAF7E51C1E9 - 96f580e2b573016f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MAcro02_Grupo02.InsightsNotifications.scheduleEndOfDayNotification(insights: MAcro02_Grupo02.InsightsDataModel) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Insights/InsightsNotifications.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "15"
-                  endingLineNumber = "15">
-               </Location>
-               <Location
-                  uuid = "B9F3E89B-EA39-466F-B872-EAAF7E51C1E9 - 96f580e2b573016f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MAcro02_Grupo02.InsightsNotifications.scheduleEndOfDayNotification(insights: MAcro02_Grupo02.InsightsDataModel) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Insights/InsightsNotifications.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "15"
-                  endingLineNumber = "15">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -316,8 +286,8 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsInteractor.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "InsightsInteractor"
             landmarkType = "3">
          </BreakpointContent>
@@ -332,26 +302,10 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsPresenter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
             landmarkName = "presentTagInsights(insights:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "18C096BB-6EC8-4C56-8324-5CDD4CFA4FE3"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MAcro02-Grupo02/Insights/SwiftUI/InsightsSwiftUIView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "body"
-            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -368,22 +322,6 @@
             endingLineNumber = "21"
             landmarkName = "makeInsights()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F8351F8D-DFD9-4E70-A82A-F1A354B5EFC1"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MAcro02-Grupo02/Insights/SwiftUI/InsightsSwiftUIViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "InsightsDataView"
-            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -444,8 +382,8 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsInteractor.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
             landmarkName = "fetchInsightsData(predicate:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -460,8 +398,8 @@
             filePath = "MAcro02-Grupo02/Insights/InsightsInteractor.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "fetchInsightsData(predicate:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -485,75 +423,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6CDA3141-BDEA-449F-B7BE-01F69C34249A"
+            uuid = "F6201C9B-7B73-4B8E-8E88-255585DDCE0D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MAcro02-Grupo02/Settings/SettingsIteractor.swift"
+            filePath = "MAcro02-Grupo02/Insights/InsightsInteractor.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
-            landmarkName = "deleteActivity(at:)"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "fetchInsightsData(predicate:completion:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "6CDA3141-BDEA-449F-B7BE-01F69C34249A - cd3ed6a5394f5b4e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MAcro02_Grupo02.SettingsIteractor.deleteActivity(at: Foundation.UUID) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Settings/SettingsIteractor.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103">
-               </Location>
-               <Location
-                  uuid = "6CDA3141-BDEA-449F-B7BE-01F69C34249A - 7e2af2a5b118311c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (MAcro02_Grupo02.ActivitiesModel) -&gt; Swift.Bool in MAcro02_Grupo02.SettingsIteractor.deleteActivity(at: Foundation.UUID) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Settings/SettingsIteractor.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103">
-               </Location>
-               <Location
-                  uuid = "6CDA3141-BDEA-449F-B7BE-01F69C34249A - cd3ed6a5394f5b4e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MAcro02_Grupo02.SettingsIteractor.deleteActivity(at: Foundation.UUID) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Settings/SettingsIteractor.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103">
-               </Location>
-               <Location
-                  uuid = "6CDA3141-BDEA-449F-B7BE-01F69C34249A - 7e2af2a5b118311c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (MAcro02_Grupo02.ActivitiesModel) -&gt; Swift.Bool in MAcro02_Grupo02.SettingsIteractor.deleteActivity(at: Foundation.UUID) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/Settings/SettingsIteractor.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

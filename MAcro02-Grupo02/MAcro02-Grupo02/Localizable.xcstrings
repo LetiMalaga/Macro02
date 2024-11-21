@@ -73,6 +73,20 @@
         }
       }
     },
+    "Aqui você pode adicionar suas próprias atividades personalizadas e desativar nossas recomendações" : {
+      "comment" : "Settings"
+    },
+    "Atividades Padrão" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default Activities"
+          }
+        }
+      }
+    },
     "Atividades Personalizadas" : {
       "comment" : "Settings",
       "localizations" : {
@@ -80,6 +94,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personalized Activities"
+          }
+        }
+      }
+    },
+    "Atualizando em %lld segundos..." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updating in %lld seconds…"
           }
         }
       }
@@ -124,6 +148,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirm"
+          }
+        }
+      }
+    },
+    "Conecte-se à internet para voltar a ver os resultados!" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect to the internet to see the results!"
           }
         }
       }
@@ -179,7 +213,7 @@
       }
     },
     "Editar" : {
-      "comment" : "Settings",
+      "comment" : "NewActivityViewController\nSettings",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -196,6 +230,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose a tag"
+          }
+        }
+      }
+    },
+    "Escolha uma etiqueta que faça mais sentido para sua atividade" : {
+      "comment" : "NewActivityViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a tag that makes the most sense for your activity"
           }
         }
       }
@@ -250,23 +295,6 @@
         }
       }
     },
-    "Hoje" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Today"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hoje"
-          }
-        }
-      }
-    },
     "Hora de focar! Escolha o tempo ideal para mergulhar na sua tarefa e bloquear distrações." : {
       "comment" : "TimeSelectorViewController",
       "localizations" : {
@@ -274,23 +302,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Time to focus! Pick the ideal time to submerge in your task and block all distractions."
-          }
-        }
-      }
-    },
-    "horas" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hours"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Horas"
           }
         }
       }
@@ -444,6 +455,9 @@
         }
       }
     },
+    "Ops! Cadê o Wi-Fi?!" : {
+      "comment" : "Oops! Where's the Wi-Fi?!"
+    },
     "Outros" : {
       "comment" : "Insights",
       "localizations" : {
@@ -532,17 +546,6 @@
         }
       }
     },
-    "Refrescar" : {
-      "comment" : "Insights",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Refresh"
-          }
-        }
-      }
-    },
     "Resetar" : {
       "comment" : "Botão de resetar pomodoro",
       "localizations" : {
@@ -597,13 +600,13 @@
         }
       }
     },
-    "Selecione uma Etiqueta" : {
-      "comment" : "NewActivityViewController",
+    "Sem Tag" : {
+      "comment" : "Tag Default",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pick a Tag"
+            "value" : "No Tag"
           }
         }
       }

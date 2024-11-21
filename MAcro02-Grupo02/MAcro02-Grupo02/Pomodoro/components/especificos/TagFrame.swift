@@ -14,24 +14,12 @@ class TagFrame: UIView {
         let label = UILabel()
         label.text = NSLocalizedString("Trabalho", comment: "ModalTagsData")
         label.font = .systemFont(ofSize: 26)
-        label.textColor = AppColors.textPrimary
+        label.textColor = UIColor.customText
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
         
     }()
-    
-//    lazy var local:UILabel = {
-//        
-//        let label = UILabel()
-//        label.text = "Em casa"
-//        label.font = .systemFont(ofSize: 13)
-//        label.textColor = AppColors.textPrimary
-//        label.textAlignment = .center
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        return label
-//        
-//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,16 +32,19 @@ class TagFrame: UIView {
     
     private func setupTag() {
         addSubview(tagline)
-//        addSubview(local)
         
-        layer.borderColor = AppColors.textPrimary.cgColor
+        layer.borderColor = UIColor.customPersonalizationButtonStrokeColor.cgColor
+        
+        tagline.layer.cornerRadius = .tagCornerRadius
+        tagline.layer.maskedCorners = [
+            .layerMinXMaxYCorner,
+            .layerMaxXMinYCorner,
+            .layerMaxXMaxYCorner
+        ]
         
         NSLayoutConstraint.activate([
             tagline.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             tagline.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-//            tagline.topAnchor.constraint(equalTo: self.topAnchor, constant: 1),
-//            local.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-//            local.topAnchor.constraint(equalTo: tagline.bottomAnchor, constant: -5),
             
             self.heightAnchor.constraint(equalToConstant: 47),
             self.widthAnchor.constraint(equalToConstant: 132)

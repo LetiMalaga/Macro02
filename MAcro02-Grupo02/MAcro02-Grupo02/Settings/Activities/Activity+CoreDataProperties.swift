@@ -20,6 +20,7 @@ extension Activity {
     @NSManaged public var id: UUID
     @NSManaged public var tag: String
     @NSManaged public var type: String
+    @NSManaged public var isCSV: Bool
 
 }
 

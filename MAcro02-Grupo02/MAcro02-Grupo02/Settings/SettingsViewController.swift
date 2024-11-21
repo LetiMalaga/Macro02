@@ -9,21 +9,24 @@ import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController, SettingsViewProtocol {
-    
-    var soundButton: Bool = false {
+    var soundButton: Bool = UserDefaults.standard.bool(forKey: "sound") {
         didSet { soundSwitch.isOn = soundButton }
     }
     
-    var vibrationButton: Bool = false {
+    var vibrationButton: Bool = UserDefaults.standard.bool(forKey: "vibration") {
         didSet { vibrationSwitch.isOn = vibrationButton }
     }
     
-    var breathingButton: Bool = false {
+    var breathingButton: Bool = UserDefaults.standard.bool(forKey: "breathing") {
         didSet { breathingSwitch.isOn = breathingButton }
     }
     
-    var recommendationButton: Bool = false {
+    var recommendationButton: Bool = UserDefaults.standard.bool(forKey: "recomendations") {
         didSet { recommendationSwitch.isOn = recommendationButton }
+    }
+    
+    var defaultActivitiesButton: Bool = UserDefaults.standard.bool(forKey: "defaultActivities") {
+        didSet { defaultActivitiesSwitch.isOn = defaultActivitiesButton }
     }
     
     var shortBreakActivities: [ActivitiesModel] = []
@@ -39,6 +42,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     private let vibrationSwitch = UISwitch()
     private let breathingSwitch = UISwitch()
     private let recommendationSwitch = UISwitch()
+    private let defaultActivitiesSwitch = UISwitch()
     var tags:[String] = []
     var editableSections: Set<Int> = []
     
@@ -49,8 +53,9 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
         super.viewDidLoad()
         
         title = NSLocalizedString("Ajustes", comment: "Settings")
-        view.backgroundColor = .white
-        interactor?.fetchActivities()
+        view.backgroundColor = .customBGColor
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomTableViewCell")
+        interactor?.fetchActivities(isCSV: false)
         interactor?.fetchTags()
         
         setupTableView()
@@ -108,6 +113,10 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
     @objc func recommendationSwitchChanged(_ sender: UISwitch) {
         interactor?.changeRecomendations()
     }
+    
+    @objc func defaultActivitiesSwitchChanged(_ sender: UISwitch) {
+        interactor?.changeDefaultActivities()
+    }
 }
 
 
@@ -122,9 +131,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 2 // Sons e Vibrações
         case 1:
-            return 0 // Respiração ao iniciar e Recomendação de atividades
+            return 0 // Botão "Editar" 
         case 2:
-            return 2 // Botão "Editar"
+            return 3 // Respiração ao iniciar, Recomendação de atividades, Atividades Padrão
         case 3:
             return shortBreakActivities.count + 1 // Atividades de intervalo curto + opção para adicionar
         case 4:
@@ -153,14 +162,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
             return cell
             
+
         case 1:
             let cell = UITableViewCell(style: .default, reuseIdentifier: "EditCell")
             cell.textLabel?.text = tableView.isEditing ? NSLocalizedString("Concluir", comment: "Settings") : NSLocalizedString("Editar", comment: "Settings")
-            cell.textLabel?.textColor = .systemBlue
+            cell.textLabel?.textColor = .customAccentColor
             cell.textLabel?.textAlignment = .right
             return cell
-            
-            
             
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath)
@@ -169,11 +177,16 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 breathingSwitch.isOn = breathingButton
                 breathingSwitch.addTarget(self, action: #selector(breathingSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = breathingSwitch
-            } else {
+            } else if indexPath.row == 1 {
                 cell.textLabel?.text = NSLocalizedString("Recomendação de Atividades", comment: "Settings")
                 recommendationSwitch.isOn = recommendationButton
                 recommendationSwitch.addTarget(self, action: #selector(recommendationSwitchChanged(_:)), for: .valueChanged)
                 cell.accessoryView = recommendationSwitch
+            } else if indexPath.row == 2 {
+                cell.textLabel?.text = NSLocalizedString("Atividades Padrão", comment: "Settings")
+                defaultActivitiesSwitch.isOn = defaultActivitiesButton
+                defaultActivitiesSwitch.addTarget(self, action: #selector(defaultActivitiesSwitchChanged(_:)), for: .valueChanged)
+                cell.accessoryView = defaultActivitiesSwitch
             }
             return cell
             
@@ -184,32 +197,35 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             //            return cell
             
         case 3:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
-            cell.selectionStyle = .none
+            
             if indexPath.row == shortBreakActivities.count {
+
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso curto", comment: "Settings")
-                cell.textLabel?.textColor = .systemBlue
+                cell.textLabel?.textColor = .customAccentColor
+                return cell
             } else {
-                cell.textLabel?.text = shortBreakActivities[indexPath.row].description
-                cell.detailTextLabel?.text = shortBreakActivities[indexPath.row].tag
-                cell.textLabel?.textColor = .black
-                cell.detailTextLabel?.textColor = .black
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as? CustomTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.configure(withText: shortBreakActivities[indexPath.row].description, tagText: shortBreakActivities[indexPath.row].tag)
+                return cell
             }
-            return cell
             
         case 4:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
-            cell.selectionStyle = .none
             if indexPath.row < longBreakActivities.count {
-                cell.textLabel?.text = longBreakActivities[indexPath.row].description
-                cell.detailTextLabel?.text = longBreakActivities[indexPath.row].tag
-                cell.textLabel?.textColor = .black
-                cell.detailTextLabel?.textColor = .black
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as? CustomTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.configure(withText: longBreakActivities[indexPath.row].description, tagText: longBreakActivities[indexPath.row].tag)
+                return cell
             } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("+ Adicione uma atividade de descanso longo", comment: "Settings")
-                cell.textLabel?.textColor = .systemBlue
+                cell.textLabel?.textColor = .customAccentColor
+                return cell
             }
-            return cell
+            
             
         default:
             return UITableViewCell()
@@ -236,22 +252,42 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 2:
             titleLabel.text = NSLocalizedString("Sugestões", comment: "Settings")
             titleLabel.textColor = .gray
+            let descriptionLabel = UILabel()
+            descriptionLabel.font = .preferredFont(forTextStyle: .caption1)
+            descriptionLabel.textColor = .gray
+            descriptionLabel.numberOfLines = 0
+            descriptionLabel.text = NSLocalizedString("Aqui você pode adicionar suas próprias atividades personalizadas e desativar nossas recomendações", comment: "Settings")
+            descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            headerView.addSubview(descriptionLabel)
+            
+            NSLayoutConstraint.activate([
+                
+                descriptionLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -50),
+                descriptionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+                descriptionLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+                
+            ])
+            
         case 3:
             titleLabel.text = NSLocalizedString("Intervalo Curto", comment: "Settings")
-            titleLabel.font = .preferredFont(forTextStyle: .headline)
+            titleLabel.textColor = .gray
             
             makeButton()
+            
         case 4:
             titleLabel.text = NSLocalizedString("Intervalo Longo", comment: "Settings")
-            titleLabel.font = .preferredFont(forTextStyle: .headline)
+            titleLabel.textColor = .gray
             
             makeButton()
+            
         default:
             titleLabel.text = ""
         }
+        
         func font(_ title:String) -> UITableViewHeaderFooterView?{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomHeader")
-            header?.textLabel?.textColor = .black
+            header?.textLabel?.textColor = .customText
             header?.textLabel?.text = title
             header?.textLabel?.font = .preferredFont(forTextStyle: .title3)
             
@@ -280,9 +316,11 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         
         NSLayoutConstraint.activate([
             // Constraints para o título
-            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: section == 0 || section == 2 ? 20 : 16),
             titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 30)
+            
+            
+            headerView.heightAnchor.constraint(equalToConstant: section == 2 ? 60 : 40)
         ])
         
         return headerView
@@ -312,8 +350,28 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             presentNewActivity(type: .short)
         } else if indexPath.section == 4 && indexPath.row == longBreakActivities.count {
             presentNewActivity(type: .long)
+        } else if indexPath.section == 3 {
+            let selectedActivity = shortBreakActivities[indexPath.row]
+            presentActivityDetail(for: selectedActivity)
+        } else if indexPath.section == 4 {
+            let selectedActivity = longBreakActivities[indexPath.row]
+            presentActivityDetail(for: selectedActivity)
         }
+        
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    private func presentActivityDetail(for activity: ActivitiesModel) {
+        let detailVC = ActivityDetailViewController()
+        detailVC.activity = activity
+        detailVC.interactor = self.interactor
+        detailVC.tags = self.tags
+        
+        detailVC.onSave = { [weak self] updatedActivity in
+            self?.updateActivity(updatedActivity)
+        }
+        detailVC.modalPresentationStyle = .fullScreen
+        present(detailVC, animated: true, completion: nil)
+
     }
     
     func presentNewActivity(type: ActivitiesType) {
@@ -324,6 +382,11 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         
         newActivityVC.modalPresentationStyle = .fullScreen
         present(newActivityVC, animated: true, completion: nil)
+    }
+    
+    private func updateActivity(_ updatedActivity: ActivitiesModel) {
+            interactor?.updateActivity(updatedActivity)
+        
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -345,6 +408,94 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 interactor?.deleteActivity(at: id)
             }
         }
+    }
+}
+
+class CustomTableViewCell: UITableViewCell {
+    
+    let mainLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = UIColor.customText
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let tagLabel: PaddedLabel = {
+        let label = PaddedLabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = UIColor.customText
+        label.backgroundColor = .customBGColor
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 10
+        label.layer.borderWidth = 1
+        label.layer.borderColor = CGColor(red: 1, green: 0, blue: 0, alpha: 0.5)
+        label.textAlignment = .center
+        label.padding = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupCell()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupCell() {
+            contentView.addSubview(mainLabel)
+            contentView.addSubview(tagLabel)
+
+            // Definindo prioridades de hugging e resistência à compressão para manter o tamanho de tagLabel
+            tagLabel.setContentHuggingPriority(.required, for: .horizontal)
+            tagLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+            // Constraints para o mainLabel
+            NSLayoutConstraint.activate([
+                mainLabel.leadingAnchor.constraint(equalTo: tagLabel.trailingAnchor, constant: 10),
+                mainLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+                mainLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+                mainLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            ])
+
+            // Constraints para o tagLabel
+            NSLayoutConstraint.activate([
+                tagLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                tagLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                tagLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 50), // largura mínima
+                tagLabel.heightAnchor.constraint(equalToConstant: 24)
+            ])
+        }
+    
+    func configure(withText text: String, tagText: String) {
+        mainLabel.text = text
+        mainLabel.numberOfLines = 1 // Limita a uma linha
+        mainLabel.lineBreakMode = .byTruncatingTail // Adiciona "..." no final quando o texto é cortado
+        mainLabel.adjustsFontSizeToFitWidth = false // Não ajusta o tamanho da fonte
+        tagLabel.text = tagText
+        tagLabel.numberOfLines = 1 // Limita a uma linha
+        tagLabel.lineBreakMode = .byTruncatingTail // Adiciona "..." no final quando o texto é cortado
+        tagLabel.adjustsFontSizeToFitWidth = false // Não ajusta o tamanho da fonte
+    }
+}
+
+class PaddedLabel: UILabel {
+    var padding = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+
+    override func drawText(in rect: CGRect) {
+        let insetRect = rect.inset(by: padding)
+        super.drawText(in: insetRect)
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(width: size.width + padding.left + padding.right,
+                      height: size.height + padding.top + padding.bottom)
     }
 }
 

@@ -26,7 +26,7 @@ class TimeSelectorViewController: UIViewController {
         
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 32)
-        label.textColor = .label
+        label.textColor = .customText
         
         return label
         
@@ -37,7 +37,7 @@ class TimeSelectorViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
         label.numberOfLines = 4
-        label.textColor = .label
+        label.textColor = .customText
         
         return label
         
@@ -48,7 +48,7 @@ class TimeSelectorViewController: UIViewController {
         let label = UILabel()
         label.text = NSLocalizedString("Tempos predefinidos", comment: "TimeSelectorViewController")
         label.font = .boldSystemFont(ofSize: 13)
-        label.textColor = .label
+        label.textColor = .customText
         
         return label
         
@@ -74,7 +74,7 @@ class TimeSelectorViewController: UIViewController {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 13)
         label.text = NSLocalizedString("Com este modo ativado, o pomodoro é contado a partir do 0 e assim prossegue até que você o pare.", comment: "TimeSelectorViewController")
-        label.textColor = .label.withAlphaComponent(0.6)
+        label.textColor = .customText.withAlphaComponent(0.6)
 
         
         return label
@@ -83,6 +83,8 @@ class TimeSelectorViewController: UIViewController {
     
     let saveButton: PomoButton = {
         let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 292, height: 60), titulo: NSLocalizedString("Salvar", comment: "TimeSelectorViewController"))
+        button.backgroundColor = .customAccentColor
+        button.setTitleColor(.customTextOpposite, for: .normal)
         button.addTarget(self, action: #selector(save), for: .touchUpInside)
         
         return button
@@ -151,7 +153,7 @@ class TimeSelectorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .customBGColor
         
             
         
@@ -234,7 +236,7 @@ class TimeSelectorViewController: UIViewController {
         
             let translation = gesture.translation(in: dentsView)
            
-           let increment = Int(translation.x / 20) * 5
+        let increment = Int(translation.x / 20) * (type == .ciclosPomodoro ? 1 : 5)
            
            // Chamando o callback com o incremento
            if increment != 0 {
@@ -245,6 +247,3 @@ class TimeSelectorViewController: UIViewController {
 
 }
 
-#Preview{
-    TimeSelectorViewController()
-}

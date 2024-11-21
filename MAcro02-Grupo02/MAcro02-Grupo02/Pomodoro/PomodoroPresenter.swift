@@ -16,12 +16,28 @@ protocol PomodoroPresenterProtocol {
     func updateButton(isRunning: Bool, isPaused: Bool)
     func updateTimer(percentage: Float)
     func completePomodoro()
+    func showAlert(with title: String, message: String)
+    func presentActivity(_ activity: ActivitiesModel)
 }
 
 class PomodoroPresenter: PomodoroPresenterProtocol {
+
+    func showAlert(with title: String, message: String) {
+        viewController?.showAlert(with: title, message: message)
+    }
+    
     weak var viewController: PomodoroViewController?
     let pomoDefaults = PomoDefaults()
+    
 
+    func presentActivity(_ activity: ActivitiesModel) {
+            let description = activity.description // Extract description text
+            viewController?.displayActivity(description) // Send it to the view controller
+        
+        print("the activity is: \(description)")
+        print("the tag is: \(activity.tag)")
+        }
+    
     func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool = false) {
             viewController?.displayTime(time, isWorkPhase: isWorkPhase, isLongBreak: isLongBreak)
         }
@@ -49,6 +65,7 @@ class PomodoroPresenter: PomodoroPresenterProtocol {
     
     func completePomodoro() {
         viewController?.complete()
+        viewController?.showActivity()
     }
 }
 
