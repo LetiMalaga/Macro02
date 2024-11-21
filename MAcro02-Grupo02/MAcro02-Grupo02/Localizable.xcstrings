@@ -464,7 +464,15 @@
       }
     },
     "Ops! Cadê o Wi-Fi?!" : {
-      "comment" : "Oops! Where's the Wi-Fi?!"
+      "comment" : "Erro de Wi-Fi",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oops! Where's the Wi-Fi?!"
+          }
+        }
+      }
     },
     "Outros" : {
       "comment" : "Insights",
