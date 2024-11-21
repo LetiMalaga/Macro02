@@ -37,7 +37,12 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         label.textAlignment = .center
         label.numberOfLines = 0
         label.isHidden = true // Initially hidden until we load an activity
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = .activityCornerRadius
+//        label.layer.maskedCorners = [
+//            .layerMinXMaxYCorner,
+//            .layerMaxXMinYCorner,
+//            .layerMaxXMaxYCorner
+//        ]
         label.layer.borderWidth = 2
         label.layer.borderColor = UIColor.customText.cgColor // Add border color for visibility
         label.textInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) // Customize padding as needed
@@ -110,9 +115,9 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         // Define the button's symbol configuration
 
         // Create the image with the configuration and set it to the button
-        if let image = UIImage(systemName: "arrow.triangle.2.circlepath.circle.fill")?.applyingSymbolConfiguration(symbolConfiguration) {
+        if let image = UIImage(systemName: "arrow.trianglehead.2.counterclockwise.rotate.90")?.applyingSymbolConfiguration(symbolConfiguration) {
             button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
-            button.tintColor = .customText
+            button.tintColor = .customAccentColor
         }
         button.addTarget(self, action: #selector(showActivity), for: .touchUpInside)
         button.isHidden = true
@@ -430,9 +435,9 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
 }
 
-//#Preview {
-//    PomodoroViewController()
-//}
+#Preview {
+    PomodoroViewController()
+}
 
 extension PomodoroViewController: UIViewControllerTransitioningDelegate, PassingTag {
     func passing(_ tag: String) {
