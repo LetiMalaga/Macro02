@@ -84,6 +84,7 @@ class TimeSelectorViewController: UIViewController {
     let saveButton: PomoButton = {
         let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 292, height: 60), titulo: NSLocalizedString("Salvar", comment: "TimeSelectorViewController"))
         button.backgroundColor = .customAccentColor
+        button.tintColor = .customAccentColor
         button.setTitleColor(.customTextOpposite, for: .normal)
         button.addTarget(self, action: #selector(save), for: .touchUpInside)
         
@@ -102,6 +103,8 @@ class TimeSelectorViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         titleLabel.text = title
+        timeSlider.tintColor = .customAccentColor
+//        timeSlider.backgroundColor = .customAccentColor
         timeSlider.isUserInteractionEnabled = true
         
         switch type {
@@ -245,4 +248,8 @@ class TimeSelectorViewController: UIViewController {
            }
        }
 
+}
+
+#Preview{
+    TimeSelectorViewController(title: "Foco", type: ConfigType.foco, atualTime: 60)
 }

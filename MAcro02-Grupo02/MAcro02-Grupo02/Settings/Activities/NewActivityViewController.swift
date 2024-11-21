@@ -56,6 +56,8 @@ class NewActivityViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle(NSLocalizedString("Salvar", comment: "NewActivityViewController"), for: .normal)
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        button.tintColor = .customAccentColor
+        button.setTitleColor(.customTextOpposite, for: .normal)
         return button
     }()
     

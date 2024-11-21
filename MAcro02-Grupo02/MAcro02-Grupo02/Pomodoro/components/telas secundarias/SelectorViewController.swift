@@ -16,7 +16,8 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
         
         let button = PomoButton(frame: CGRect(x: 0, y: 0, width: 290, height: 60), titulo: NSLocalizedString("Salvar", comment: "SelectorViewController"))
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
-        
+        // Ajuste de cor botão salvar
+        button.backgroundColor = .customAccentColor
         return button
 
     }()
@@ -197,4 +198,8 @@ class ConfigCell: UICollectionViewCell {
         
         pomoTime.widthAnchor.constraint(equalToConstant: type == .ciclosPomodoro ? 155 : 251).isActive = true
     }
+}
+
+#Preview{
+    TimeSelectorViewController(title: "Foco", type: ConfigType.foco, atualTime: 60)
 }
