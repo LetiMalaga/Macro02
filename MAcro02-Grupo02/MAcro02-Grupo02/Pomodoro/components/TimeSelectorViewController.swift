@@ -245,6 +245,6 @@ class TimeSelectorViewController: UIViewController {
 
 }
 
-#Preview{
-    TimeSelectorViewController()
-}
+//#Preview{
+//    TimeSelectorViewController()
+//}
