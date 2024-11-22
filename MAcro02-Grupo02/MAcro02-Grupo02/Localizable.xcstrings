@@ -51,6 +51,9 @@
         }
       }
     },
+    "Aparência" : {
+      "comment" : "Settings"
+    },
     "Aperte para começar" : {
       "comment" : "Tela de respiração",
       "localizations" : {
@@ -73,6 +76,28 @@
         }
       }
     },
+    "Aqui você pode adicionar suas próprias atividades personalizadas e desativar nossas recomendações" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Here you can add your own personalized activities and turn off our recommendations"
+          }
+        }
+      }
+    },
+    "Atividades Padrão" : {
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default Activities"
+          }
+        }
+      }
+    },
     "Atividades Personalizadas" : {
       "comment" : "Settings",
       "localizations" : {
@@ -80,6 +105,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personalized Activities"
+          }
+        }
+      }
+    },
+    "Atualizando em %lld segundos..." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updating in %lld seconds…"
           }
         }
       }
@@ -128,6 +163,16 @@
         }
       }
     },
+    "Conecte-se à internet para voltar a ver os resultados!" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect to the internet to see the results!"
+          }
+        }
+      }
+    },
     "Continuar" : {
       "comment" : "Botão de continuar pomodoro",
       "localizations" : {
@@ -144,6 +189,9 @@
           }
         }
       }
+    },
+    "Cor" : {
+      "comment" : "Settings"
     },
     "Defina quantos ciclos de foco e intervalos você deseja realizar. O app automatiza essas sessões, permitindo que você se concentre sem precisar se preocupar com os tempos." : {
       "comment" : "TimeSelectorViewController",
@@ -179,7 +227,7 @@
       }
     },
     "Editar" : {
-      "comment" : "Settings",
+      "comment" : "NewActivityViewController\nSettings",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -196,6 +244,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose a tag"
+          }
+        }
+      }
+    },
+    "Escolha uma etiqueta que faça mais sentido para sua atividade" : {
+      "comment" : "NewActivityViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a tag that makes the most sense for your activity"
           }
         }
       }
@@ -250,23 +309,6 @@
         }
       }
     },
-    "Hoje" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Today"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hoje"
-          }
-        }
-      }
-    },
     "Hora de focar! Escolha o tempo ideal para mergulhar na sua tarefa e bloquear distrações." : {
       "comment" : "TimeSelectorViewController",
       "localizations" : {
@@ -278,22 +320,8 @@
         }
       }
     },
-    "horas" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hours"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Horas"
-          }
-        }
-      }
+    "Ícone" : {
+      "comment" : "Settings"
     },
     "Iniciar" : {
       "comment" : "Botão de iniciar pomodoro",
@@ -444,6 +472,17 @@
         }
       }
     },
+    "Ops! Cadê o Wi-Fi?!" : {
+      "comment" : "Erro de Wi-Fi",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oops! Where's the Wi-Fi?!"
+          }
+        }
+      }
+    },
     "Outros" : {
       "comment" : "Insights",
       "localizations" : {
@@ -532,17 +571,6 @@
         }
       }
     },
-    "Refrescar" : {
-      "comment" : "Insights",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Refresh"
-          }
-        }
-      }
-    },
     "Resetar" : {
       "comment" : "Botão de resetar pomodoro",
       "localizations" : {
@@ -597,13 +625,13 @@
         }
       }
     },
-    "Selecione uma Etiqueta" : {
-      "comment" : "NewActivityViewController",
+    "Sem Tag" : {
+      "comment" : "Tag Default",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pick a Tag"
+            "value" : "No Tag"
           }
         }
       }

@@ -3,6 +3,7 @@
     <entity name="Activity" representedClassName="Activity" syncable="YES">
         <attribute name="descriptionText" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isCSV" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="tag" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
     </entity>

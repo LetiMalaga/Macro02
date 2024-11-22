@@ -23,8 +23,10 @@ class GearBarView: UIView {
             }
             
             // Vibra quando o tempo é setado
-            let generator = UIImpactFeedbackGenerator(style: .medium)
-            generator.impactOccurred()
+            if UserDefaults.standard.bool(forKey: "sound"){
+                let generator = UIImpactFeedbackGenerator(style: .medium)
+                generator.impactOccurred()
+            }
         }
     }
     
@@ -32,7 +34,7 @@ class GearBarView: UIView {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 96, weight: .bold)
-        label.textColor = .label
+        label.textColor = .customText
         label.textAlignment = .center
         return label
     }()
@@ -112,7 +114,7 @@ class GearBarView: UIView {
             // Ajuste o divisor para ajustar a sensibilidade do arraste
             let newTime = timeInMinutes + increment
             
-            if !vibrate {
+            if !vibrate && UserDefaults.standard.bool(forKey: "sound") {
                 let generator = UIImpactFeedbackGenerator(style: .light)
                 generator.impactOccurred()
                 vibrate = true

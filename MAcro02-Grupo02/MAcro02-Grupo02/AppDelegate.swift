@@ -11,17 +11,21 @@ import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    
+    var settingsInteractor: SettingsIteractorProtocol?
+    var settingsData: SettingsDataProtocol?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        schedulerTasks()
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
                 print("Erro ao pedir permissão para notificações: \(error)")
             }
             print("Permissão concedida: \(granted)")
+        }
+        schedulerTasks()
+        if UserDefaults.standard.object(forKey: "sound") == nil {
+            self.firstLaunch()
         }
         
 //        saveContext()
@@ -72,6 +76,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         insightsNotifications.registerBackgroundTasks()
         insightsNotifications.scheduleDailyBackgroundTask()
         insightsNotifications.scheduleWeeklyBackgroundTask()
+    }
+    func firstLaunch() {
+        if UserDefaults.standard.object(forKey: "sound") == nil {
+            UserDefaults.standard.set(true, forKey: "sound")
+        }
+        if UserDefaults.standard.object(forKey: "vibration") == nil {
+            UserDefaults.standard.set(true, forKey: "vibration")
+        }
+        if UserDefaults.standard.object(forKey: "breathing") == nil {
+            UserDefaults.standard.set(true, forKey: "breathing")
+        }
+        if UserDefaults.standard.object(forKey: "recomendations") == nil {
+            UserDefaults.standard.set(true, forKey: "recomendations")
+        }
+        
+        settingsInteractor = SettingsIteractor()
+        settingsData = SettingsData()
+        settingsData?.parseAndSaveActivities(from: "Atividades_Curtas_Simples")
+        settingsData?.parseAndSaveActivities(from: "Atividades_Longas_Simples")
+        
     }
 }
 
