@@ -183,16 +183,16 @@ class ConfigCell: UICollectionViewCell {
         switch type {
             
         case .foco:
-                descriptionLabel.text = "Período de concentração"
+            descriptionLabel.text = NSLocalizedString("Período de concentração", comment: "SelectorViewController")
             
         case .intervaloCurto:
-                descriptionLabel.text = "Intervalo após o período de concentração"
+            descriptionLabel.text = NSLocalizedString("Intervalo após o período de concentração", comment: "SelectorViewController")
         
         case .intervaloLongo:
-                descriptionLabel.text = "Intervalo após concluir um ciclo completo"
+                descriptionLabel.text = NSLocalizedString("Intervalo após concluir um ciclo completo", comment: "SelectorViewController")
         
         case .ciclosPomodoro:
-                descriptionLabel.text = "Repetições do ciclo de foco e intervalo curto"
+                descriptionLabel.text = NSLocalizedString("Repetições do ciclo de foco e intervalo curto", comment: "SelectorViewController")
             
         }
         
