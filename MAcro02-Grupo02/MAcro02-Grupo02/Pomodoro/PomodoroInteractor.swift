@@ -309,7 +309,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     
     func fetchActivities(_ breakType:ActivitiesType,_ tag:String, completion: @escaping (ActivitiesModel) -> Void){
         
-        let activity = dataManager.fetchActivities(breakType, tag: tag)
+        let activity = dataManager.fetchActivities(breakType, tag: tag, includeDefaultActivities: UserDefaults.standard.bool(forKey: "defaultActivities"))
 
         guard let activity else { return }
         completion(ActivitiesModel(id: activity.id,
@@ -321,11 +321,13 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
     }
     
     func fetchAndPresentRandomActivity(tag: String, breakType: ActivitiesType) {
-        print("Fetching activity with tag: \(tag) and break type: \(breakType)")
-        fetchActivities(breakType, tag) { [weak self] activity in
-            guard let self = self else { return }
-            print("Fetched activity: \(activity.description)")
-            self.presenter?.presentActivity(activity)  // Pass activity to presenter
+        if UserDefaults.standard.bool(forKey: "recomendations") {
+            print("Fetching activity with tag: \(tag) and break type: \(breakType)")
+            fetchActivities(breakType, tag) { [weak self] activity in
+                guard let self = self else { return }
+                print("Fetched activity: \(activity.description)")
+                self.presenter?.presentActivity(activity)  // Pass activity to presenter
+            }
         }
     }
     

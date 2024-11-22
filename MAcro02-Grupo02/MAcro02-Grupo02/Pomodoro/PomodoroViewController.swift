@@ -410,20 +410,22 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     @objc func showActivity() {
-        if interactor?.returnCurrentState() == "long pause" {
-//            print(tagframe.tagline.text ?? "0")
-            activityLabel.isHidden = false
-            refreshActivityButton.isHidden = false
-            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
-        } else if interactor?.returnCurrentState() == "pause" {
-//            print(tagframe.tagline.text ?? "0")
-            activityLabel.isHidden = false
-            refreshActivityButton.isHidden = false
-            interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .short)
-        } else {
-            print("aiaiaiai")
-            activityLabel.isHidden = true
-            refreshActivityButton.isHidden = true
+        if UserDefaults.standard.bool(forKey: "recomendations") {
+            if interactor?.returnCurrentState() == "long pause" {
+                //            print(tagframe.tagline.text ?? "0")
+                activityLabel.isHidden = false
+                refreshActivityButton.isHidden = false
+                interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
+            } else if interactor?.returnCurrentState() == "pause" {
+                //            print(tagframe.tagline.text ?? "0")
+                activityLabel.isHidden = false
+                refreshActivityButton.isHidden = false
+                interactor?.fetchAndPresentRandomActivity(tag: tagframe.tagline.text ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .short)
+            } else {
+                print("aiaiaiai")
+                activityLabel.isHidden = true
+                refreshActivityButton.isHidden = true
+            }
         }
     }
     

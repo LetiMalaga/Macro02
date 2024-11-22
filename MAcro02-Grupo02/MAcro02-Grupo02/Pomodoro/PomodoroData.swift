@@ -16,6 +16,9 @@ class PomodoroData {
     
     let privateDatabase = CKContainer.default().privateCloudDatabase
     let userDefaultsStd = UserDefaults.standard
+//    let sp = SettingsPresenter()
+//    let si = SettingsIteractor()
+//    let svc = SettingsViewController()
     
     private let cachedDataKey = "cachedData"
     private let reachability = try! Reachability()
@@ -151,25 +154,51 @@ class PomodoroData {
         }
     }
     
-    func fetchActivities(_ type: ActivitiesType, tag: String) -> Activity? {
+    func fetchActivities(_ type: ActivitiesType, tag: String?, includeDefaultActivities: Bool) -> Activity? {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil }
 
         let contexts = appDelegate.persistentContainer.viewContext
+        var include = includeDefaultActivities
+
+        // Use the provided tag or default to "Sem Tag"
+        let resolvedTag = tag ?? NSLocalizedString("Sem Tag", comment: "Tag Default")
 
         // Create the fetch request
         let request: NSFetchRequest<Activity> = Activity.fetchRequest()
 
-        // Update predicate to include both isCSV true and false
-        request.predicate = NSPredicate(
-            format: "tag == %@ AND type == %@ AND (isCSV == true OR isCSV == false)",
-            tag,
-            type.rawValue
-        )
+        // Adjust predicate based on `includeDefaultTag`
+        if include {
+            // Fetch activities from both custom and CSV activities
+            request.predicate = NSPredicate(
+                format: "(tag == %@ OR tag == %@) AND type == %@ AND (isCSV == true OR isCSV == false)",
+                resolvedTag,
+                NSLocalizedString("Sem Tag", comment: "Tag Default"),
+                type.rawValue
+            )
+        } else {
+            // Fetch activities from only custom activities
+            request.predicate = NSPredicate(
+                format: "tag == %@ AND type == %@ AND isCSV == false",
+                resolvedTag,
+                type.rawValue
+            )
+        }
 
         do {
             // Fetch and return a random activity
             let activities = try contexts.fetch(request)
-            return activities.randomElement()
+            if activities.isEmpty == false {
+                return activities.randomElement()
+            } else {
+                
+                // If no custom activities, it fetches from CSV.
+                
+                include = true
+//                si.changeDefaultActivities()
+//                svc.reloadData()
+                return fetchActivities(type, tag: nil, includeDefaultActivities: include)
+            }
+            
         } catch {
             print("Failed to fetch activities: \(error)")
             return nil
