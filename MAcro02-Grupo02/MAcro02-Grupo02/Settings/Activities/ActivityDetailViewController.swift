@@ -9,20 +9,20 @@ import Foundation
 import UIKit
 
 class ActivityDetailViewController: UIViewController{
-    
+
     // MARK: - Properties
     var activity: ActivitiesModel?
     var onSave: ((ActivitiesModel) -> Void)?
     var isEditingActivity: Bool = false
     var interactor: SettingsIteractorProtocol?
     let characterLimit = 100
-    
+
     var tags: [String] = []{
         didSet {tagsCollectionView.dataSource = self}
     }
-    
+
     private var selectedTag: String?
-    
+
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -30,7 +30,7 @@ class ActivityDetailViewController: UIViewController{
         label.textAlignment = .center
         return label
     }()
-    
+
     let tagLabel: PaddedLabel = {
         let label = PaddedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +45,7 @@ class ActivityDetailViewController: UIViewController{
         label.padding = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
         return label
     }()
-    
+
     private let activityDescriptionLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("Descrição de Atividade", comment: "NewActivityViewController")
@@ -55,7 +55,7 @@ class ActivityDetailViewController: UIViewController{
         label.numberOfLines = 0
         return label
     }()
-    
+
     private let descriptionTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("Descrição de Atividade", comment: "NewActivityViewController")
@@ -63,7 +63,7 @@ class ActivityDetailViewController: UIViewController{
         textField.font = .systemFont(ofSize: 16)
         return textField
     }()
-    
+
     private let characterLimitLabel: UILabel = {
         let label = UILabel()
         label.text = "" // Começa vazia
@@ -72,22 +72,24 @@ class ActivityDetailViewController: UIViewController{
         label.isHidden = true // Oculta inicialmente
         return label
     }()
-    
+
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(NSLocalizedString("Voltar", comment: "NewActivityViewController"), for: .normal)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         return button
     }()
-    
+
     private let saveEditButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(NSLocalizedString("Editar", comment: "NewActivityViewController"), for: .normal)
         button.addTarget(self, action: #selector(saveEditButtonTapped), for: .touchUpInside)
-        button.setTitleColor(.customAccentColor, for: .normal)
+        button.backgroundColor = .customAccentColor
+        button.tintColor = .customAccentColor
+        button.setTitleColor(.customTextOpposite, for: .normal)
         return button
     }()
-    
+
     private let tagsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -99,7 +101,7 @@ class ActivityDetailViewController: UIViewController{
         collectionView.backgroundColor = .clear
         return collectionView
     }()
-    
+
     private let tagsBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.systemGray6
@@ -107,7 +109,7 @@ class ActivityDetailViewController: UIViewController{
         view.layer.masksToBounds = true
         return view
     }()
-    
+
     private let descriptionBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.systemGray6
@@ -125,20 +127,20 @@ class ActivityDetailViewController: UIViewController{
         label.numberOfLines = 0
         return label
     }()
-    
+
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.customBGColor
         title = "Detalhes da Atividade"
-        
+
         setupUIEditing()
         loadActivityData()
         tagsCollectionView.dataSource = self
         tagsCollectionView.delegate = self
         descriptionTextField.delegate = self
-    } 
-    
+    }
+
     // MARK: - UI Setup
     private func setupUISave() {
         view.addSubview(titleLabel)
@@ -149,7 +151,7 @@ class ActivityDetailViewController: UIViewController{
         view.addSubview(backButton)
         view.addSubview(saveEditButton)
         view.addSubview(characterLimitLabel)
-        
+
         // Configuração de Constraints
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -159,42 +161,42 @@ class ActivityDetailViewController: UIViewController{
         backButton.translatesAutoresizingMaskIntoConstraints = false
         saveEditButton.translatesAutoresizingMaskIntoConstraints = false
         characterLimitLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            
+
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             backButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            
+
             saveEditButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             saveEditButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            
+
             descriptionTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32),
             descriptionTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             descriptionTextField.heightAnchor.constraint(equalToConstant: 40),
-            
+
             tagsBackgroundView.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor, constant: 20),
             tagsBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tagsBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tagsBackgroundView.heightAnchor.constraint(equalToConstant: 55),
-            
+
             tagsCollectionView.centerYAnchor.constraint(equalTo: tagsBackgroundView.centerYAnchor),
             tagsCollectionView.leadingAnchor.constraint(equalTo: tagsBackgroundView.leadingAnchor, constant: 8),
             tagsCollectionView.trailingAnchor.constraint(equalTo: tagsBackgroundView.trailingAnchor, constant: -8),
             tagsCollectionView.heightAnchor.constraint(equalToConstant: 40),
-            
+
             tagsDescriptionLabel.topAnchor.constraint(equalTo: tagsBackgroundView.bottomAnchor, constant: 10),
             tagsDescriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tagsDescriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
+
             characterLimitLabel.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor, constant: 4),
             characterLimitLabel.leadingAnchor.constraint(equalTo: descriptionTextField.leadingAnchor),
             characterLimitLabel.trailingAnchor.constraint(equalTo: descriptionTextField.trailingAnchor)
         ])
     }
-    
+
     func setupUIEditing(){
         view.addSubview(descriptionBackgroundView)
         descriptionBackgroundView.addSubview(activityDescriptionLabel)
@@ -202,71 +204,71 @@ class ActivityDetailViewController: UIViewController{
         view.addSubview(titleLabel)
         view.addSubview(backButton)
         view.addSubview(saveEditButton)
-        
+
         tagLabel.text = activity?.tag
         activityDescriptionLabel.text = activity?.description
-        
+
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         tagLabel.translatesAutoresizingMaskIntoConstraints = false
         activityDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         backButton.translatesAutoresizingMaskIntoConstraints = false
         saveEditButton.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            
+
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             backButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            
+
             saveEditButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             saveEditButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            
+
             descriptionBackgroundView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 36),
             descriptionBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             descriptionBackgroundView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100),
-            
+
             activityDescriptionLabel.topAnchor.constraint(equalTo: descriptionBackgroundView.topAnchor, constant: 10),
             activityDescriptionLabel.leadingAnchor.constraint(equalTo: descriptionBackgroundView.leadingAnchor, constant: 10),
             activityDescriptionLabel.trailingAnchor.constraint(equalTo: descriptionBackgroundView.trailingAnchor, constant: -10),
             activityDescriptionLabel.heightAnchor.constraint(equalToConstant: 40),
-            
+
             tagLabel.topAnchor.constraint(equalTo: activityDescriptionLabel.bottomAnchor, constant: 10),
             tagLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 50), // largura mínima
             tagLabel.heightAnchor.constraint(equalToConstant: 24),
             tagLabel.centerXAnchor.constraint(equalTo: descriptionBackgroundView.centerXAnchor),
         ])
     }
-    
+
     // MARK: - Actions
     @objc private func backButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
-    
+
     private func loadActivityData() {
         descriptionTextField.text = activity?.description
         selectedTag = activity?.tag
     }
-    
+
     @objc private func saveEditButtonTapped() {
-        
+
         if isEditingActivity{
             let activityDescription = descriptionTextField.text
             guard let activityDescription,
                   var activity = activity else { return }
             activity.description = activityDescription
             activity.tag = selectedTag!
-            
+
             if !interactor!.validateActivityName(activity, .edit) {
                 showAlert(with: "Error", message: "Activity description already exists or is empty")
             }else{
                 onSave?(activity)
                 navigationController?.popViewController(animated: true)
-                
+
             }
-            
+
             dismiss(animated: true, completion: nil)
         }else{
             saveEditButton.setTitle("Save", for: .normal)
@@ -289,20 +291,20 @@ extension ActivityDetailViewController: UICollectionViewDataSource, UICollection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return tags.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TagCollectionViewCell.identifier, for: indexPath) as? TagCollectionViewCell else {
             return UICollectionViewCell()
         }
-        
+
         cell.configure(with: tags[indexPath.item])
         if tags[indexPath.item] == selectedTag{
             cell.setSelectedTagColor()
         }
-        
+
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedTag = tags[indexPath.item]
         print("Tag selecionada: \(selectedTag ?? "")")
@@ -314,7 +316,7 @@ extension ActivityDetailViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
-        
+
         if updatedText.count > characterLimit {
             characterLimitLabel.text = "Limite de \(characterLimit) caracteres atingido"
             characterLimitLabel.isHidden = false
