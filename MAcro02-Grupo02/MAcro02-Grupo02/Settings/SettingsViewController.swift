@@ -139,8 +139,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             return shortBreakActivities.count + 1 // Atividades de intervalo curto + opção para adicionar
         case 4:
             return longBreakActivities.count + 1 // Atividades de intervalo longo + opção para adicionar
-        case 5:
-            return 2
+//        case 5:
+//            return 2
         default:
             return 0
         }
@@ -233,54 +233,54 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.textLabel?.textColor = .customAccentColor
                 return cell
             }
-        case 5:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ColorIconCell", for: indexPath)
-            cell.selectionStyle = .gray
-            if indexPath.row == 0 {
-                cell.textLabel?.text = NSLocalizedString("Cor", comment: "Settings")
-                let circleView = UIView()
-                circleView.translatesAutoresizingMaskIntoConstraints = false
-                circleView.backgroundColor = .blue // Cor do círculo
-                circleView.layer.cornerRadius = 15 // Define o raio (para um círculo de 20x20)
-                circleView.layer.masksToBounds = true
-                let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
-                chevronImageView.translatesAutoresizingMaskIntoConstraints = false
-                chevronImageView.tintColor = .systemGray
-                
-                // Adiciona o círculo à célula
-                cell.contentView.addSubview(circleView)
-                cell.contentView.addSubview(chevronImageView)
-                
-                // Configura constraints para posicionar o círculo
-                NSLayoutConstraint.activate([
-                    circleView.widthAnchor.constraint(equalToConstant: 30),
-                    circleView.heightAnchor.constraint(equalToConstant: 30),
-                    circleView.centerYAnchor.constraint(equalTo: cell.textLabel!.centerYAnchor),
-                    circleView.leadingAnchor.constraint(equalTo: cell.textLabel!.trailingAnchor, constant: -35),
-                    
-                    chevronImageView.centerYAnchor.constraint(equalTo: cell.textLabel!.centerYAnchor),
-                    chevronImageView.leadingAnchor.constraint(equalTo: cell.textLabel!.trailingAnchor),
-                    
-                ])
-            } else {
-                cell.textLabel?.text = NSLocalizedString("Ícone", comment: "Settings")
-                let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
-                chevronImageView.translatesAutoresizingMaskIntoConstraints = false
-                chevronImageView.tintColor = .systemGray
-                
-                // Adiciona o círculo à célula
-                cell.contentView.addSubview(chevronImageView)
-                
-                // Configura constraints para posicionar o círculo
-                NSLayoutConstraint.activate([
-                    chevronImageView.centerYAnchor.constraint(equalTo: cell.textLabel!.centerYAnchor),
-                    chevronImageView.leadingAnchor.constraint(equalTo: cell.textLabel!.trailingAnchor),
-                    
-                ])
-            }
-            return cell
-            
-            
+//        case 5:
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "ColorIconCell", for: indexPath)
+//            cell.selectionStyle = .gray
+//            if indexPath.row == 0 {
+//                cell.textLabel?.text = NSLocalizedString("Cor", comment: "Settings")
+//                let circleView = UIView()
+//                circleView.translatesAutoresizingMaskIntoConstraints = false
+//                circleView.backgroundColor = .blue // Cor do círculo
+//                circleView.layer.cornerRadius = 15 // Define o raio (para um círculo de 20x20)
+//                circleView.layer.masksToBounds = true
+//                let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+//                chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+//                chevronImageView.tintColor = .systemGray
+//                
+//                // Adiciona o círculo à célula
+//                cell.contentView.addSubview(circleView)
+//                cell.contentView.addSubview(chevronImageView)
+//                
+//                // Configura constraints para posicionar o círculo
+//                NSLayoutConstraint.activate([
+//                    circleView.widthAnchor.constraint(equalToConstant: 30),
+//                    circleView.heightAnchor.constraint(equalToConstant: 30),
+//                    circleView.centerYAnchor.constraint(equalTo: cell.textLabel!.centerYAnchor),
+//                    circleView.leadingAnchor.constraint(equalTo: cell.textLabel!.trailingAnchor, constant: -35),
+//                    
+//                    chevronImageView.centerYAnchor.constraint(equalTo: cell.textLabel!.centerYAnchor),
+//                    chevronImageView.leadingAnchor.constraint(equalTo: cell.textLabel!.trailingAnchor),
+//                    
+//                ])
+//            } else {
+//                cell.textLabel?.text = NSLocalizedString("Ícone", comment: "Settings")
+//                let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+//                chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+//                chevronImageView.tintColor = .systemGray
+//                
+//                // Adiciona o círculo à célula
+//                cell.contentView.addSubview(chevronImageView)
+//                
+//                // Configura constraints para posicionar o círculo
+//                NSLayoutConstraint.activate([
+//                    chevronImageView.centerYAnchor.constraint(equalTo: cell.textLabel!.centerYAnchor),
+//                    chevronImageView.leadingAnchor.constraint(equalTo: cell.textLabel!.trailingAnchor),
+//                    
+//                ])
+//            }
+//            return cell
+//            
+//            
         default:
             return UITableViewCell()
         }
@@ -334,10 +334,10 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             titleLabel.textColor = .gray
             
             makeButton()
-        case 5:
-            titleLabel.text = NSLocalizedString("Aparência", comment: "Settings")
-            titleLabel.textColor = .gray
-            
+//        case 5:
+//            titleLabel.text = NSLocalizedString("Aparência", comment: "Settings")
+//            titleLabel.textColor = .gray
+//            
             
         default:
             titleLabel.text = ""
@@ -414,11 +414,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         } else if indexPath.section == 4 {
             let selectedActivity = longBreakActivities[indexPath.row]
             presentActivityDetail(for: selectedActivity)
-        }else if indexPath.section == 5 && indexPath.row == 0{
-            presentColor()
-        }else if indexPath.section == 5 && indexPath.row == 1{
-            //MARK: icon
         }
+//        else if indexPath.section == 5 && indexPath.row == 0{
+//            presentColor()
+//        }else if indexPath.section == 5 && indexPath.row == 1{
+//            //MARK: icon
+//        }
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
