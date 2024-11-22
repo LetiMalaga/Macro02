@@ -23,6 +23,7 @@ extension CGFloat {
     public static let modalIdentifierLineCornerRadius = 5.00
     
     public static let tagCornerRadius = 25.0
+    public static let activityCornerRadius = 10.0
     
     public static let tagWidthCtt = 0.36
     public static let tagHeightCtt = 0.06 // altura 0.06 -> valor dividido pelo tamanho de tela total

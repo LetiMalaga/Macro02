@@ -37,6 +37,9 @@ extension UIColor {
     // Padrões
     static let customBGColor = UIColor(lightHex: 0xFAF8F6, darkHex: 0x141414)
     static let customAccentColor = UIColor(lightHex: 0xAA603C, darkHex: 0xFF830F)
+    static let customLightAccentColor = UIColor(lightHex: 0xF3E9E3, darkHex: 0x2F2012)
+    static let customMediumAccentColor = UIColor(lightHex: 0xC5A494, darkHex: 0xEFB37A)
+    
     
     // Círculo
     static let customCircleColor = UIColor(lightHex: 0xF3E9E3, darkHex: 0x2F2012)

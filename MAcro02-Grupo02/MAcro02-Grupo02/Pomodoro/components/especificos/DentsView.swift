@@ -33,8 +33,8 @@ class DentsView: UIView {
     }
 
     private func setupShadowView() {
-        shadowView.backgroundColor = .customBGColor
-        shadowView.layer.cornerRadius = 5
+        shadowView.backgroundColor = .customMediumAccentColor
+        shadowView.layer.cornerRadius = 2
         addSubview(shadowView)
     }
 
@@ -107,4 +107,8 @@ class DentsView: UIView {
             
         ])
     }
+}
+
+#Preview{
+    TimeSelectorViewController(title: "Foco", type: ConfigType.foco, atualTime: 60)
 }
