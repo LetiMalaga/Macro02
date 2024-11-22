@@ -142,10 +142,15 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     @objc private func didTapPlayPause() {
         
         // Present the BreathingViewController for the breathing exercise if needed
-        let breathingVC = BreathingViewController()
-        breathingVC.delegate = self
-        breathingVC.modalPresentationStyle = .fullScreen
-        present(breathingVC, animated: true, completion: nil)
+        
+        if UserDefaults.standard.bool(forKey: "breathing") {
+            let breathingVC = BreathingViewController()
+            breathingVC.delegate = self
+            breathingVC.modalPresentationStyle = .fullScreen
+            present(breathingVC, animated: true, completion: nil)
+        } else {
+            didFinishBreathingExercise()
+        }
     }
     
     // Método do protocolo que será chamado quando o exercício de respiração terminar
