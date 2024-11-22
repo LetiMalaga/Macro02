@@ -51,6 +51,9 @@
         }
       }
     },
+    "Aparência" : {
+      "comment" : "Settings"
+    },
     "Aperte para começar" : {
       "comment" : "Tela de respiração",
       "localizations" : {
@@ -74,7 +77,15 @@
       }
     },
     "Aqui você pode adicionar suas próprias atividades personalizadas e desativar nossas recomendações" : {
-      "comment" : "Settings"
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Here you can add your own personalized activities and turn off our recommendations"
+          }
+        }
+      }
     },
     "Atividades Padrão" : {
       "comment" : "Settings",
@@ -178,6 +189,9 @@
           }
         }
       }
+    },
+    "Cor" : {
+      "comment" : "Settings"
     },
     "Defina quantos ciclos de foco e intervalos você deseja realizar. O app automatiza essas sessões, permitindo que você se concentre sem precisar se preocupar com os tempos." : {
       "comment" : "TimeSelectorViewController",
@@ -305,6 +319,9 @@
           }
         }
       }
+    },
+    "Ícone" : {
+      "comment" : "Settings"
     },
     "Iniciar" : {
       "comment" : "Botão de iniciar pomodoro",
@@ -456,7 +473,15 @@
       }
     },
     "Ops! Cadê o Wi-Fi?!" : {
-      "comment" : "Oops! Where's the Wi-Fi?!"
+      "comment" : "Erro de Wi-Fi",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oops! Where's the Wi-Fi?!"
+          }
+        }
+      }
     },
     "Outros" : {
       "comment" : "Insights",
