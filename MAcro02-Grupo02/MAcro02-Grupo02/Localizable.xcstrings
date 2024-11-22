@@ -52,7 +52,15 @@
       }
     },
     "Aparência" : {
-      "comment" : "Settings"
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        }
+      }
     },
     "Aperte para começar" : {
       "comment" : "Tela de respiração",
@@ -191,7 +199,15 @@
       }
     },
     "Cor" : {
-      "comment" : "Settings"
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color"
+          }
+        }
+      }
     },
     "Defina quantos ciclos de foco e intervalos você deseja realizar. O app automatiza essas sessões, permitindo que você se concentre sem precisar se preocupar com os tempos." : {
       "comment" : "TimeSelectorViewController",
@@ -321,7 +337,15 @@
       }
     },
     "Ícone" : {
-      "comment" : "Settings"
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icon"
+          }
+        }
+      }
     },
     "Iniciar" : {
       "comment" : "Botão de iniciar pomodoro",
