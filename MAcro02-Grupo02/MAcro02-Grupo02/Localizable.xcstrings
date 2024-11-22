@@ -52,7 +52,15 @@
       }
     },
     "Aparência" : {
-      "comment" : "Settings"
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        }
+      }
     },
     "Aperte para começar" : {
       "comment" : "Tela de respiração",
@@ -191,7 +199,15 @@
       }
     },
     "Cor" : {
-      "comment" : "Settings"
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color"
+          }
+        }
+      }
     },
     "Defina quantos ciclos de foco e intervalos você deseja realizar. O app automatiza essas sessões, permitindo que você se concentre sem precisar se preocupar com os tempos." : {
       "comment" : "TimeSelectorViewController",
@@ -321,7 +337,15 @@
       }
     },
     "Ícone" : {
-      "comment" : "Settings"
+      "comment" : "Settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icon"
+          }
+        }
+      }
     },
     "Iniciar" : {
       "comment" : "Botão de iniciar pomodoro",
@@ -358,6 +382,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Break"
+          }
+        }
+      }
+    },
+    "Intervalo após concluir um ciclo completo" : {
+      "comment" : "SelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Break after finishing a full cycle"
+          }
+        }
+      }
+    },
+    "Intervalo após o período de concentração" : {
+      "comment" : "SelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Break after focus time"
           }
         }
       }
@@ -522,6 +568,17 @@
         }
       }
     },
+    "Período de concentração" : {
+      "comment" : "SelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus time"
+          }
+        }
+      }
+    },
     "Personalização" : {
       "comment" : "SelectorViewController",
       "localizations" : {
@@ -567,6 +624,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Activity Recommendation"
+          }
+        }
+      }
+    },
+    "Repetições do ciclo de foco e intervalo curto" : {
+      "comment" : "SelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number of repetitions of focus and short break cycles"
           }
         }
       }
