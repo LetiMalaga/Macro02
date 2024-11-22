@@ -250,12 +250,6 @@ class TimeSelectorViewController: UIViewController {
 
 }
 
-<<<<<<< HEAD:MAcro02-Grupo02/MAcro02-Grupo02/Pomodoro/components/TimeSelectorViewController.swift
-//#Preview{
-//    TimeSelectorViewController()
-//}
-=======
 #Preview{
     TimeSelectorViewController(title: "Foco", type: ConfigType.foco, atualTime: 60)
 }
->>>>>>> 8f91973a13dd0a9199ee871633265c9e566ea81a:MAcro02-Grupo02/MAcro02-Grupo02/Pomodoro/components/telas secundarias/TimeSelectorViewController.swift
