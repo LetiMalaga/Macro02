@@ -420,5 +420,145 @@
             landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "307B4E52-C10C-4B1D-9ADF-ECD990E043A6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MAcro02-Grupo02/TesteDeConexao.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "sessionDidReceiveMessage(_:didReceiveMessage:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "307B4E52-C10C-4B1D-9ADF-ECD990E043A6 - 37d2c25a182adffc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in MAcro02_Grupo02.TesteDeConexao.sessionDidReceiveMessage(_: __C.WCSession, didReceiveMessage: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
+                  moduleName = "MAcro02-Grupo02.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/TesteDeConexao.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88">
+               </Location>
+               <Location
+                  uuid = "307B4E52-C10C-4B1D-9ADF-ECD990E043A6 - 37d2c25a182adffc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in MAcro02_Grupo02.TesteDeConexao.sessionDidReceiveMessage(_: __C.WCSession, didReceiveMessage: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
+                  moduleName = "MAcro02-Grupo02.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/TesteDeConexao.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FF8AEBA0-E99E-4B9E-9DD2-59E7246B4B4E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MAcro02-Grupo02/TesteDeConexao.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "sessionDidReceiveMessage(_:didReceiveMessage:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "FF8AEBA0-E99E-4B9E-9DD2-59E7246B4B4E - 1a9131aaeab85495"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MAcro02_Grupo02.TesteDeConexao.sessionDidReceiveMessage(_: __C.WCSession, didReceiveMessage: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
+                  moduleName = "MAcro02-Grupo02.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/TesteDeConexao.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "87"
+                  endingLineNumber = "87">
+               </Location>
+               <Location
+                  uuid = "FF8AEBA0-E99E-4B9E-9DD2-59E7246B4B4E - 37d2c25a182adfdd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in MAcro02_Grupo02.TesteDeConexao.sessionDidReceiveMessage(_: __C.WCSession, didReceiveMessage: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
+                  moduleName = "MAcro02-Grupo02.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/TesteDeConexao.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "87"
+                  endingLineNumber = "87">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DE039C4F-B6B8-474D-8671-86074B41B540"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pomdera Watch App/Connection.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "sendMessage()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0CF2BAF7-7E83-4CA6-AA18-E9A3B9604D94"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pomdera Watch App/Connection.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "session(_:didReceiveMessage:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F61B75A6-8B8B-4C30-A5C2-20E39F471741"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MAcro02-Grupo02/TesteDeConexao.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "sessionDidReceiveMessage(_:didReceiveMessage:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

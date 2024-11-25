@@ -268,6 +268,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
 
     
     func saveTimeData() async {
+        
         do{
             let data = FocusDataModel(focusTimeInMinutes: workDuration * longBreakInterval, breakTimeinMinutes: breakDuration * longBreakInterval, longBreakTimeInMinutes: longBreakDuration, category: self.tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), date: Date())
             
@@ -284,6 +285,7 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
             print("Erro ao salvar o registro: \(error)")
         }
     }
+    
     
     func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60

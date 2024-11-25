@@ -16,6 +16,8 @@
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
 	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
 	<key>com.apple.security.application-groups</key>
-	<array/>
+	<array>
+		<string>group.uikittestes.Macro02-Grupo02.leticiamalagutti</string>
+	</array>
 </dict>
 </plist>
