@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 //        let pomodoroVC = PomodoroRouter().build()
 //        let insightVC = InsightsFactory.makeInsights()
-        let tabBar =  MainTabBarController()
+        let tabBar =  TesteDeConexao()
 //        window.rootViewController = tabBar
 
 //        let modalTagsVC = ModalTagsViewController()
