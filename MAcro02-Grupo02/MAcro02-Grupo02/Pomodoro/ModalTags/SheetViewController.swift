@@ -197,9 +197,9 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     func changeToAddingNewTagMode(){
         textFieldTag.isHidden = !isAddingNewTag
         if isAddingNewTag{
-            tagNewTagButton.setTitle("Save", for: .normal)
+            tagNewTagButton.setTitle(NSLocalizedString("Salvar", comment: "Modal de Tags"), for: .normal)
         }else{
-            tagNewTagButton.setTitle("New Tag", for: .normal)
+            tagNewTagButton.setTitle(NSLocalizedString("Nova Etiqueta", comment: "Modal de Tags"), for: .normal)
         }
     }
 

@@ -9,8 +9,13 @@
 import Foundation
 
 struct CSVParser {
+    
+    // parseCSV: Parses the activity CSVs and returns all the activities following ActivitiesModel
+    
     static func parseCSV(from fileName: String) -> [ActivitiesModel] {
         var activities: [ActivitiesModel] = []
+        
+        // Establishing the path to the correct CSVs
         
         guard let path = Bundle.main.path(forResource: csvTranslation(csvName: fileName), ofType: "csv") else {
             print("❌ CSV file \(fileName) not found")
@@ -20,6 +25,7 @@ struct CSVParser {
         print("✅ CSV file \(fileName) found at path: \(path)")
         
         // csvTranslation: Checks which language the App is in, returns specific CSV name accordingly
+        
         func csvTranslation(csvName: String) -> String {
             var csvString: String = csvName
             if let appLanguage = Bundle.main.preferredLocalizations.first {
@@ -45,13 +51,16 @@ struct CSVParser {
             for (index, row) in rows.enumerated() {
                 if index == 0 { continue } // Skip header row
                 
+                // Formatting the Activities, Tags, etc.
+                
                 let columns = row.components(separatedBy: ";")
                 if columns.count >= 2 {
                     let description = columns[0].trimmingCharacters(in: .whitespacesAndNewlines)
                     var tag = columns[1].trimmingCharacters(in: .whitespacesAndNewlines)
                     let type: ActivitiesType
                     
-
+                    // Establishing whether the activities loaded are .short or .long based on the CSVs name
+                    
                     if fileName.lowercased().contains("short") || fileName.lowercased().contains("curtas") {
                         type = .short
                     } else if fileName.lowercased().contains("long") || fileName.lowercased().contains("longas") {
@@ -77,6 +86,9 @@ struct CSVParser {
         } catch {
             print("❌ Error reading CSV file \(fileName): \(error)")
         }
+        
+        // Returns all the activities extracted from the correct CSVs
+        
         return activities
     }
 }
