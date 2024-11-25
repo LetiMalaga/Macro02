@@ -221,13 +221,6 @@ class PomodoroInteractor: PomodoroInteractorProtocol {
                 currentState = "long pause"
                 presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
                 pendingPhaseSwitch = true
-            } else if remainingLoops % longBreakInterval == 0 && remainingLoops > 0 {
-                // Long break every 4 loops
-                fetchAndPresentRandomActivity(tag: tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .long)
-                remainingTime = /*longBreakDuration * 60*/ 6 // TODO: Descomentar para postar na AppStore  // Set to the actual long break duration
-                currentState = "long pause"
-                presenter?.displayTime(formatTime(remainingTime), isWorkPhase: false, isLongBreak: true)
-                pendingPhaseSwitch = true
             } else {
                 // Normal break
                 fetchAndPresentRandomActivity(tag: tagTime ?? NSLocalizedString("Sem Tag", comment: "Tag Default"), breakType: .short)
