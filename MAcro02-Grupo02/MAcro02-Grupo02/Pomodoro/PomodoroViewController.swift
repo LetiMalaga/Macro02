@@ -310,16 +310,17 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
         
         updateCircle(percentage: 0)
         
+        let breakDuration = pomoConfig.breakDuration
         resumeButton.isHidden = true
         resetButton.isHidden = true
         playButton.isHidden = false
         progressView.isHidden = true
-        intervaloLabel.isHidden = false
         interactor?.stopPomodoro()
         
         // Voltando a tag
         
         showActivity()
+        intervaloLabel.text = "\(NSLocalizedString("Intervalo", comment: "PomodoroViewController")): \(PomodoroInteractor().formatTime(breakDuration * 60))"
         
         tagframe.isHidden = false
         
@@ -357,6 +358,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     func displayTime(_ time: String, isWorkPhase: Bool, isLongBreak: Bool = false) {
         timeLabel.text = time
         timeLabel.isHidden = false // Show main timer once breathing is done
+        intervaloLabel.isHidden = false
         
         if isLongBreak {
             intervaloLabel.text = NSLocalizedString("Pausa Longa", comment: "PomodoroViewController")
