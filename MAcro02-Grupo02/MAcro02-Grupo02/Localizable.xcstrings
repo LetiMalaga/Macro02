@@ -386,6 +386,28 @@
         }
       }
     },
+    "Intervalo após concluir um ciclo completo" : {
+      "comment" : "SelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Break after finishing a full cycle"
+          }
+        }
+      }
+    },
+    "Intervalo após o período de concentração" : {
+      "comment" : "SelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Break after focus time"
+          }
+        }
+      }
+    },
     "Intervalo Curto" : {
       "comment" : "SelectorViewController\nSettings",
       "localizations" : {
@@ -546,6 +568,17 @@
         }
       }
     },
+    "Período de concentração" : {
+      "comment" : "SelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus time"
+          }
+        }
+      }
+    },
     "Personalização" : {
       "comment" : "SelectorViewController",
       "localizations" : {
@@ -591,6 +624,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Activity Recommendation"
+          }
+        }
+      }
+    },
+    "Repetições do ciclo de foco e intervalo curto" : {
+      "comment" : "SelectorViewController",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number of repetitions of focus and short break cycles"
           }
         }
       }
