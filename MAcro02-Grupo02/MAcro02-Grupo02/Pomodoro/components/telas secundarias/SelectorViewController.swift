@@ -88,8 +88,8 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     
     func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: view.frame.width - 40, height: 150) // Aumentando a altura para o título
-        layout.minimumLineSpacing = -10 // Espaçamento entre as células
+        layout.itemSize = CGSize(width: view.frame.width - 40, height: 155) // Aumentando a altura para o título
+        layout.minimumLineSpacing = 0 // Espaçamento entre as células
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
@@ -175,10 +175,10 @@ class ConfigCell: UICollectionViewCell {
         pomoTime.NumText = String(format: type == .ciclosPomodoro ? "%02d" : "%02d:00", seconds) // Converte segundos em minuto
         
         titleLabel.textColor = .customText
-        titleLabel.font = AppFonts.title2.bold()
+        titleLabel.font = UIFont(name: "Baloo2-Bold", size: 23)
         
         descriptionLabel.textColor = .customText
-        descriptionLabel.font = AppFonts.regular
+        descriptionLabel.font = UIFont(name: "Baloo2-Regular", size: 15)
         
         switch type {
             

@@ -32,7 +32,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     private let activityLabel: PaddingLabel = {
         let label = PaddingLabel()
-        label.font = UIFont.systemFont(ofSize: 22)
+        label.font = UIFont(name: "Baloo2-Regular", size: 22)
         label.textColor = .customText
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -67,7 +67,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
+        label.font = UIFont(name: "Baloo2-Bold", size: 80)
         label.textColor = UIColor.customText
         label.textAlignment = .center
         label.isUserInteractionEnabled = true
@@ -77,7 +77,7 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     
     private let intervaloLabel: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 22)
+        label.font = UIFont(name: "Baloo2-SemiBold", size: 24)
         label.layer.opacity = 0.3
         label.textColor = UIColor.customText
         
@@ -254,14 +254,14 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             
             // Time Label
             timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0),
+            timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 10),
             
-            intervaloLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: -10),
+            intervaloLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: -30),
             intervaloLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             // Progress Circle View
             progressCircleView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            progressCircleView.centerYAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 40),
+            progressCircleView.centerYAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 20),
             progressCircleView.heightAnchor.constraint(equalToConstant: 150),
             
             tagframe.centerXAnchor.constraint(equalTo: view.centerXAnchor),

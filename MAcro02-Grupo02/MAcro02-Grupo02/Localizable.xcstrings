@@ -672,7 +672,7 @@
       }
     },
     "Salvar" : {
-      "comment" : "NewActivityViewController\nSelectorViewController\nTimeSelectorViewController",
+      "comment" : "Modal de Tags\nNewActivityViewController\nSelectorViewController\nTimeSelectorViewController",
       "localizations" : {
         "en" : {
           "stringUnit" : {

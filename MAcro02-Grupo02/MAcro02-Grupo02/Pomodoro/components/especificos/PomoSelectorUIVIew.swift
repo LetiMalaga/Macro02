@@ -35,7 +35,7 @@ class PomoSelectorUIVIew: UIView {
         label.backgroundColor = .clear
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: .init(70)).bold()
+        label.font = UIFont(name: "Baloo2-Bold", size: 70)
         return label
     }()
     

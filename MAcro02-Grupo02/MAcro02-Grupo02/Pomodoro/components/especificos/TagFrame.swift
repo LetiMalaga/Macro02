@@ -13,7 +13,7 @@ class TagFrame: UIView {
         
         let label = UILabel()
         label.text = NSLocalizedString("Trabalho", comment: "ModalTagsData")
-        label.font = .systemFont(ofSize: 26)
+        label.font = UIFont(name: "Baloo2-Bold", size: 24)
         label.textColor = UIColor.customText
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false

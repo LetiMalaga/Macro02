@@ -30,7 +30,7 @@ class PomoButton: UIButton {
         
     
         self.layer.cornerRadius = 30
-        self.titleLabel?.font = .boldSystemFont(ofSize: 24)
+        self.titleLabel?.font = UIFont(name: "Baloo2-Bold", size: 24)
         self.backgroundColor = UIColor.customPersonalizationButtonColor
         self.setTitleColor(UIColor.customTextOpposite, for: .normal)
     }

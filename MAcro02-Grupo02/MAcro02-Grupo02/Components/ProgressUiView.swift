@@ -27,7 +27,7 @@ class ProgressUiView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         
-        label.font = AppFonts.regular
+        label.font = UIFont(name: "Baloo2-Regular", size: 15)
         label.textColor = UIColor.customText
         
         label.text = NSLocalizedString("Mantenha pressionado para pular", comment: "Tela de respiração") 

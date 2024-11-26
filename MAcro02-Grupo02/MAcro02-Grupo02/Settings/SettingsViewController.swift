@@ -300,7 +300,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case 1:
             
             titleLabel.text = NSLocalizedString("Atividades Personalizadas", comment: "Settings")
-            titleLabel.font = .preferredFont(forTextStyle: .headline)
+            titleLabel.font = UIFont(name: "Baloo2-Bold", size: 20)
             
             
         case 2:
@@ -354,7 +354,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         func makeButton(){
             let button = UIButton(type: .system)
             button.setTitle(tableView.isEditing ? NSLocalizedString("Concluir", comment: "Settings") : NSLocalizedString("Editar", comment: "Settings"), for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+            button.titleLabel?.font = UIFont(name: "Baloo2-Regular", size: 14)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.tag = section // Tag para identificar a seção
             button.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
@@ -487,7 +487,7 @@ class CustomTableViewCell: UITableViewCell {
     let mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont(name: "Baloo2-Regular", size: 16)
         label.textColor = UIColor.customText
         label.numberOfLines = 0
         return label
@@ -496,7 +496,7 @@ class CustomTableViewCell: UITableViewCell {
     let tagLabel: PaddedLabel = {
         let label = PaddedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "Baloo2-Regular", size: 14)
         label.textColor = UIColor.customText
         label.backgroundColor = .customBGColor
         label.layer.cornerRadius = 5

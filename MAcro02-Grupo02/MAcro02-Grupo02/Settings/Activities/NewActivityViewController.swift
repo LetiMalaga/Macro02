@@ -32,14 +32,14 @@ class NewActivityViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("Descrição de Atividade", comment: "NewActivityViewController")
         textField.borderStyle = .roundedRect
-        textField.font = .systemFont(ofSize: 16)
+        textField.font = UIFont(name: "Baloo2-Regular", size: 16)
         return textField
     }()
     
     private let characterLimitLabel: UILabel = {
         let label = UILabel()
         label.text = "" // Começa vazia
-        label.font = .systemFont(ofSize: 12)
+        label.font = UIFont(name: "Baloo2-Regular", size: 12)
         label.textColor = .red
         label.isHidden = true // Oculta inicialmente
         return label
@@ -84,7 +84,7 @@ class NewActivityViewController: UIViewController {
     private let tagsDescriptionLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("Escolha uma etiqueta que faça mais sentido para sua atividade", comment: "NewActivityViewController")
-        label.font = .systemFont(ofSize: 14)
+        label.font = UIFont(name: "Baloo2-Regular", size: 14)
         label.textColor = .darkGray
         label.textAlignment = .left
         label.numberOfLines = 0
@@ -241,7 +241,7 @@ class TagCollectionViewCell: UICollectionViewCell {
     
     private let tagLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.font = UIFont(name: "Baloo2-Regular", size: 14)
         label.textAlignment = .center
         label.textColor = .white
         label.numberOfLines = 1
