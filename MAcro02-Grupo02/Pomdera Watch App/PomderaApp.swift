@@ -11,7 +11,7 @@ import SwiftUI
 struct Pomdera_Watch_AppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            InsightsView()
         }
     }
 }

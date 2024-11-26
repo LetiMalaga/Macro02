@@ -510,6 +510,36 @@
             endingLineNumber = "26"
             landmarkName = "sendMessage()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "DE039C4F-B6B8-474D-8671-86074B41B540 - ccb4db1148aaaf1e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Pomdera_Watch_App.Connection.sendMessage() -&gt; ()"
+                  moduleName = "Pomdera Watch App.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/Pomdera%20Watch%20App/Connection.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26">
+               </Location>
+               <Location
+                  uuid = "DE039C4F-B6B8-474D-8671-86074B41B540 - 292978f9f9296eba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Error) -&gt; () in Pomdera_Watch_App.Connection.sendMessage() -&gt; ()"
+                  moduleName = "Pomdera Watch App.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/Pomdera%20Watch%20App/Connection.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

@@ -58,8 +58,10 @@ class InsightsViewModel : InsightsViewModelProtocol, ObservableObject{
     
     func getInsights(completion: @escaping (InsightsDataModel) -> Void) {
         var data = InsightsDataModel(
-            timeFocusedInMinutes: [:],
-            timePerHour: [:],
+            timeFocusedInMinutes: [],
+            timeFocusedTotal: 0,
+            timeFocusPerHour: [],
+            timeBreakPerHour: [],
             timeTotalInMinutes: 0,
             timeBreakInMinutes: 0
         )
@@ -74,23 +76,42 @@ class InsightsViewModel : InsightsViewModelProtocol, ObservableObject{
                 result.forEach { response in
                     // Soma por hora
                     let hour = calendar.component(.hour, from: response.date)
-                    data.timePerHour[hour, default: 0] += response.focusTimeInMinutes
+                    data.timeFocusPerHour.append(ChartData(hour: hour, value: response.focusTimeInMinutes))
+                    data.timeBreakPerHour.append(ChartData(hour: hour, value: response.breakTimeinMinutes))
 
                     // Soma por categoria
-                    if let currentTime = data.timeFocusedInMinutes[response.category] {
-                        data.timeFocusedInMinutes[response.category] = currentTime + response.focusTimeInMinutes
+                    if let currentTime = data.timeFocusedInMinutes.first(where: { $0.tag == response.category })?.value,
+                       let currentTagIndex = data.timeFocusedInMinutes.firstIndex(where: {$0.tag == response.category}){
+                        data.timeFocusedInMinutes[currentTagIndex].value = currentTime + response.focusTimeInMinutes
                     } else {
-                        data.timeFocusedInMinutes[response.category] = response.focusTimeInMinutes
+                        data.timeFocusedInMinutes.append(TagsData(tag: response.category, value: response.focusTimeInMinutes))
                     }
 
                     // Soma total de intervalos
                     data.timeBreakInMinutes += response.breakTimeinMinutes + response.longBreakTimeInMinutes
-                    data.timeTotalInMinutes += response.focusTimeInMinutes
+                    data.timeTotalInMinutes += response.focusTimeInMinutes + response.breakTimeinMinutes + response.longBreakTimeInMinutes
+                    data.timeFocusedTotal += response.focusTimeInMinutes
                 }
                 
                 completion(data)
             }
         }
+    }
+    
+    func formatMinutesToHours(minutes: Int) -> String {
+        let hours = minutes / 60
+            let remainingMinutes = minutes % 60
+        return minutes<60 ? "\(minutes) min" : "\(hours) h \(remainingMinutes) min"
+    }
+    
+    func dateFormatter() -> String{
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMM" // "dd" para o dia e "MMM" para o mês abreviado
+        formatter.locale = Locale(identifier: "pt_BR") // Define o idioma como português do Brasil
+        let formattedDate = formatter.string(from: date)
+        
+        return formattedDate
     }
 }
 
@@ -100,7 +121,7 @@ enum PreriodInsights{
     case month
 }
 
-struct FocusDataModel: Identifiable, Encodable, Decodable {
+struct FocusDataModel: Identifiable{
     var id = UUID()
     var focusTimeInMinutes: Int
     var breakTimeinMinutes: Int
@@ -110,11 +131,25 @@ struct FocusDataModel: Identifiable, Encodable, Decodable {
     
 }
 
-struct InsightsDataModel: Identifiable, Encodable, Decodable {
+struct InsightsDataModel: Identifiable {
     var id = UUID()
-    var timeFocusedInMinutes: [String: Int] // Categoria e minutos focados
-    var timePerHour: [Int: Int] // Hora e minutos focados
+    var timeFocusedInMinutes: [TagsData] // Categoria e minutos focados
+    var timeFocusedTotal: Int // Categoria e minutos focados
+    var timeFocusPerHour: [ChartData] // Hora e minutos focados
+    var timeBreakPerHour: [ChartData] // Hora e minutos focados
     var timeTotalInMinutes: Int
     var timeBreakInMinutes: Int
     var value: Int?
+}
+
+struct ChartData: Identifiable, Hashable {
+    var id = UUID()
+    var hour: Int
+    var value: Int
+}
+
+struct TagsData: Identifiable, Hashable  {
+    var id = UUID()
+    var tag: String
+    var value: Int
 }
