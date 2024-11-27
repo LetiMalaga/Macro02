@@ -192,6 +192,10 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
             isAddingNewTag.toggle()
             changeToAddingNewTagMode()
         }
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
     }
 
     func changeToAddingNewTagMode(){
@@ -207,6 +211,10 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
     @objc private func toggleState(){
         isEditingMode.toggle()
         changeToEditingMode()
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
     }
 
     // Muda para o modo de edição, onde as tags ppodem ser removidas
@@ -244,7 +252,10 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         collectionView.reloadData()
         delegate?.passing(selectedTag!)
         print("\(tags[sender.tag]) tapped!")
-        
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
 //        selectedTag = tags[sender.tag]
 //        delegate?.passing(selectedTag!)
 //        print("\(tags[sender.tag]) tapped!")

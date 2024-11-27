@@ -1,27 +1,27 @@
+////
+////  ContentView.swift
+////  Pomdera Watch App
+////
+////  Created by Felipe Porto on 21/11/24.
+////
 //
-//  ContentView.swift
-//  Pomdera Watch App
+//import SwiftUI
 //
-//  Created by Felipe Porto on 21/11/24.
+//struct ContentView: View {
+//    @StateObject var conection = Connection()
+//    var body: some View {
+//        VStack {
 //
-
-import SwiftUI
-
-struct ContentView: View {
-    @StateObject var conection = Connection()
-    var body: some View {
-        VStack {
-
-            Text(conection.message)
-            
-            Button(conection.message) {
-                conection.sendMessage()
-            }
-        }
-        .padding()
-    }
-}
-
-#Preview {
-    ContentView()
-}
+//            Text(conection.message)
+//            
+//            Button(conection.message) {
+//                conection.sendMessage()
+//            }
+//        }
+//        .padding()
+//    }
+//}
+//
+//#Preview {
+//    ContentView()
+//}

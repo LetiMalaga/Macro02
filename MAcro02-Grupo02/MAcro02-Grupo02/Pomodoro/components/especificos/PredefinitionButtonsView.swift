@@ -71,6 +71,10 @@ class PredefinitionButtonsView: UIView {
     @objc private func buttonTapped(_ sender: UIButton) {
         if let title = sender.title(for: .normal) {
             buttonAction?(Int(title) ?? 0)
+            if UserDefaults.standard.bool(forKey: "sound"){
+                let generator = UIImpactFeedbackGenerator(style: .medium)
+                generator.impactOccurred()
+            }
         }
     }
 }

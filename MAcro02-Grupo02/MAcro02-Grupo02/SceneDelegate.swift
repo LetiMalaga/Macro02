@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
-        let tabBar =  TesteDeConexao()
+        let tabBar =  MainTabBarController()
 
         let navControler = UINavigationController(rootViewController: tabBar )
         window.rootViewController = navControler

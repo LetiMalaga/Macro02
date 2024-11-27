@@ -53,6 +53,10 @@ struct InsightsSwiftUIView: View {
                         default:
                             print("erro")
                         }
+                        if UserDefaults.standard.bool(forKey: "sound"){
+                            let generator = UIImpactFeedbackGenerator(style: .medium)
+                            generator.impactOccurred()
+                        }
                     } label: {
                         Image(systemName: "chevron.left")
                             .font(.headline)
@@ -81,6 +85,10 @@ struct InsightsSwiftUIView: View {
                             interactor?.advanceMonth()
                         default:
                             print("erro")
+                        }
+                        if UserDefaults.standard.bool(forKey: "sound"){
+                            let generator = UIImpactFeedbackGenerator(style: .medium)
+                            generator.impactOccurred()
                         }
                     } label: {
                         Image(systemName: "chevron.right")

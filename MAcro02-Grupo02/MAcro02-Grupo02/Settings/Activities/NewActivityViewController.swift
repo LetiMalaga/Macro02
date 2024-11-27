@@ -176,6 +176,10 @@ class NewActivityViewController: UIViewController {
     }
     
     @objc private func saveButtonTapped() {
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         let activityDescription = descriptionTextField.text
         guard let activityType,
               let activityDescription else { return }
@@ -210,6 +214,10 @@ extension NewActivityViewController: UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         selectedTag = tags[indexPath.item]
         print("Tag selecionada: \(selectedTag ?? "")")
     }

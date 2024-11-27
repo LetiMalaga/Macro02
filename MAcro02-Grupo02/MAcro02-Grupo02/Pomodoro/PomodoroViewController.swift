@@ -140,7 +140,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }()
     
     @objc private func didTapPlayPause() {
-        
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         // Present the BreathingViewController for the breathing exercise if needed
         let breathingVC = BreathingViewController()
         breathingVC.delegate = self
@@ -282,7 +285,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     // MARK: - Actions
     
     @objc func resume() {
-        
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         interactor?.resumePomodoro()
         
         resumeButton.isHidden = true
@@ -297,7 +303,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     @objc func reset() {
-        
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         updateCircle(percentage: 0)
         
         resumeButton.isHidden = true
@@ -337,6 +346,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
             progressView.isHidden = true
             
         }
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
     }
     
     func displayActivity(_ description: String) {
@@ -362,6 +375,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     @objc func tags() {
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         
         let vc = ModalTagsFactory.makeModalTags(delegate: self)
         let navVC = UINavigationController(rootViewController: vc)
@@ -376,6 +393,10 @@ class PomodoroViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     @objc func configTime() {
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         if !isRuning {
             let vc = SelectorViewController()
             

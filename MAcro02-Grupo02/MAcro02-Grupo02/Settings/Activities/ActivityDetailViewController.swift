@@ -251,7 +251,10 @@ class ActivityDetailViewController: UIViewController{
     }
     
     @objc private func saveEditButtonTapped() {
-        
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         if isEditingActivity{
             let activityDescription = descriptionTextField.text
             guard let activityDescription,
@@ -300,11 +303,16 @@ extension ActivityDetailViewController: UICollectionViewDataSource, UICollection
             cell.setSelectedTagColor()
         }
         
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedTag = tags[indexPath.item]
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         print("Tag selecionada: \(selectedTag ?? "")")
     }
 }

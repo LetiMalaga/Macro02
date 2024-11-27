@@ -99,6 +99,10 @@ class SelectorViewController: UIViewController, UICollectionViewDataSource, UICo
     
     // Ação do botão "Salvar"
     @objc func saveButtonTapped() {
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         navigationController?.popViewController(animated: true)
     }
     

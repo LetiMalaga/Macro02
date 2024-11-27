@@ -407,144 +407,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "307B4E52-C10C-4B1D-9ADF-ECD990E043A6"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MAcro02-Grupo02/TesteDeConexao.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "sessionDidReceiveMessage(_:didReceiveMessage:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "307B4E52-C10C-4B1D-9ADF-ECD990E043A6 - 37d2c25a182adffc"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in MAcro02_Grupo02.TesteDeConexao.sessionDidReceiveMessage(_: __C.WCSession, didReceiveMessage: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/TesteDeConexao.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "88"
-                  endingLineNumber = "88">
-               </Location>
-               <Location
-                  uuid = "307B4E52-C10C-4B1D-9ADF-ECD990E043A6 - 37d2c25a182adffc"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in MAcro02_Grupo02.TesteDeConexao.sessionDidReceiveMessage(_: __C.WCSession, didReceiveMessage: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/TesteDeConexao.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "88"
-                  endingLineNumber = "88">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FF8AEBA0-E99E-4B9E-9DD2-59E7246B4B4E"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MAcro02-Grupo02/TesteDeConexao.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-            landmarkName = "sessionDidReceiveMessage(_:didReceiveMessage:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "FF8AEBA0-E99E-4B9E-9DD2-59E7246B4B4E - 1a9131aaeab85495"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MAcro02_Grupo02.TesteDeConexao.sessionDidReceiveMessage(_: __C.WCSession, didReceiveMessage: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/TesteDeConexao.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "87"
-                  endingLineNumber = "87">
-               </Location>
-               <Location
-                  uuid = "FF8AEBA0-E99E-4B9E-9DD2-59E7246B4B4E - 37d2c25a182adfdd"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in MAcro02_Grupo02.TesteDeConexao.sessionDidReceiveMessage(_: __C.WCSession, didReceiveMessage: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "MAcro02-Grupo02.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/MAcro02-Grupo02/TesteDeConexao.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "87"
-                  endingLineNumber = "87">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "DE039C4F-B6B8-474D-8671-86074B41B540"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pomdera Watch App/Connection.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "sendMessage()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "DE039C4F-B6B8-474D-8671-86074B41B540 - ccb4db1148aaaf1e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Pomdera_Watch_App.Connection.sendMessage() -&gt; ()"
-                  moduleName = "Pomdera Watch App.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/Pomdera%20Watch%20App/Connection.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "26"
-                  endingLineNumber = "26">
-               </Location>
-               <Location
-                  uuid = "DE039C4F-B6B8-474D-8671-86074B41B540 - 292978f9f9296eba"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Error) -&gt; () in Pomdera_Watch_App.Connection.sendMessage() -&gt; ()"
-                  moduleName = "Pomdera Watch App.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/Pomdera%20Watch%20App/Connection.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "26"
-                  endingLineNumber = "26">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "0CF2BAF7-7E83-4CA6-AA18-E9A3B9604D94"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -552,8 +414,8 @@
             filePath = "Pomdera Watch App/Connection.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "session(_:didReceiveMessage:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -568,10 +430,116 @@
             filePath = "MAcro02-Grupo02/TesteDeConexao.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "sessionDidReceiveMessage(_:didReceiveMessage:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "679DAA2B-0CF6-4C01-8D74-E20DA94764DA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pomdera Watch App/Insights/InsightsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "getInsights(completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "679DAA2B-0CF6-4C01-8D74-E20DA94764DA - 7c9afaefac32e363"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Pomdera_Watch_App.FocusDataModel) -&gt; () in closure #1 (Swift.Array&lt;Pomdera_Watch_App.FocusDataModel&gt;) -&gt; () in closure #1 () async -&gt; () in Pomdera_Watch_App.InsightsViewModel.getInsights(completion: (Pomdera_Watch_App.InsightsDataModel) -&gt; ()) -&gt; ()"
+                  moduleName = "Pomdera Watch App.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/Pomdera%20Watch%20App/Insights/InsightsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "83"
+                  endingLineNumber = "83">
+               </Location>
+               <Location
+                  uuid = "679DAA2B-0CF6-4C01-8D74-E20DA94764DA - b5b76f09ed9f7548"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Pomdera_Watch_App.TagsData) -&gt; Swift.Bool in closure #1 (Pomdera_Watch_App.FocusDataModel) -&gt; () in closure #1 (Swift.Array&lt;Pomdera_Watch_App.FocusDataModel&gt;) -&gt; () in closure #1 () async -&gt; () in Pomdera_Watch_App.InsightsViewModel.getInsights(completion: (Pomdera_Watch_App.InsightsDataModel) -&gt; ()) -&gt; ()"
+                  moduleName = "Pomdera Watch App.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/Pomdera%20Watch%20App/Insights/InsightsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "83"
+                  endingLineNumber = "83">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A74C761E-B972-4527-A024-309EB5F4BF3B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pomdera Watch App/Insights/InsightsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "getInsights(completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A74C761E-B972-4527-A024-309EB5F4BF3B - 7c9afaefac32e302"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Pomdera_Watch_App.FocusDataModel) -&gt; () in closure #1 (Swift.Array&lt;Pomdera_Watch_App.FocusDataModel&gt;) -&gt; () in closure #1 () async -&gt; () in Pomdera_Watch_App.InsightsViewModel.getInsights(completion: (Pomdera_Watch_App.InsightsDataModel) -&gt; ()) -&gt; ()"
+                  moduleName = "Pomdera Watch App.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/Pomdera%20Watch%20App/Insights/InsightsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84">
+               </Location>
+               <Location
+                  uuid = "A74C761E-B972-4527-A024-309EB5F4BF3B - 7c9afaefac32e302"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Pomdera_Watch_App.FocusDataModel) -&gt; () in closure #1 (Swift.Array&lt;Pomdera_Watch_App.FocusDataModel&gt;) -&gt; () in closure #1 () async -&gt; () in Pomdera_Watch_App.InsightsViewModel.getInsights(completion: (Pomdera_Watch_App.InsightsDataModel) -&gt; ()) -&gt; ()"
+                  moduleName = "Pomdera Watch App.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/Pomdera%20Watch%20App/Insights/InsightsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84">
+               </Location>
+               <Location
+                  uuid = "A74C761E-B972-4527-A024-309EB5F4BF3B - e930c7aa43c4db28"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Pomdera_Watch_App.TagsData) -&gt; Swift.Bool in closure #1 (Pomdera_Watch_App.FocusDataModel) -&gt; () in closure #1 (Swift.Array&lt;Pomdera_Watch_App.FocusDataModel&gt;) -&gt; () in closure #1 () async -&gt; () in Pomdera_Watch_App.InsightsViewModel.getInsights(completion: (Pomdera_Watch_App.InsightsDataModel) -&gt; ()) -&gt; ()"
+                  moduleName = "Pomdera Watch App.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/luizfelipe/Desktop/Macro02/MAcro02-Grupo02/Pomdera%20Watch%20App/Insights/InsightsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

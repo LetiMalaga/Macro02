@@ -228,8 +228,12 @@ class TimeSelectorViewController: UIViewController {
         case .ciclosPomodoro:
             pomoDefaults.setTime(for: "loopsQuantity", value: timeSlider.timeInMinutes)
         }
-        
+        if UserDefaults.standard.bool(forKey: "sound"){
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+        }
         navigationController?.popViewController(animated: true)
+        
     }
     
     @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
