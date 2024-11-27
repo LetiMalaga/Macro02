@@ -46,7 +46,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         textField.borderStyle = .roundedRect
         textField.backgroundColor = .customBGColor
         textField.textColor = .customText
-        textField.font = .preferredFont(forTextStyle: .caption1)
+        textField.font = UIFont(name: "Baloo2-SemiBold", size: 15)
 
         return textField
     }()
@@ -94,7 +94,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         // MARK: Label
         modalTagLabel.textColor = .customText
         modalTagLabel.text = NSLocalizedString("Escolha uma Etiqueta", comment: "Modal de Tags")
-        modalTagLabel.font = .preferredFont(for: .title2, weight: .bold)
+        modalTagLabel.font = UIFont(name: "Baloo2-Bold", size: 24)
 
 
         // MARK: Button & TextField
@@ -103,7 +103,7 @@ class SheetViewController: UIViewController, SheetViewControllerProtocol {
         tagNewTagButton.layer.borderColor = UIColor.customText.cgColor
         tagNewTagButton.setTitleColor(.customText, for: .normal)
         tagNewTagButton.setTitle(NSLocalizedString("Nova Etiqueta", comment: "Modal de Tags"), for: .normal)
-        tagNewTagButton.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
+        tagNewTagButton.titleLabel?.font = UIFont(name: "Baloo2-Bold", size: 24)
         tagNewTagButton.layer.cornerRadius = .tagCornerRadius
         tagNewTagButton.layer.maskedCorners = [
                 .layerMinXMaxYCorner,
@@ -267,7 +267,7 @@ extension SheetViewController: UICollectionViewDelegate, UICollectionViewDataSou
         myTagsView.layer.borderWidth = 3
         myTagsView.layer.borderColor = UIColor.customText.cgColor
         myTagsView.setTitleColor(UIColor.customText, for: .normal)
-        myTagsView.titleLabel?.font = .preferredFont(for: .title2, weight: .bold)
+        myTagsView.titleLabel?.font = UIFont(name: "Baloo2-Bold", size: 24)
         myTagsView.layer.cornerRadius = .tagCornerRadius
         myTagsView.translatesAutoresizingMaskIntoConstraints = false
         myTagsView.tag = indexPath.item

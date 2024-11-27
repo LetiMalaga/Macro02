@@ -33,7 +33,7 @@ class GearBarView: UIView {
     // Label para exibir o tempo
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 96, weight: .bold)
+        label.font = UIFont(name: "Baloo2-Bold", size: 96)
         label.textColor = .customText
         label.textAlignment = .center
         return label

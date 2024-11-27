@@ -25,7 +25,7 @@ class TimeSelectorViewController: UIViewController {
     let titleLabel: UILabel = {
 
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 32)
+        label.font = UIFont(name: "Baloo2-Bold", size: 35)
         label.textColor = .customText
 
         return label
@@ -35,7 +35,7 @@ class TimeSelectorViewController: UIViewController {
     let explanationLabel: UILabel = {
 
         let label = UILabel()
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont(name: "Baloo2-Regular", size: 13)
         label.numberOfLines = 4
         label.textColor = .customText
 
@@ -47,7 +47,7 @@ class TimeSelectorViewController: UIViewController {
 
         let label = UILabel()
         label.text = NSLocalizedString("Tempos predefinidos", comment: "TimeSelectorViewController")
-        label.font = .boldSystemFont(ofSize: 13)
+        label.font = UIFont(name: "Baloo2-Bold", size: 13)
         label.textColor = .customText
 
         return label
@@ -72,7 +72,7 @@ class TimeSelectorViewController: UIViewController {
     let infiniteLabel: UILabel = {
 
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 13)
+        label.font = UIFont(name: "Baloo2-Bold", size: 13)
         label.text = NSLocalizedString("Com este modo ativado, o pomodoro é contado a partir do 0 e assim prossegue até que você o pare.", comment: "TimeSelectorViewController")
         label.textColor = .customText.withAlphaComponent(0.6)
 

@@ -300,14 +300,15 @@ struct InsightsSwiftUIView: View {
                 .overlay {
                     VStack{
                         Text("Ops! Cadê o Wi-Fi?!")
-                            .font(.title3)
-                            .bold()
+                            .font(.custom("Baloo2-Bold", size: .init(23)))
                             .padding()
                         Text("Conecte-se à internet para voltar a ver os resultados!")
+                            .font(.custom("Baloo2-Regular", size: .init(15)))
                             .foregroundStyle(.gray)
                             .multilineTextAlignment(.center)
                         Spacer()
                         Text("Atualizando em \(self.countdown) segundos...")
+                            .font(.custom("Baloo2-Bold", size: .init(15)))
                             .foregroundStyle(.gray)
                             .padding()
                     }

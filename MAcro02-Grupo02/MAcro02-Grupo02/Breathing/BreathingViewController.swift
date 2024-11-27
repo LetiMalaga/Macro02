@@ -44,7 +44,7 @@ class BreathingViewController: UIViewController {
     private var stateLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.customText
-        label.font = AppFonts.largeTitle.bold()
+        label.font = UIFont(name: "Baloo2-Bold", size: 38)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = NSLocalizedString("Aperte para começar", comment: "Tela de respiração")
         return label
